@@ -4,7 +4,18 @@ const http = require('http');
 const PORT = process.env.PORT || 5000;
 app.set('port', PORT);
 
+/* Imports combined db from sequelize init */
 const server = http.createServer(app);
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+const db = require('../models');
+
+db.sequelize
+  .sync({ force: true })
+  /* .sync() */
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
