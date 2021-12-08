@@ -1,21 +1,84 @@
 const User = require('../models').user;
+const base = require('../helpers/modelBase').constraints;
+const { createError, createResult, createMessage } = require('../helpers/jsonMessage');
+const validate = require('validate.js');
+const constraints = {
+  email: {
+    /* The property is required (existing in json) and it can't be blank */
+    presence: { allowEmpty: false },
+    email: true,
+    length: { minimum: 4, maximum: 100 }
+  },
+  firstName: base.reqString,
+  lastName: base.reqString,
+  username: base.reqString
+};
 
 function getAll() {
   return User.findAll();
 }
+
 function getById(id) {
   return User.findOne({ where: { id } });
 }
-function create(data) {
-  return User.create(data);
+
+async function create(data) {
+  /* Validating data. Validate function will return object with messages if failing */
+  const invalidData = validate(data, constraints);
+  if (invalidData) {
+    return Promise.resolve(createError(400, invalidData));
+  } else {
+    try {
+      const result = await User.create(data);
+      return Promise.resolve(createResult(result));
+    } catch (err) {
+      return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    }
+  }
 }
 
-function update(data, id) {
-  //implicit id: id, shortened through es6-function.
-  return User.update(data, { where: { id } });
+async function update(data, id) {
+  /* Before anything else, checking id */
+  if (!id) {
+    return Promise.resolve(createError(400, "Id can't be blank"));
+  }
+
+  try {
+    /* Checking if user exists */
+    const existingUser = await User.findOne({ where: { id } });
+    if (!existingUser) {
+      return Promise.resolve(createError(404, 'No user to update'));
+    }
+    /* Validating data. Validate function will return object with messages if failing */
+    const invalidData = validate(data, constraints);
+    if (invalidData) {
+      return Promise.resolve(createError(400, invalidData));
+    }
+    /* Finally, trying to update user by given id */
+    await User.update(data, { where: { id } });
+    /* All ok */
+    return Promise.resolve(createMessage(200, 'User updated successfully'));
+  } catch (err) {
+    /* Any other error */
+    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+  }
 }
-function destroy(id) {
-  return User.destroy({ where: { id } });
+async function destroy(id) {
+  /* Before anything else, checking id */
+  if (!id) {
+    return Promise.resolve(createError(400, "Id can't be blank"));
+  }
+  try {
+    const existingUser = await User.findOne({ where: { id } });
+    if (!existingUser) {
+      return Promise.resolve(createError(404, 'No user to delete'));
+    }
+    await User.destroy({ where: { id } });
+    return Promise.resolve(createMessage(200, 'User deleted successfully'));
+  } catch (err) {
+    /* Any other error */
+    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+  }
 }
 
 module.exports = {

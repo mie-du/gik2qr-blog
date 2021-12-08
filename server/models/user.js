@@ -1,11 +1,11 @@
-const base = require('../helpers/modelBase');
+const base = require('../helpers/modelBase').columns;
 
 /* Defines a model with dependency injection which is called when index.js assembles the complete db-object.  */
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     'user',
     {
-      id: base.columns.id,
+      id: base.id,
       email: {
         type: DataTypes.STRING(100),
         len: [4, 100],
@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true
         }
       },
-      firstName: { ...base.columns.reqString },
-      lastName: { ...base.columns.reqString },
-      userName: { ...base.columns.reqString }
+      firstName: { ...base.reqString },
+      lastName: { ...base.reqString },
+      username: { ...base.reqString }
     },
     base.options
   );

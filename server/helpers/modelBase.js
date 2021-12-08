@@ -8,8 +8,13 @@ module.exports = {
     },
     reqString: {
       type: DataTypes.STRING(50),
-      /* allowNull: false, */
+      allowNull: false,
       len: [2, 50]
+    }
+  },
+  constraints: {
+    reqString: {
+      presence: { allowEmpty: false, length: { minimum: 2, maximum: 50 } }
     }
   },
   options: {
