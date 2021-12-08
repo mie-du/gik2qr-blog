@@ -8,7 +8,7 @@ module.exports = {
     },
     reqString: {
       type: DataTypes.STRING(50),
-      allowNull: false,
+      /* allowNull: false, */
       len: [2, 50]
     }
   },
