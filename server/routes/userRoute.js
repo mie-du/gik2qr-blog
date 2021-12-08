@@ -1,6 +1,10 @@
 const router = require('express').Router();
+const db = require('../models');
+
 router.get('/', (req, res) => {
-  res.send('It works!');
+  db.user.findAll().then((result) => {
+    res.json(result);
+  });
 });
 
 module.exports = router;
