@@ -1,6 +1,17 @@
 const router = require('express').Router();
 const postService = require('../services/postService');
 
+router.get('/full', (req, res) => {
+  postService.getFull().then((result) => {
+    res.send(result);
+  });
+});
+
+router.get('/author/:id', (req, res) => {
+  postService.getByAuthor(req.params.id).then((posts) => res.send(posts));
+});
+
+/* Regular crud */
 router.get('/', (req, res) => {
   postService
     .getAll()

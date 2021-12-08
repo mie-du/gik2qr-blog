@@ -1,9 +1,11 @@
 const Post = require('../models').post;
+const User = require('../models').user;
 const base = require('../helpers/modelBase').constraints;
 const { createError, createResult, createMessage } = require('../helpers/jsonMessage');
 const validate = require('validate.js');
 const constraints = {
-  title: base.reqString
+  title: base.reqString,
+  userId: { presence: { allowEmpty: false } }
 };
 
 function getAll() {
@@ -12,6 +14,14 @@ function getAll() {
 
 function getById(id) {
   return Post.findOne({ where: { id } });
+}
+
+function getByAuthor(id) {
+  return Post.findAll({ where: { authorId: id } });
+}
+
+function getFull() {
+  return Post.findAll({ include: { model: User } });
 }
 
 async function create(data) {
@@ -76,6 +86,8 @@ async function destroy(id) {
 module.exports = {
   getAll,
   getById,
+  getByAuthor,
+  getFull,
   create,
   update,
   destroy
