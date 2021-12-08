@@ -40,4 +40,7 @@ db.user.hasMany(db.post, {
 });
 db.post.belongsTo(db.user);
 
+db.post.belongsToMany(db.tag, { through: db.postTag });
+db.tag.belongsToMany(db.post, { through: db.postTag });
+
 module.exports = db;
