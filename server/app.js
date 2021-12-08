@@ -13,6 +13,9 @@ app.use((req, res, next) => {
   next();
 });
 
+/* Routes */
+app.use('/users', require('./routes/userRoute'));
+
 /* Error handling on the app-level (unless caught and handled elsewhere) */
 app.use((err, req, res, next) => {
   if (err) {
