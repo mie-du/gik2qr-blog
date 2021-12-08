@@ -17,6 +17,10 @@ router.post('/addTag', (req, res) => {
   });
 });
 
+/* Remove tag - when last tag is gone, remove from tag-table */
+
+/* Comments */
+
 /* Regular crud */
 router.get('/', (req, res) => {
   postService.getAll().then((result) => {
