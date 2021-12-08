@@ -1,10 +1,16 @@
 const router = require('express').Router();
-const db = require('../models');
+const userService = require('../services/userService');
 
 router.get('/', (req, res) => {
-  db.user.findAll().then((result) => {
-    res.json(result);
-  });
+  userService
+    .getAll()
+    .then((result) => {
+      if (result.length != 0) res.status(200).json(result);
+      else res.status(204).send();
+    })
+    .catch((e) => {
+      res.json({ error: e.message, stack: e.stack });
+    });
 });
 
 module.exports = router;
