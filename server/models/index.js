@@ -38,9 +38,20 @@ db.user.hasMany(db.post, {
   allowNull: false,
   onDelete: 'CASCADE'
 });
-db.post.belongsTo(db.user);
+db.user.hasMany(db.comment, {
+  allowNull: false,
+  onDelete: 'CASCADE'
+});
+db.post.hasMany(db.comment, {
+  allowNull: false,
+  onDelete: 'CASCADE'
+});
 
-db.post.belongsToMany(db.tag, { through: db.postTag });
-db.tag.belongsToMany(db.post, { through: db.postTag });
+db.post.belongsTo(db.user);
+db.comment.belongsTo(db.user);
+db.comment.belongsTo(db.post);
+
+db.post.belongsToMany(db.tag, { through: db.postTag, onDelete: 'CASCADE' });
+db.tag.belongsToMany(db.post, { through: db.postTag, onDelete: 'CASCADE' });
 
 module.exports = db;
