@@ -1,16 +1,19 @@
 import './App.css';
-import { Button } from '@mui/material';
-import { purple } from '@mui/material/colors';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import Home from './Home';
+import User from './User';
+import Posts from './Posts';
+
 function App() {
-  console.log(purple);
   return (
-    <div className='App'>
-      <h1> Hello world</h1>
-      <Button color='primary' variant='contained'>
-        {' '}
-        Hello World
-      </Button>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route exact path='/user' component={User} />
+        <Route exact path='/posts' component={Posts} />
+      </Switch>
+    </Router>
   );
 }
 
