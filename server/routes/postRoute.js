@@ -1,4 +1,4 @@
-const router = require('express').Router();
+let router = require('express').Router();
 const postService = require('../services/postService');
 const RouterCreator = require('../helpers/RouterCreator');
 
