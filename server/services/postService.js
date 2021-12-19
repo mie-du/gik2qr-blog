@@ -114,13 +114,14 @@ async function getSummary() {
   try {
     const allPosts = await Post.findAll({ include: [User, Tag] });
     let cleanResult = [];
-    let cleanPost = {
-      content: {},
-      author: {},
-      tags: []
-    };
 
     allPosts.forEach((post) => {
+      //must be inside loop, reference will be added otherwise.
+      let cleanPost = {
+        content: {},
+        author: {},
+        tags: []
+      };
       const { title, body, imageUrl, createdAt, updatedAt } = post;
       const { firstName, lastName, username, email } = post.user;
 
@@ -129,9 +130,12 @@ async function getSummary() {
       post.tags.forEach((tag) => {
         cleanPost.tags.push(tag.name);
       });
+      console.log('---single post---');
+      console.log(cleanPost);
       cleanResult.push(cleanPost);
     });
-
+    console.log('---complete result---');
+    console.log(cleanResult);
     return Promise.resolve(createResult(cleanResult));
   } catch (err) {
     return Promise.resolve(

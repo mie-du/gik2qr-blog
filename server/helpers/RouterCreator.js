@@ -1,7 +1,5 @@
-const router = require('express').Router();
-
 class RouterCreator {
-  constructor(service) {
+  constructor(service, router) {
     this.service = service;
     this.router = router;
   }
