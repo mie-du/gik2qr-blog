@@ -7,9 +7,18 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-/* Setting header allowing requests from our future React front end */
+/* Setting header and logging requests */
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  console.log('.....');
+  console.log(
+    `${new Date().toLocaleTimeString()} Request: ${req.url} method: ${
+      req.method
+    }`
+  );
+
   next();
 });
 

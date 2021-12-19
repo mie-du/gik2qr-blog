@@ -4,10 +4,13 @@ export default class UserModel {
   apiPath = 'users';
 
   getAll() {
-    return api.get(`${this.apiPath}`);
+    const data = api.get(this.apiPath).then((data) => data);
+    return data;
   }
 
   createUser(user) {
-    this.users.push(user);
+    console.log(user);
+    const data = api.post(this.apiPath, user).then((data) => data);
+    return data;
   }
 }
