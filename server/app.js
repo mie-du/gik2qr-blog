@@ -20,7 +20,9 @@ app.use('/posts', require('./routes/postRoute'));
 /* Error handling on the app-level (unless caught and handled elsewhere) */
 app.use((err, req, res, next) => {
   if (err) {
-    res.status(err.status || 500).json({ error: err.message, stack: err.stack || 'Unknown error' });
+    res
+      .status(err.status || 500)
+      .json({ error: err.message, stack: err.stack || 'Unknown error' });
   }
 });
 

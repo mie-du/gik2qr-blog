@@ -4,7 +4,11 @@ const Tag = require('../models').tag;
 const Comment = require('../models').comment;
 const PostTag = require('../models').postTag;
 const constraints = require('../helpers/modelBase').constraints;
-const { createError, createResult, createMessage } = require('../helpers/jsonMessage');
+const {
+  createError,
+  createResult,
+  createMessage
+} = require('../helpers/jsonMessage');
 const validate = require('validate.js');
 const postConstraints = {
   title: constraints.reqString,
@@ -16,6 +20,8 @@ const commentConstraints = {
   userId: { presence: { allowEmpty: false } },
   postId: { presence: { allowEmpty: false } }
 };
+
+/* refactor to blog? */
 
 async function addComment(data) {
   try {
@@ -34,7 +40,9 @@ async function addComment(data) {
     const result = await Comment.create(data);
     return Promise.resolve(createResult(result));
   } catch (err) {
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 
@@ -55,16 +63,22 @@ async function addTag(name, postId) {
       tagId = existingTag.id;
       const tagOnPost = await PostTag.findOne({ where: { postId, tagId } });
       if (tagOnPost) {
-        return Promise.resolve(createError(400, `Tag '${name}' already exist on post`));
+        return Promise.resolve(
+          createError(400, `Tag '${name}' already exist on post`)
+        );
       }
     } else {
       const newTag = await Tag.create({ name });
       tagId = newTag.id;
     }
     await PostTag.create({ postId, tagId });
-    return Promise.resolve(createMessage(200, `Tag '${name}' added to post with id ${postId}`));
+    return Promise.resolve(
+      createMessage(200, `Tag '${name}' added to post with id ${postId}`)
+    );
   } catch (err) {
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 
@@ -81,7 +95,9 @@ async function removeTag(postId, tagId) {
     }
     return Promise.resolve(createMessage(200, 'Tag removed successfully'));
   } catch (err) {
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 
@@ -118,7 +134,9 @@ async function getSummary() {
 
     return Promise.resolve(createResult(cleanResult));
   } catch (err) {
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 
@@ -130,7 +148,9 @@ async function getFull() {
     }
     return Promise.resolve(createResult(result));
   } catch (err) {
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 /* Basic crud */
@@ -142,7 +162,9 @@ async function getAll() {
     }
     return Promise.resolve(createResult(result));
   } catch (err) {
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 
@@ -154,7 +176,9 @@ async function getById(id) {
     }
     return Promise.resolve(createResult(result));
   } catch (err) {
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 
@@ -174,7 +198,9 @@ async function create(data) {
       const result = await Post.create(data);
       return Promise.resolve(createResult(result));
     } catch (err) {
-      return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+      return Promise.resolve(
+        createError(err.status || 500, err.message || 'Unknown error')
+      );
     }
   }
 }
@@ -202,7 +228,9 @@ async function update(data, id) {
     return Promise.resolve(createMessage(200, 'Post updated successfully'));
   } catch (err) {
     /* Any other error */
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 async function destroy(id) {
@@ -219,7 +247,9 @@ async function destroy(id) {
     return Promise.resolve(createMessage(200, 'Post deleted successfully'));
   } catch (err) {
     /* Any other error */
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 
