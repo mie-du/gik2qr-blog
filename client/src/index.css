@@ -1,9 +1,24 @@
 :root {
   --color-gray: #333;
-  --color-main: hsl(240, 30%, 40%);
+
+  --color-sec-h: 140;
+
   --color-main-h: 240;
   --color-main-s: 30%;
   --color-main-l: 40%;
+  --color-main-hex: #474785;
+  --color-secondary-hex: #47855c;
+
+  --color-secondary: hsl(
+    var(--color-sec-h),
+    var(--color-main-s),
+    var(--color-main-l)
+  );
+  --color-main: hsl(
+    var(--color-main-h),
+    var(--color-main-s),
+    var(--color-main-l)
+  );
 
   --font-sans: 'Fira Sans', sans-serif;
   --font-script: 'Imperial Script', cursive;
