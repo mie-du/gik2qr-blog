@@ -13,4 +13,9 @@ export default class UserModel {
     const data = api.post(this.apiPath, user).then((data) => data);
     return data;
   }
+
+  updateUser(user) {
+    const data = api.put(this.apiPath, user).then((data) => data);
+    return data;
+  }
 }

@@ -22,8 +22,20 @@ export default class User extends Component {
     };
     this.model.createUser(user);
   }
+  saveUser() {
+    const user = this.state.users[0];
+    user.firstName = 'Yoshi';
+    console.log(user);
+    this.model.updateUser(user);
+  }
+  deleteUser() {}
+  validateUser() {}
+
   render() {
     console.log(this.state.users);
+    if (this.state.users[0]) {
+      this.saveUser(this.state.users[0]);
+    }
     return <div>User</div>;
   }
 }
