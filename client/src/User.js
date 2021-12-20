@@ -1,3 +1,11 @@
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText
+} from '@mui/material';
+import ImageIcon from '@mui/icons-material/Image';
 import React, { Component } from 'react';
 import UserModel from './UserModel';
 
@@ -44,6 +52,24 @@ export default class User extends Component {
   render() {
     console.log('--- render ---');
     console.log(this.state.users);
-    return <div>User</div>;
+    return (
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        {this.state.users &&
+          this.state.users.map((user) => {
+            return (
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <ImageIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${user.firstName} ${user.lastName}`}
+                  secondary={user.email}></ListItemText>
+              </ListItem>
+            );
+          })}
+      </List>
+    );
   }
 }

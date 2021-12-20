@@ -1,3 +1,11 @@
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText
+} from '@mui/material';
+import ShortTextIcon from '@mui/icons-material/ShortText';
 import React, { Component } from 'react';
 import PostModel from './PostModel';
 
@@ -24,7 +32,7 @@ export default class User extends Component {
   }
   savePost(post) {
     if (post.id) {
-      post.title = 'något ändrat';
+      post.description = 'Extract';
       this.model.updatePost(post).then((result) => {
         console.log(result);
       });
@@ -43,12 +51,24 @@ export default class User extends Component {
   changeUser() {}
 
   render() {
-    console.log('--- render ---');
-    console.log(this.state.posts);
-
-    if (this.state.posts[0]) {
-      this.savePost(this.state.posts[0]);
-    }
-    return <div>Posts</div>;
+    return (
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        {this.state.posts &&
+          this.state.posts.map((post) => {
+            return (
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <ShortTextIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${post.title}`}
+                  secondary={post.description}></ListItemText>
+              </ListItem>
+            );
+          })}
+      </List>
+    );
   }
 }
