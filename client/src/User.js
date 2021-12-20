@@ -9,7 +9,7 @@ export default class User extends Component {
   }
   componentDidMount() {
     this.model.getAll().then((result) => {
-      this.setState({ users: result });
+      this.setState({ users: result.data });
     });
   }
 
@@ -35,7 +35,6 @@ export default class User extends Component {
   }
   deleteUser(user) {
     this.model.deleteUser(user).then((result) => {
-      console.log('Kom något tillbaka?');
       console.log(result);
     });
   }
@@ -43,12 +42,8 @@ export default class User extends Component {
   changeUser() {}
 
   render() {
-    /*    console.log('--- render ---');
-    console.log(this.state.users); */
-
-    if (this.state.users[0]) {
-      this.saveUser(this.state.users[0]);
-    }
+    console.log('--- render ---');
+    console.log(this.state.users);
     return <div>User</div>;
   }
 }

@@ -36,7 +36,7 @@ class Api {
   //Returns the response, which contains information about the created object.
   post(data) {
     const JSONData = JSON.stringify(data);
-    console.log(JSONData);
+    /* console.log(JSONData); */
     const result = fetch(this.url, {
       method: 'POST',
       headers: {
@@ -53,7 +53,7 @@ class Api {
   //U=PUT
   put(data) {
     const JSONData = JSON.stringify(data);
-    console.log(JSONData);
+    /* console.log(JSONData); */
     const result = fetch(this.url, {
       method: 'PUT',
       headers: {
@@ -70,7 +70,7 @@ class Api {
   //D=DELETE
   delete(data) {
     const JSONData = JSON.stringify(data);
-    console.log(JSONData);
+    /* console.log(JSONData); */
     const result = fetch(this.url, {
       method: 'DELETE',
       headers: {

@@ -19,11 +19,31 @@ const constraints = {
 };
 
 async function getAll() {
-  return await User.findAll();
+  try {
+    const result = await User.findAll();
+    if (result.length === 0) {
+      return Promise.resolve(createError(204));
+    }
+    return Promise.resolve(createResult(result));
+  } catch (err) {
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
+  }
 }
 
 async function getById(id) {
-  return await User.findOne({ where: { id } });
+  try {
+    const result = await User.findOne({ where: { id } });
+    if (!result) {
+      return Promise.resolve(createError(204));
+    }
+    return Promise.resolve(createResult(result));
+  } catch (err) {
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
+  }
 }
 
 async function create(data) {
