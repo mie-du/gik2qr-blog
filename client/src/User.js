@@ -8,31 +8,44 @@ export default class User extends Component {
     this.state = { users: [] };
   }
   componentDidMount() {
-    this.model.getAll().then((res) => {
-      this.setState({ users: res.data });
+    this.model.getAll().then((result) => {
+      this.setState({ users: result });
     });
   }
 
   createFakeUser() {
     const user = {
-      firstName: 'Tomten',
-      lastName: 'Jansson',
-      email: 'tomten@nordpolen.se',
-      username: 'tomteyeah'
+      firstName: 'Mikaela',
+      lastName: 'Hedberg',
+      email: 'mikaela.hedberg@gmail.comj',
+      username: 'termedea'
     };
-    this.model.createUser(user);
+    return user;
   }
-  saveUser() {
-    const user = this.state.users[0];
-    user.firstName = 'Yoshi';
-    console.log(user);
-    this.model.updateUser(user);
+  saveUser(user) {
+    if (user.id) {
+      this.model.updateUser(user).then((result) => {
+        console.log(result);
+      });
+    } else {
+      this.model.createUser(user).then((result) => {
+        console.log(result);
+      });
+    }
   }
-  deleteUser() {}
+  deleteUser(user) {
+    this.model.deleteUser(user).then((result) => {
+      console.log('Kom något tillbaka?');
+      console.log(result);
+    });
+  }
   validateUser() {}
+  changeUser() {}
 
   render() {
-    console.log(this.state.users);
+    /*    console.log('--- render ---');
+    console.log(this.state.users); */
+
     if (this.state.users[0]) {
       this.saveUser(this.state.users[0]);
     }

@@ -1,21 +1,27 @@
-import api from './api';
+import Api from './Api';
 
 export default class UserModel {
-  apiPath = 'users';
+  constructor() {
+    this.api = new Api('users');
+  }
 
   getAll() {
-    const data = api.get(this.apiPath).then((data) => data);
+    const data = this.api.get().then((data) => data);
     return data;
   }
 
   createUser(user) {
-    console.log(user);
-    const data = api.post(this.apiPath, user).then((data) => data);
+    const data = this.api.post(user).then((data) => data);
     return data;
   }
 
   updateUser(user) {
-    const data = api.put(this.apiPath, user).then((data) => data);
+    const data = this.api.put(user).then((data) => data);
+    return data;
+  }
+
+  deleteUser(user) {
+    const data = this.api.delete(user).then((data) => data);
     return data;
   }
 }

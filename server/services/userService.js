@@ -1,6 +1,10 @@
 const User = require('../models').user;
 const base = require('../helpers/modelBase').constraints;
-const { createError, createResult, createMessage } = require('../helpers/jsonMessage');
+const {
+  createError,
+  createResult,
+  createMessage
+} = require('../helpers/jsonMessage');
 const validate = require('validate.js');
 const constraints = {
   email: {
@@ -14,12 +18,12 @@ const constraints = {
   username: base.reqString
 };
 
-function getAll() {
-  return User.findAll();
+async function getAll() {
+  return await User.findAll();
 }
 
-function getById(id) {
-  return User.findOne({ where: { id } });
+async function getById(id) {
+  return await User.findOne({ where: { id } });
 }
 
 async function create(data) {
@@ -32,7 +36,9 @@ async function create(data) {
       const result = await User.create(data);
       return Promise.resolve(createResult(result));
     } catch (err) {
-      return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+      return Promise.resolve(
+        createError(err.status || 500, err.message || 'Unknown error')
+      );
     }
   }
 }
@@ -60,10 +66,13 @@ async function update(data, id) {
     return Promise.resolve(createMessage(200, 'User updated successfully'));
   } catch (err) {
     /* Any other error */
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 async function destroy(id) {
+  console.log(`id: ${id}`);
   /* Before anything else, checking id */
   if (!id) {
     return Promise.resolve(createError(400, "Id can't be blank"));
@@ -73,11 +82,15 @@ async function destroy(id) {
     if (!existingUser) {
       return Promise.resolve(createError(404, 'No user to delete'));
     }
+
     await User.destroy({ where: { id } });
     return Promise.resolve(createMessage(200, 'User deleted successfully'));
   } catch (err) {
+    console.log(err);
     /* Any other error */
-    return Promise.resolve(createError(err.status || 500, err.message || 'Unknown error'));
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
   }
 }
 

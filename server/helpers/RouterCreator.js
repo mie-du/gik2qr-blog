@@ -9,10 +9,12 @@ class RouterCreator {
         .getAll()
         /* always returns array, even if empty/one */
         .then((result) => {
+          console.log(result.body);
           if (result.length != 0) res.status(200).json(result);
           else res.status(204).send();
         })
         .catch((e) => {
+          console.log(e.message);
           res.json({ error: e.message, stack: e.stack });
         });
     });
@@ -22,10 +24,12 @@ class RouterCreator {
         .getById(req.params.id)
         /* Returns one object */
         .then((result) => {
+          console.log(result.body);
           if (result) res.status(200).json(result);
           else res.status(204).send();
         })
         .catch((e) => {
+          console.log(e.message);
           res.json({ error: e.message, stack: e.stack });
         });
     });
@@ -33,6 +37,7 @@ class RouterCreator {
     this.router.post('/', (req, res) => {
       const data = req.body;
       this.service.create(data).then((result) => {
+        console.log(result.body);
         res.status(result.status).json(result.data);
       });
     });
@@ -42,6 +47,7 @@ class RouterCreator {
       const id = req.body.id;
 
       this.service.update(data, id).then((result) => {
+        console.log(result.body);
         res.status(result.status).json(result.data);
       });
     });
@@ -50,6 +56,7 @@ class RouterCreator {
       const id = req.body.id;
 
       this.service.destroy(id).then((result) => {
+        console.log(result.body);
         res.status(result.status).json(result.data);
       });
     });

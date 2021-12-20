@@ -20,9 +20,9 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   console.log('.....');
   console.log(
-    `${new Date().toLocaleTimeString()} Request: ${req.url} method: ${
-      req.method
-    }`
+    `${new Date().toLocaleTimeString()} Request: ${req.protocol}://${req.get(
+      'host'
+    )}${req.url} method: ${req.method}`
   );
   next();
 });
