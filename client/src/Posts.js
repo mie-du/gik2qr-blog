@@ -32,7 +32,6 @@ export default class User extends Component {
   }
   savePost(post) {
     if (post.id) {
-      post.description = 'Extract';
       this.model.updatePost(post).then((result) => {
         console.log(result);
       });
@@ -56,7 +55,7 @@ export default class User extends Component {
         {this.state.posts &&
           this.state.posts.map((post) => {
             return (
-              <ListItem>
+              <ListItem key={post.id}>
                 <ListItemAvatar>
                   <Avatar>
                     <ShortTextIcon />
@@ -64,7 +63,7 @@ export default class User extends Component {
                 </ListItemAvatar>
                 <ListItemText
                   primary={`${post.title}`}
-                  secondary={post.description}></ListItemText>
+                  secondary={post.body}></ListItemText>
               </ListItem>
             );
           })}

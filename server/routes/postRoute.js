@@ -6,7 +6,6 @@ router.get('/full', (req, res) => {
   postService.getFull().then((result) => {
     res.status(result.status).json(result.data);
   });
-  console.log(router);
 });
 
 router.get('/summary', (req, res) => {

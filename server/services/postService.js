@@ -222,10 +222,7 @@ async function update(data, id) {
       return Promise.resolve(createError(404, 'No post to update'));
     }
     /* Validating data. Validate function will return object with messages if failing */
-    const invalidData = validate(data, postConstraints);
-    if (invalidData) {
-      return Promise.resolve(createError(400, invalidData));
-    }
+
     /* Finally, trying to update post by given id */
     await Post.update(data, { where: { id } });
     /* All ok */
