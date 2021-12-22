@@ -53,7 +53,7 @@ export default class User extends Component {
     console.log('--- render ---');
     console.log(this.state.users);
     return (
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <List sx={{ width: '100%', maxWidth: 360 }}>
         {this.state.users &&
           this.state.users.map((user) => {
             return (
