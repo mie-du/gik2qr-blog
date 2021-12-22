@@ -6,8 +6,8 @@
   --color-main-h: 240;
   --color-main-s: 30%;
   --color-main-l: 40%;
-  --color-main-hex: #474785;
-  --color-secondary-hex: #47855c;
+  --color-main-hex: #9c9cc9;
+  --color-secondary-hex: #bddbc7;
 
   --color-secondary: hsl(
     var(--color-sec-h),

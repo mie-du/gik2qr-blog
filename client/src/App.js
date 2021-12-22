@@ -1,10 +1,10 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { AppBar, Toolbar, Typography, Container } from '@mui/material';
 
-import Home from './Home';
-import User from './User';
-import Posts from './Posts';
+import Home from './ViewModels/Home';
+import User from './ViewModels/User';
+import Posts from './ViewModels/Posts';
 
 function App() {
   return (
@@ -18,17 +18,32 @@ function App() {
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/posts'>Posts</Link>
             </Typography>
-            <Typography variant='body1' component='p'>
+            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/users'>Users</Link>
+            </Typography>
+            <Typography variant='body1' component='p'>
+              <Link to='/users/1'>My profile</Link>
             </Typography>
           </Toolbar>
         </AppBar>
-
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/users' component={User} />
-          <Route exact path='/posts' component={Posts} />
-        </Switch>
+        <Container
+          maxWidth='lg'
+          sx={{
+            borderRadius: 2,
+            border: 1,
+            borderColor: 'secondary.light',
+            mt: 5,
+            py: 2
+          }}>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/users' component={User} />
+            <Route exact path='/users/new' component={User} />
+            <Route path='/users/:id/:action' component={User} />
+            <Route path='/users/:id' component={User} />
+            <Route exact path='/posts' component={Posts} />
+          </Switch>
+        </Container>
       </Router>
     </>
   );

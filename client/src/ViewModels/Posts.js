@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import ShortTextIcon from '@mui/icons-material/ShortText';
 import React, { Component } from 'react';
-import PostModel from './PostModel';
+import PostModel from '../Models/PostModel';
 
 export default class User extends Component {
   constructor(props) {

@@ -1,4 +1,4 @@
-import Api from './Api';
+import Api from '../Api';
 
 export default class PostModel {
   constructor() {

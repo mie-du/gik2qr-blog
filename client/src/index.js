@@ -7,19 +7,32 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
+    text: {
+      primary: 'primary.dark'
+    },
+    background: {
+      primary: 'primary.dark'
+    },
     primary: {
-      main: '#474785'
+      light: '#bdbddb',
+      main: '#9c9cc9',
+      dark: '#474785'
     },
     neutral: {
       main: '#333',
       contrastText: '#fff'
     },
     secondary: {
-      main: '#47855c'
+      light: '#bddbc7',
+      main: '#47855c',
+      dark: '#122117'
     }
   },
   typography: {
-    fontFamily: ['Fira Sans', 'sans-serif'].join(',')
+    fontFamily: ['Fira Sans', 'sans-serif'].join(','),
+    title: {
+      fontSize: '1.7rem'
+    }
   }
 });
 
