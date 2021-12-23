@@ -37,10 +37,21 @@ function App() {
           }}>
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route exact path='/users' component={User} />
+            <Route
+              exact
+              path='/users'
+              component={(props) => (
+                <User {...props} key={window.location.pathname} />
+              )}
+            />
             <Route exact path='/users/new' component={User} />
-            <Route path='/users/:id/:action' component={User} />
-            <Route path='/users/:id' component={User} />
+            <Route
+              path='/users/:id'
+              component={(props) => (
+                <User {...props} key={window.location.pathname} />
+              )}
+            />
+            <Route path='/users/:id/edit' component={User} />
             <Route exact path='/posts' component={Posts} />
           </Switch>
         </Container>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import UserModel from '../Models/UserModel';
 import UserList from '../Views/UserList';
-import { Container, Typography } from '@mui/material';
 
 import UserView from '../Views/UserView';
 import UserEdit from '../Views/UserEdit';
@@ -11,9 +10,7 @@ class User extends Component {
     super(props);
     this.model = new UserModel();
     this.state = {
-      users: [],
-      action: 'view',
-      id: 0
+      users: []
     };
 
     this.mapActions();
@@ -22,32 +19,24 @@ class User extends Component {
   mapActions() {
     const params = this.props.match.params;
     const url = this.props.match.url;
-    this.state.action = 'view';
-    this.state.id = params.id || 0;
+    this.action = 'view';
+    this.id = params.id || 0;
 
     if (url && url.indexOf('new') > 0) {
       //ignore all else if new is in the url.
-      this.state.action = 'new';
-      this.state.id = 0;
+      this.action = 'new';
+      this.id = 0;
     } else if (params.action) {
-      this.state.action = params.action;
+      this.action = params.action;
     }
   }
-
   componentDidMount() {
     this.model.getAll().then((result) => {
       this.setState({ users: result.data });
     });
   }
-
-  createFakeUser() {
-    const user = {
-      firstName: 'Mikaela',
-      lastName: 'Hedberg',
-      email: 'mikaela.hedberg@gmail.comj',
-      username: 'termedea'
-    };
-    return user;
+  componentDidUpdate() {
+    this.mapActions();
   }
 
   saveUser(user) {
@@ -61,6 +50,7 @@ class User extends Component {
       });
     }
   }
+
   deleteUser(user) {
     this.model.deleteUser(user).then((result) => {
       console.log(result);
@@ -70,15 +60,15 @@ class User extends Component {
   changeUser() {}
 
   renderSwitch() {
-    switch (this.state.action) {
+    switch (this.action) {
       case 'new': {
         return <UserEdit validate={this.validateUser} save={this.saveUser} />;
       }
       case 'edit': {
-        if (this.state.id) {
+        if (this.id) {
           return (
             <UserEdit
-              user={this.state.users.find((user) => (user.id = this.state.id))}
+              user={this.users.find((user) => (user.id = this.id))}
               validate={this.validateUser}
               save={this.saveUser}
             />
@@ -87,10 +77,10 @@ class User extends Component {
         break;
       }
       case 'view': {
-        if (this.state.id) {
+        if (this.id) {
           return (
             <UserView
-              user={this.state.users.find((user) => (user.id = this.state.id))}
+              user={this.state.users.find((user) => (user.id = this.id))}
             />
           );
         } else {
@@ -108,8 +98,6 @@ class User extends Component {
     }
   }
   render() {
-    //re-map actions on render, if url changed
-    this.mapActions();
     return <div>{this.state.users && this.renderSwitch()}</div>;
   }
 }

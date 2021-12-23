@@ -31,7 +31,7 @@ const theme = createTheme({
   typography: {
     fontFamily: ['Fira Sans', 'sans-serif'].join(','),
     title: {
-      fontSize: '1.7rem'
+      fontSize: '1.5rem'
     }
   }
 });

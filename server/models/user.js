@@ -13,9 +13,10 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true
         }
       },
-      firstName: { ...columns.reqString },
-      lastName: { ...columns.reqString },
-      username: { ...columns.reqString }
+      firstName: { ...columns.unreqStringShort },
+      lastName: { ...columns.unreqStringShort },
+      username: { ...columns.reqString },
+      imageUrl: { ...columns.unreqStringLong }
     },
     options
   );

@@ -9,12 +9,9 @@ const validate = require('validate.js');
 const constraints = {
   email: {
     /* The property is required (existing in json) and it can't be blank */
-    presence: { allowEmpty: false },
-    email: true,
-    length: { minimum: 4, maximum: 100 }
+    ...base.reqString,
+    email: true
   },
-  firstName: base.reqString,
-  lastName: base.reqString,
   username: base.reqString
 };
 
@@ -48,12 +45,14 @@ async function getById(id) {
 
 async function create(data) {
   /* Validating data. Validate function will return object with messages if failing */
+
   const invalidData = validate(data, constraints);
   if (invalidData) {
     return Promise.resolve(createError(400, invalidData));
   } else {
     try {
       const result = await User.create(data);
+
       return Promise.resolve(createResult(result));
     } catch (err) {
       return Promise.resolve(
@@ -92,7 +91,6 @@ async function update(data, id) {
   }
 }
 async function destroy(id) {
-  console.log(`id: ${id}`);
   /* Before anything else, checking id */
   if (!id) {
     return Promise.resolve(createError(400, "Id can't be blank"));
