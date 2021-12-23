@@ -4,19 +4,15 @@ import './index.css';
 import App from './App';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { orange, red } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
-    text: {
-      primary: 'primary.dark'
-    },
-    background: {
-      primary: 'primary.dark'
-    },
     primary: {
       light: '#bdbddb',
       main: '#9c9cc9',
-      dark: '#474785'
+      dark: '#474785',
+      contrastText: '#fff'
     },
     neutral: {
       main: '#333',
@@ -25,7 +21,8 @@ const theme = createTheme({
     secondary: {
       light: '#bddbc7',
       main: '#47855c',
-      dark: '#122117'
+      dark: '#122117',
+      contrastText: '#fff'
     }
   },
   typography: {

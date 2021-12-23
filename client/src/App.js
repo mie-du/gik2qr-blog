@@ -29,29 +29,15 @@ function App() {
         <Container
           maxWidth='lg'
           sx={{
-            borderRadius: 2,
-            border: 1,
-            borderColor: 'secondary.light',
             mt: 5,
             py: 2
           }}>
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route
-              exact
-              path='/users'
-              component={(props) => (
-                <User {...props} key={window.location.pathname} />
-              )}
-            />
+            <Route exact path='/users' component={User} />
+            <Route path='/users/:id/:action' component={User} />
+            <Route path='/users/:id' component={User} />
             <Route exact path='/users/new' component={User} />
-            <Route
-              path='/users/:id'
-              component={(props) => (
-                <User {...props} key={window.location.pathname} />
-              )}
-            />
-            <Route path='/users/:id/edit' component={User} />
             <Route exact path='/posts' component={Posts} />
           </Switch>
         </Container>

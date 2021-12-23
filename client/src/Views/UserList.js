@@ -18,12 +18,16 @@ export default function UserList({ users }) {
             return (
               <ListItem key={user.id}>
                 <ListItemAvatar>
-                  <Avatar>
-                    <ImageIcon />
-                  </Avatar>
+                  {user.imageUrl ? (
+                    <Avatar alt={user.username} src={user.imageUrl} />
+                  ) : (
+                    <Avatar>
+                      <ImageIcon />
+                    </Avatar>
+                  )}
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`${user.firstName} ${user.lastName}`}
+                  primary={`${user.username}`}
                   secondary={user.email}></ListItemText>
               </ListItem>
             );

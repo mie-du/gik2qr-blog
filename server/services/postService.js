@@ -130,12 +130,10 @@ async function getSummary() {
       post.tags.forEach((tag) => {
         cleanPost.tags.push(tag.name);
       });
-      console.log('---single post---');
-      console.log(cleanPost);
+
       cleanResult.push(cleanPost);
     });
-    console.log('---complete result---');
-    console.log(cleanResult);
+
     return Promise.resolve(createResult(cleanResult));
   } catch (err) {
     return Promise.resolve(

@@ -4,39 +4,63 @@ import {
   CardContent,
   Typography,
   CardActions,
-  Button
+  Button,
+  Grid,
+  Fab
 } from '@mui/material';
+import { flexbox } from '@mui/system';
+
+import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Box } from '@mui/system';
 
 export default function UserView({ user }) {
-  const { firstName, lastName, username, email, imgUrl } = user || {};
+  const { id, firstName, lastName, username, email, imageUrl, description } =
+    user || {};
+
   return (
     <div>
       {user ? (
         <>
-          <Typography variant='title'>Min profil</Typography>
+          <Typography variant='title' component='h3'>
+            Min profil
+          </Typography>
 
-          <Card sx={{ maxWidth: 345 }}>
-            <CardMedia
-              component='img'
-              height='140'
-              image='/static/images/cards/contemplative-reptile.jpg'
-              alt='green iguana'
-            />
-            <CardContent>
-              <Typography gutterBottom variant='h5' component='div'>
-                Lizard
+          <Grid container my={3} spacing={3} sx={{ width: '100%' }}>
+            <Grid item xs='auto'>
+              {imageUrl ? (
+                <img src={imageUrl} alt={`Bild på ${username}`} />
+              ) : (
+                'Bild saknas'
+              )}
+            </Grid>
+            <Grid item md={6}>
+              <Typography gutterBottom variant='h5' component='h3'>
+                {username}
               </Typography>
+              <Typography>
+                Namn:{' '}
+                {firstName && lastName ? `${firstName} ${lastName}` : 'Okänt'}
+              </Typography>
+
+              <Typography>E-post: {email}</Typography>
+              <Typography component='h4' variant='body1'>
+                Beskrivning
+              </Typography>
+
               <Typography variant='body2' color='text.secondary'>
-                Lizards are a widespread group of squamate reptiles, with over
-                6,000 species, ranging across all continents except Antarctica
+                {description}
               </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size='small'>Share</Button>
-              <Button size='small'>Learn More</Button>
-            </CardActions>
-          </Card>
+            </Grid>
+            <Grid container mt={5} justifyContent='flex-end'>
+              <Link to={`/users/${id}/edit`}>
+                <Fab color='secondary' aria-label='edit'>
+                  <EditIcon />
+                </Fab>
+              </Link>
+            </Grid>
+          </Grid>
         </>
       ) : (
         'No user found'

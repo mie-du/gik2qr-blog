@@ -10,7 +10,7 @@ class User extends Component {
     super(props);
     this.model = new UserModel();
     this.state = {
-      users: []
+      users: null
     };
 
     this.mapActions();
@@ -19,6 +19,7 @@ class User extends Component {
   mapActions() {
     const params = this.props.match.params;
     const url = this.props.match.url;
+
     this.action = 'view';
     this.id = params.id || 0;
 
@@ -32,11 +33,55 @@ class User extends Component {
   }
   componentDidMount() {
     this.model.getAll().then((result) => {
-      this.setState({ users: result.data });
+      if (result.status === 200) this.setState({ users: result.data });
     });
   }
-  componentDidUpdate() {
+  componentDidUpdate() {}
+
+  renderSwitch() {
+    console.log(this.action, this.id);
+    switch (this.action) {
+      case 'new': {
+        return <UserEdit validate={this.validateUser} save={this.saveUser} />;
+      }
+      case 'edit': {
+        console.log(this.id);
+        if (this.id) {
+          return (
+            <UserEdit
+              user={this.state.users.find((user) => user.id == this.id)}
+              validate={this.validateUser}
+              save={this.saveUser}
+            />
+          );
+        }
+        break;
+      }
+      case 'view': {
+        if (this.id) {
+          console.log(this.id);
+          return (
+            <UserView
+              user={this.state.users.find((user) => user.id == this.id)}
+            />
+          );
+        } else {
+          return (
+            <>
+              <UserList users={this.state.users} />
+            </>
+          );
+        }
+      }
+      default:
+        <>
+          <UserList users={this.state.users} />
+        </>;
+    }
+  }
+  render() {
     this.mapActions();
+    return <div>{this.state.users ? this.renderSwitch() : 'No data'}</div>;
   }
 
   saveUser(user) {
@@ -58,47 +103,5 @@ class User extends Component {
   }
   validateUser() {}
   changeUser() {}
-
-  renderSwitch() {
-    switch (this.action) {
-      case 'new': {
-        return <UserEdit validate={this.validateUser} save={this.saveUser} />;
-      }
-      case 'edit': {
-        if (this.id) {
-          return (
-            <UserEdit
-              user={this.users.find((user) => (user.id = this.id))}
-              validate={this.validateUser}
-              save={this.saveUser}
-            />
-          );
-        }
-        break;
-      }
-      case 'view': {
-        if (this.id) {
-          return (
-            <UserView
-              user={this.state.users.find((user) => (user.id = this.id))}
-            />
-          );
-        } else {
-          return (
-            <>
-              <UserList users={this.state.users} />
-            </>
-          );
-        }
-      }
-      default:
-        <>
-          <UserList users={this.state.users} />
-        </>;
-    }
-  }
-  render() {
-    return <div>{this.state.users && this.renderSwitch()}</div>;
-  }
 }
 export default User;
