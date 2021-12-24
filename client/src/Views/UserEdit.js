@@ -6,12 +6,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function UserEdit({ user, validData, saveUser, onChange }) {
+export default function UserEdit({ user, validData, onSave, onChange }) {
   const { id, firstName, lastName, username, email, description } = user || {};
-  const { firstNameValid, lastNameValid, usernameValid, emailValid } =
-    validData || {};
-
-  console.log(validData);
+  /*   const { validFirstName, validLastName, validEmail, validUsername } =
+    validData || null; */
   return (
     <>
       <Typography variant='h5'>
@@ -22,11 +20,9 @@ export default function UserEdit({ user, validData, saveUser, onChange }) {
         <Grid item xs={12} md={6}>
           <TextField
             variant='filled'
-            error={firstNameValid && firstNameValid.error}
-            helperText={
-              firstNameValid && firstNameValid.error && firstNameValid.message
-            }
-            onChange={(e) => onChange(e.target.value)}
+            type='text'
+            name='firstName'
+            onChange={onChange}
             style={Field.left}
             label='Förnamn'
             value={firstName || ''}
@@ -35,18 +31,19 @@ export default function UserEdit({ user, validData, saveUser, onChange }) {
         <Grid item xs={12} md={6}>
           <TextField
             variant='filled'
-            error={lastNameValid && lastNameValid.error}
-            helperText={
-              lastNameValid && lastNameValid.error && lastNameValid.message
-            }
+            onChange={onChange}
+            name='lastName'
             style={Field.right}
             label='Efternamn'
             value={lastName || ''}
+            inputProps={{ minLength: 2 }}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             variant='filled'
+            name='email'
+            onChange={onChange}
             style={Field.left}
             label='E-post'
             value={email || ''}
@@ -55,6 +52,8 @@ export default function UserEdit({ user, validData, saveUser, onChange }) {
         <Grid item xs={12} md={6}>
           <TextField
             variant='filled'
+            name='username'
+            onChange={onChange}
             style={Field.right}
             label='Användarnamn'
             value={username || ''}
@@ -63,6 +62,8 @@ export default function UserEdit({ user, validData, saveUser, onChange }) {
         <Grid item xs={12}>
           <TextField
             variant='filled'
+            name='description'
+            onChange={onChange}
             fullWidth
             rows='3'
             multiline
@@ -84,11 +85,13 @@ export default function UserEdit({ user, validData, saveUser, onChange }) {
           </Link>
         </Grid>
         <Grid item>
-          <Link to={`/users/${id}`}>
-            <Button endIcon={<SaveIcon />} variant='contained' size='large'>
-              Save
-            </Button>
-          </Link>
+          <Button
+            endIcon={<SaveIcon />}
+            onClick={onSave}
+            variant='contained'
+            size='large'>
+            Save
+          </Button>
         </Grid>
       </Grid>
     </>

@@ -17,16 +17,11 @@ class User extends Component {
     this.model = new UserModel();
     this.state = {
       users: null,
-      validData: {
-        firstNameValid: { error: false },
-        lastNameValid: { error: true, message: 'hej' },
-        usernameValid: { error: false },
-        emailValid: { error: false }
-      }
+      currentUser: null
     };
-    this.validateUser = this.validateUser.bind(this);
+
+    this.onUserSave = this.onUserSave.bind(this);
     this.onUserChange = this.onUserChange.bind(this);
-    this.mapActions();
   }
 
   mapActions() {
@@ -47,6 +42,12 @@ class User extends Component {
   componentDidMount() {
     this.model.getAll().then((result) => {
       if (result.status === 200) this.setState({ users: result.data });
+      this.mapActions();
+      if (this.id) {
+        this.setState({
+          currentUser: this.state.users.find((user) => user.id == this.id)
+        });
+      }
     });
   }
   componentDidUpdate() {}
@@ -54,16 +55,15 @@ class User extends Component {
   renderSwitch() {
     switch (this.action) {
       case 'new': {
-        return <UserEdit validate={this.validateUser} save={this.saveUser} />;
+        return <UserEdit save={this.saveUser} />;
       }
       case 'edit': {
         if (this.id) {
           return (
             <UserEdit
-              user={this.state.users.find((user) => user.id == this.id)}
+              user={this.state.currentUser}
               onChange={this.onUserChange}
-              onSave={this.saveUser}
-              validData={this.state.validData}
+              onSave={this.onUserSave}
             />
           );
         }
@@ -71,11 +71,7 @@ class User extends Component {
       }
       case 'view': {
         if (this.id) {
-          return (
-            <UserView
-              user={this.state.users.find((user) => user.id == this.id)}
-            />
-          );
+          return <UserView user={this.state.currentUser} />;
         } else {
           return (
             <>
@@ -90,16 +86,11 @@ class User extends Component {
         </>;
     }
   }
-  render() {
-    this.mapActions();
-    return <div>{this.state.users ? this.renderSwitch() : 'No data'}</div>;
-  }
 
-  onUserSave(user) {
+  onUserSave() {
+    const user = this.state.currentUser;
     if (user.id) {
-      this.model.updateUser(user).then((result) => {
-        console.log(result);
-      });
+      this.model.updateUser(user).then((result) => {});
     } else {
       this.model.createUser(user).then((result) => {
         console.log(result);
@@ -107,28 +98,24 @@ class User extends Component {
     }
   }
 
+  onUserChange(e) {
+    const newUser = {
+      ...this.state.currentUser,
+      [e.target.name]: e.target.value
+    };
+
+    this.setState({ currentUser: newUser });
+  }
+
   onUserDelete(user) {
     this.model.deleteUser(user).then((result) => {
       console.log(result);
     });
   }
-  validateUser(user) {
-    return {
-      validData: {
-        firstNameValid: {
-          error: false,
-          message: 'fel'
-        },
-        lastNameValid: { error: true, message: 'hej' },
-        usernameValid: { error: false },
-        emailValid: { error: false }
-      }
-    };
-  }
-  onUserChange(value) {
-    console.log(value);
-    const validation = this.validateUser({ firstName: value });
-    this.setState({ validData: validation });
+
+  render() {
+    this.mapActions();
+    return <div>{this.state.users ? this.renderSwitch() : 'No data'}</div>;
   }
 }
 export default User;
