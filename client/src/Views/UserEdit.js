@@ -6,10 +6,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function UserEdit({ user, validData, onSave, onChange }) {
+export default function UserEdit({ user, validation, onSave, onChange }) {
   const { id, firstName, lastName, username, email, description } = user || {};
   /*   const { validFirstName, validLastName, validEmail, validUsername } =
     validData || null; */
+  console.log(validation);
   return (
     <>
       <Typography variant='h5'>
@@ -21,8 +22,10 @@ export default function UserEdit({ user, validData, onSave, onChange }) {
           <TextField
             variant='filled'
             type='text'
-            name='firstName'
             onChange={onChange}
+            name='firstName'
+            error={validation?.firstName && !validation.firstName.valid}
+            helperText={validation?.firstName?.message}
             style={Field.left}
             label='Förnamn'
             value={firstName || ''}
@@ -33,6 +36,8 @@ export default function UserEdit({ user, validData, onSave, onChange }) {
             variant='filled'
             onChange={onChange}
             name='lastName'
+            error={validation?.lastName && !validation.lastName.valid}
+            helperText={validation?.lastName?.message}
             style={Field.right}
             label='Efternamn'
             value={lastName || ''}

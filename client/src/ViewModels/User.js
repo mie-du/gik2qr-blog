@@ -11,17 +11,21 @@ import UserList from '../Views/UserList';
 import UserView from '../Views/UserView';
 import UserEdit from '../Views/UserEdit';
 
+import validator from 'validator';
+
 class User extends Component {
   constructor(props) {
     super(props);
     this.model = new UserModel();
     this.state = {
       users: null,
-      currentUser: null
+      currentUser: null,
+      validation: null
     };
 
     this.onUserSave = this.onUserSave.bind(this);
     this.onUserChange = this.onUserChange.bind(this);
+    this.validateUser = this.validateUser.bind(this);
   }
 
   mapActions() {
@@ -64,6 +68,7 @@ class User extends Component {
               user={this.state.currentUser}
               onChange={this.onUserChange}
               onSave={this.onUserSave}
+              validation={this.state.validation}
             />
           );
         }
@@ -97,12 +102,22 @@ class User extends Component {
       });
     }
   }
-
+  validateUser(field, value) {
+    console.log(field, value);
+    const validationData = {
+      ...this.state.validation,
+      [field]: { valid: false, message: 'fel' }
+    };
+    this.setState({
+      validation: validationData
+    });
+  }
   onUserChange(e) {
     const newUser = {
       ...this.state.currentUser,
       [e.target.name]: e.target.value
     };
+    this.validateUser(e.target.name, e.target.value);
 
     this.setState({ currentUser: newUser });
   }
