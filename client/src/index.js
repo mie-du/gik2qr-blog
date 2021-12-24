@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { orange, red } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
@@ -23,12 +23,26 @@ const theme = createTheme({
       main: '#47855c',
       dark: '#122117',
       contrastText: '#fff'
+    },
+    danger: {
+      dark: red[900],
+      main: red[600],
+      ligth: red[200],
+      contrastText: '#ffffff'
     }
   },
   typography: {
     fontFamily: ['Fira Sans', 'sans-serif'].join(','),
-    title: {
-      fontSize: '1.5rem'
+    h5: {
+      fontSize: '1.5rem',
+      marginBottom: '2rem',
+      component: 'h3'
+    }
+  },
+  textField: {
+    left: {
+      variant: 'filled',
+      style: { width: '99%' }
     }
   }
 });

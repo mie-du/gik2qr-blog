@@ -1,3 +1,9 @@
+/* Syfte: 
+- Lyft state
+- Logik lämnat till "controller"
+- Hämtar data och ger till vy
+     */
+/*eslint eqeqeq: "off"*/
 import React, { Component } from 'react';
 import UserModel from '../Models/UserModel';
 import UserList from '../Views/UserList';
@@ -10,9 +16,16 @@ class User extends Component {
     super(props);
     this.model = new UserModel();
     this.state = {
-      users: null
+      users: null,
+      validData: {
+        firstNameValid: { error: false },
+        lastNameValid: { error: true, message: 'hej' },
+        usernameValid: { error: false },
+        emailValid: { error: false }
+      }
     };
-
+    this.validateUser = this.validateUser.bind(this);
+    this.onUserChange = this.onUserChange.bind(this);
     this.mapActions();
   }
 
@@ -39,19 +52,18 @@ class User extends Component {
   componentDidUpdate() {}
 
   renderSwitch() {
-    console.log(this.action, this.id);
     switch (this.action) {
       case 'new': {
         return <UserEdit validate={this.validateUser} save={this.saveUser} />;
       }
       case 'edit': {
-        console.log(this.id);
         if (this.id) {
           return (
             <UserEdit
               user={this.state.users.find((user) => user.id == this.id)}
-              validate={this.validateUser}
-              save={this.saveUser}
+              onChange={this.onUserChange}
+              onSave={this.saveUser}
+              validData={this.state.validData}
             />
           );
         }
@@ -59,7 +71,6 @@ class User extends Component {
       }
       case 'view': {
         if (this.id) {
-          console.log(this.id);
           return (
             <UserView
               user={this.state.users.find((user) => user.id == this.id)}
@@ -84,7 +95,7 @@ class User extends Component {
     return <div>{this.state.users ? this.renderSwitch() : 'No data'}</div>;
   }
 
-  saveUser(user) {
+  onUserSave(user) {
     if (user.id) {
       this.model.updateUser(user).then((result) => {
         console.log(result);
@@ -96,12 +107,28 @@ class User extends Component {
     }
   }
 
-  deleteUser(user) {
+  onUserDelete(user) {
     this.model.deleteUser(user).then((result) => {
       console.log(result);
     });
   }
-  validateUser() {}
-  changeUser() {}
+  validateUser(user) {
+    return {
+      validData: {
+        firstNameValid: {
+          error: false,
+          message: 'fel'
+        },
+        lastNameValid: { error: true, message: 'hej' },
+        usernameValid: { error: false },
+        emailValid: { error: false }
+      }
+    };
+  }
+  onUserChange(value) {
+    console.log(value);
+    const validation = this.validateUser({ firstName: value });
+    this.setState({ validData: validation });
+  }
 }
 export default User;

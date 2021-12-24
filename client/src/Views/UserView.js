@@ -1,19 +1,8 @@
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  CardActions,
-  Button,
-  Grid,
-  Fab
-} from '@mui/material';
-import { flexbox } from '@mui/system';
+import { Typography, Grid, Fab } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box } from '@mui/system';
 
 export default function UserView({ user }) {
   const { id, firstName, lastName, username, email, imageUrl, description } =
@@ -23,11 +12,11 @@ export default function UserView({ user }) {
     <div>
       {user ? (
         <>
-          <Typography variant='title' component='h3'>
+          <Typography variant='h5' component='h3'>
             Min profil
           </Typography>
 
-          <Grid container my={3} spacing={3} sx={{ width: '100%' }}>
+          <Grid container spacing={3} sx={{ width: '100%' }}>
             <Grid item xs='auto'>
               {imageUrl ? (
                 <img src={imageUrl} alt={`Bild på ${username}`} />
