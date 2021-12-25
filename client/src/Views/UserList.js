@@ -11,14 +11,14 @@ import ImageIcon from '@mui/icons-material/Image';
 export default function UserList({ users }) {
   return (
     <>
-      <Typography variant='title'>List all users</Typography>
+      <Typography variant='h5'>Visa alla användare</Typography>
       <List sx={{ width: '100%' }}>
         {users &&
           users.map((user) => {
             return (
               <ListItem key={user.id}>
                 <ListItemAvatar>
-                  {user.imageUrl ? (
+                  {user?.imageUrl ? (
                     <Avatar alt={user.username} src={user.imageUrl} />
                   ) : (
                     <Avatar>

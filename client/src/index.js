@@ -33,16 +33,17 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: ['Fira Sans', 'sans-serif'].join(','),
-    h5: {
+    h2: {
+      fontSize: '2rem',
+      marginBottom: '1rem',
+      component: 'h2',
+      fontFamily: ['Titillium Web', 'sans-serif'].join(',')
+    },
+    h3: {
       fontSize: '1.5rem',
-      marginBottom: '2rem',
-      component: 'h3'
-    }
-  },
-  textField: {
-    left: {
-      variant: 'filled',
-      style: { width: '99%' }
+      marginBottom: '1rem',
+      component: 'h3',
+      fontWeight: 'normal'
     }
   }
 });

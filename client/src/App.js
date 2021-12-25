@@ -13,16 +13,19 @@ function App() {
         <AppBar component='nav' position='static'>
           <Toolbar>
             <Typography variant='h7' component='p' sx={{ flexGrow: 1 }}>
-              <Link to='/'>Home</Link>
+              <Link to='/'>GIK2QR Blog</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts'>Posts</Link>
+              <Link to='/posts'>Inlägg</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/users'>Users</Link>
+              <Link to='/users'>Användare</Link>
+            </Typography>
+            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
+              <Link to='/users/new'>Skapa Användare</Link>
             </Typography>
             <Typography variant='body1' component='p'>
-              <Link to='/users/1'>My profile</Link>
+              <Link to='/users/1'>Min profil</Link>
             </Typography>
           </Toolbar>
         </AppBar>

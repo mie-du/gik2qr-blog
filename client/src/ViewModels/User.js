@@ -19,13 +19,12 @@ class User extends Component {
     this.model = new UserModel();
     this.state = {
       users: null,
-      currentUser: null,
       validation: null
     };
 
     this.onUserSave = this.onUserSave.bind(this);
-    this.onUserChange = this.onUserChange.bind(this);
     this.validateUser = this.validateUser.bind(this);
+    this.findOne = this.findOne.bind(this);
   }
 
   mapActions() {
@@ -43,65 +42,27 @@ class User extends Component {
       this.action = params.action;
     }
   }
+
   componentDidMount() {
+    this.mapActions();
+    this.fetchAll();
+  }
+
+  componentDidUpdate() {
+    this.mapActions();
+  }
+
+  fetchAll() {
     this.model.getAll().then((result) => {
       if (result.status === 200) this.setState({ users: result.data });
       this.mapActions();
-      if (this.id) {
-        this.setState({
-          currentUser: this.state.users.find((user) => user.id == this.id)
-        });
-      }
     });
   }
-  componentDidUpdate() {}
 
-  renderSwitch() {
-    switch (this.action) {
-      case 'new': {
-        return <UserEdit save={this.saveUser} />;
-      }
-      case 'edit': {
-        if (this.id) {
-          return (
-            <UserEdit
-              user={this.state.currentUser}
-              onChange={this.onUserChange}
-              onSave={this.onUserSave}
-              validation={this.state.validation}
-            />
-          );
-        }
-        break;
-      }
-      case 'view': {
-        if (this.id) {
-          return <UserView user={this.state.currentUser} />;
-        } else {
-          return (
-            <>
-              <UserList users={this.state.users} />
-            </>
-          );
-        }
-      }
-      default:
-        <>
-          <UserList users={this.state.users} />
-        </>;
-    }
+  findOne(id) {
+    return this.state.users.find((user) => user.id == id);
   }
 
-  onUserSave() {
-    const user = this.state.currentUser;
-    if (user.id) {
-      this.model.updateUser(user).then((result) => {});
-    } else {
-      this.model.createUser(user).then((result) => {
-        console.log(result);
-      });
-    }
-  }
   validateUser(field, value) {
     console.log(field, value);
     const validationData = {
@@ -112,14 +73,32 @@ class User extends Component {
       validation: validationData
     });
   }
-  onUserChange(e) {
-    const newUser = {
-      ...this.state.currentUser,
-      [e.target.name]: e.target.value
-    };
-    this.validateUser(e.target.name, e.target.value);
 
-    this.setState({ currentUser: newUser });
+  newUser() {
+    return {
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      description: ''
+    };
+  }
+
+  onUserSave(newUser) {
+    const users = this.state.users;
+    if (newUser.id) {
+      const userIndex = users.findIndex((user) => user.id == newUser.id);
+      console.log(userIndex);
+      users.splice(userIndex, 1, newUser);
+      this.setState({ users });
+
+      this.model.updateUser(newUser).then((result) => {});
+    } else {
+      this.model.createUser(newUser).then((result) => {
+        this.setState(users.splice(0, 0, result.body));
+      });
+    }
+    console.log('new state', this.state.users);
   }
 
   onUserDelete(user) {
@@ -128,8 +107,57 @@ class User extends Component {
     });
   }
 
-  render() {
+  renderSwitch() {
     this.mapActions();
+
+    switch (this.action) {
+      case 'new': {
+        console.log('new', this.id, this.action);
+        return (
+          <UserEdit
+            user={this.newUser()}
+            onSave={this.onUserSave}
+            validation={this.state.validation}
+          />
+        );
+      }
+      case 'edit': {
+        console.log('edit', this.id, this.action);
+        if (this.id) {
+          return (
+            <UserEdit
+              user={this.findOne(this.id)}
+              onSave={this.onUserSave}
+              onChange={this.onUserChange}
+              validation={this.state.validation}
+            />
+          );
+        }
+        break;
+      }
+      case 'view': {
+        if (this.id) {
+          console.log('view one', this.id, this.action);
+          return <UserView user={this.findOne(this.id)} />;
+        } else {
+          console.log('view all', this.id, this.action);
+          console.log(this.state.users);
+          return (
+            <>
+              <UserList users={this.state.users} />
+            </>
+          );
+        }
+      }
+      default: {
+        <>
+          <UserList users={this.state.users} />
+        </>;
+      }
+    }
+  }
+
+  render() {
     return <div>{this.state.users ? this.renderSwitch() : 'No data'}</div>;
   }
 }

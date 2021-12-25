@@ -7,33 +7,34 @@ import { Link } from 'react-router-dom';
 export default function UserView({ user }) {
   const { id, firstName, lastName, username, email, imageUrl, description } =
     user || {};
-
+  console.log('User in userView', user);
   return (
     <div>
       {user ? (
         <>
-          <Typography variant='h5' component='h3'>
-            Min profil
-          </Typography>
+          <Typography variant='h2'>Min profil</Typography>
 
           <Grid container spacing={3} sx={{ width: '100%' }}>
             <Grid item xs='auto'>
               {imageUrl ? (
                 <img src={imageUrl} alt={`Bild på ${username}`} />
               ) : (
-                'Bild saknas'
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/img-placeholder.svg`}
+                  alt='Ingen bild tillgänglig'
+                />
               )}
             </Grid>
             <Grid item md={6}>
-              <Typography gutterBottom variant='h5' component='h3'>
+              <Typography gutterBottom variant='h3' component='h3'>
                 {username}
               </Typography>
-              <Typography>
+              <Typography paragraph>
                 Namn:{' '}
                 {firstName && lastName ? `${firstName} ${lastName}` : 'Okänt'}
               </Typography>
 
-              <Typography>E-post: {email}</Typography>
+              <Typography paragraph>E-post: {email}</Typography>
               <Typography component='h4' variant='body1'>
                 Beskrivning
               </Typography>

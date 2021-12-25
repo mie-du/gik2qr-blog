@@ -10,6 +10,11 @@ export default class UserModel {
     return data;
   }
 
+  getOne(id) {
+    const data = this.api.getById(id).then((data) => data);
+    return data;
+  }
+
   createUser(user) {
     const data = this.api.post(user).then((data) => data);
     return data;
