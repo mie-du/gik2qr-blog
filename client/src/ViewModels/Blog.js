@@ -20,7 +20,48 @@ export default class User extends Component {
       this.setState({ posts: result.data });
     });
 
-    /* this.savePost(this.createFakePost()); */
+    this.mapActions();
+  }
+  componentDidUpdate() {
+    this.mapActions();
+  }
+
+  mapActions() {
+    const params = this.props.match.params;
+    const url = this.props.match.url;
+    console.log(params, url);
+    this.id = params.id || 0;
+    this.action = 'view';
+
+    if (url.indexOf('new') > 0) {
+      this.action = 'new';
+      this.id = 0;
+    } else if (url.indexOf('edit') > 0) {
+      this.action = 'edit';
+    }
+    console.log(this.action, this.id);
+  }
+
+  render() {
+    return (
+      <List sx={{ width: '100%', maxWidth: 360 }}>
+        {this.state.posts &&
+          this.state.posts.map((post) => {
+            return (
+              <ListItem key={post.id}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <ShortTextIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${post.title}`}
+                  secondary={post.body}></ListItemText>
+              </ListItem>
+            );
+          })}
+      </List>
+    );
   }
 
   createFakePost() {
@@ -48,26 +89,4 @@ export default class User extends Component {
   }
 
   changeUser() {}
-
-  render() {
-    return (
-      <List sx={{ width: '100%', maxWidth: 360 }}>
-        {this.state.posts &&
-          this.state.posts.map((post) => {
-            return (
-              <ListItem key={post.id}>
-                <ListItemAvatar>
-                  <Avatar>
-                    <ShortTextIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={`${post.title}`}
-                  secondary={post.body}></ListItemText>
-              </ListItem>
-            );
-          })}
-      </List>
-    );
-  }
 }

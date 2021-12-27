@@ -13,7 +13,7 @@ function App() {
         <AppBar component='nav' position='static'>
           <Toolbar>
             <Typography variant='h7' component='p' sx={{ flexGrow: 1 }}>
-              <Link to='/'>GIK2QR Blog</Link>
+              <Link to='/'>GIK2QR Blogg</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/posts'>Blogg</Link>
@@ -22,7 +22,13 @@ function App() {
               <Link to='/users'>Användare</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/users/new'>Skapa inlägg</Link>
+              <Link to='/posts/new'>Skapa inlägg</Link>
+            </Typography>
+            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
+              <Link to='/posts/1'>Visa inlägg</Link>
+            </Typography>
+            <Typography variant='body1' component='p'>
+              <Link to='/posts/1/edit'>Ändra inlägg</Link>
             </Typography>
           </Toolbar>
         </AppBar>
@@ -34,10 +40,10 @@ function App() {
           }}>
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route exact path='/blog' component={Blog} />
-            <Route path='/posts/:id/:action' component={Blog} />
-            <Route path='/users/:id' component={Blog} />
-            <Route exact path='/users/new' component={Blog} />
+            <Route exact path='/posts' component={Blog} />
+            <Route path='/posts/:id/edit' component={Blog} />
+            <Route path='/posts/:id' component={Blog} />
+            <Route exact path='/posts/new' component={Blog} />
             <Route exact path='/users' component={User} />
           </Switch>
         </Container>
