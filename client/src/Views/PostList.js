@@ -1,62 +1,38 @@
 import {
-  Avatar,
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
-  Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Typography
 } from '@mui/material';
 
 import React from 'react';
-import { deepPurple, green } from '@mui/material/colors';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { toDateTimeString } from '../Helpers/formating';
 import { Link } from 'react-router-dom';
+import { PlaceholderAvatar } from '../Helpers/components';
 export default function PostList({ posts }) {
   return (
     <Grid container spacing={{ xs: 2, md: 3 }} sx={{ width: '100%' }}>
       {posts &&
         posts.map((post) => {
-          const { id, title, body, imageUrl, updatedAt, createdAt } =
-            post.content;
+          const { id, title, body, imageUrl, updatedAt } = post.content;
 
           const { author } = post;
           const { tags } = post;
-          console.log(author);
+
           return (
             <Grid item key={id} xs='auto'>
               <Card sx={{ width: 345 }}>
-                <Link to={`/users/${author.authorId}`}>
+                <Link to={`/users/${author.id}`}>
                   <CardHeader
-                    avatar={
-                      author.authorImage ? (
-                        <Avatar
-                          src={author.authorImage}
-                          alt={`Bild på ${author.firstName} ${author.lastName}`}
-                          aria-label='Author image'
-                        />
-                      ) : (
-                        <Avatar
-                          sx={{ bgcolor: deepPurple[500] }}
-                          aria-label='Author image placeholder'>
-                          {`${author.firstName.substring(
-                            0,
-                            1
-                          )}${author.lastName.substring(0, 1)}`}
-                        </Avatar>
-                      )
-                    }
+                    avatar={<PlaceholderAvatar person={author} />}
                     title={`Skrivet av ${author.firstName} ${author.lastName} (${author.username})`}
                     subheader={`Senast uppdaterad: ${toDateTimeString(
-                      createdAt
+                      updatedAt
                     )}`}
                   />
                 </Link>

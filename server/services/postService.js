@@ -1,6 +1,7 @@
 const Post = require('../models').post;
 const User = require('../models').user;
 const Tag = require('../models').tag;
+const db = require('../models');
 const Comment = require('../models').comment;
 const PostTag = require('../models').postTag;
 const constraints = require('../helpers/modelBase').constraints;
@@ -112,39 +113,58 @@ async function getAuthor(postId) {
 /* Clean getFull with slim result */
 async function getSummary() {
   try {
-    const allPosts = await Post.findAll({ include: [User, Tag] });
+    const allPosts = await Post.findAll({
+      include: [User, Tag, { model: Comment, include: [User] }],
+      order: [['updatedAt', 'ASC']]
+    });
     let cleanResult = [];
+    console.log(allPosts);
 
     allPosts.forEach((post) => {
       //must be inside loop, reference will be added otherwise.
       let cleanPost = {
         content: {},
         author: {},
-        tags: []
+        tags: [],
+        comments: []
       };
-      const { id, title, body, imageUrl, createdAt, updatedAt } = post;
-      const {
-        id: authorId,
-        firstName,
-        lastName,
-        username,
-        email,
-        imageUrl: authorImage
-      } = post.user;
 
-      cleanPost.content = { id, title, body, imageUrl, createdAt, updatedAt };
-      cleanPost.author = {
-        authorId,
-        firstName,
-        lastName,
-        username,
-        email,
-        authorImage
+      cleanPost.content = {
+        id: post.id,
+        title: post.title,
+        body: post.body,
+        imageUrl: post.imageUrl,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt
       };
+
+      cleanPost.author = {
+        id: post.user.id,
+        firstName: post.user.firstName,
+        lastName: post.user.lastName,
+        username: post.user.username,
+        email: post.user.email,
+        imageUrl: post.user.imageUrl
+      };
+
       post.tags.forEach((tag) => {
         cleanPost.tags.push(tag.name);
       });
 
+      post.comments.forEach((comment) => {
+        cleanPost.comments.push({
+          title: comment.title,
+          body: comment.body,
+          createdAt: comment.createdAt,
+          updatedAt: comment.updatedAt,
+          author: {
+            id: comment.user.id,
+            firstName: comment.user.firstName,
+            lastName: comment.user.lastName,
+            imageUrl: comment.user.imageUrl
+          }
+        });
+      });
       cleanResult.push(cleanPost);
     });
 

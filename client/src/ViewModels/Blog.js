@@ -1,12 +1,6 @@
-import {
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography
-} from '@mui/material';
-import ShortTextIcon from '@mui/icons-material/ShortText';
+/*eslint eqeqeq: "off"*/
+import { Typography } from '@mui/material';
+
 import React, { Component } from 'react';
 import PostModel from '../Models/PostModel';
 import { ACTIONS } from '../Helpers/constants';
@@ -62,7 +56,7 @@ export default class Blog extends Component {
       case ACTIONS.VIEW: {
         if (this.id) {
           console.log('view one', this.id, this.action);
-          return <PostView post={this.getOne(this.id)} />;
+          return <PostView post={this.findOne(this.id)} />;
         }
         console.log('view all', this.id, this.action, this.state.posts);
         return <PostList posts={this.state.posts} />;
@@ -83,8 +77,8 @@ export default class Blog extends Component {
     });
   }
 
-  getOne(id) {
-    this.model.getSummaryById(id).then((result) => {});
+  findOne(id) {
+    return this.state.posts.filter((post) => post.content.id == id)[0];
   }
 
   savePost(post) {
