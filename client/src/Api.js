@@ -5,14 +5,15 @@
 class Api {
   baseUrl = 'http://localhost:5001';
   constructor(path) {
-    this.url = `${this.baseUrl}/${path}/`;
+    this.url = `${this.baseUrl}/${path}`;
   }
   //R=GET
   //Get All, converted to JSON for cleanest possible result to work with
-  get() {
+  get(extra = '') {
     //first response returns data stream, needs to be converted to json.
+    const fullUrl = `${this.url}/${extra}`;
 
-    const result = fetch(this.url)
+    const result = fetch(fullUrl)
       .then((response) => response.json())
       .then((data) => {
         return data;

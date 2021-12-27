@@ -12,7 +12,9 @@ const constraints = {
     ...base.reqString,
     email: true
   },
-  username: base.reqString
+  username: base.reqString,
+  firstName: base.reqString,
+  lastName: base.reqString
 };
 
 async function getAll() {

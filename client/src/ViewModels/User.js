@@ -97,10 +97,11 @@ class User extends Component {
   changeUser() {}
 
   render() {
+    console.log(this.state.users);
     return (
       this.state.users && (
         <>
-          <Typography variant='h5'>Visa alla användare</Typography>
+          <Typography variant='h2'>Visa alla användare</Typography>
           <List sx={{ width: '100%' }}>
             {this.state.users &&
               this.state.users.map((user) => {

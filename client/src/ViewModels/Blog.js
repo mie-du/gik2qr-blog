@@ -18,15 +18,12 @@ export default class Blog extends Component {
   constructor(props) {
     super(props);
     this.model = new PostModel();
-    this.state = { posts: [] };
+    this.state = { posts: [], currentPost: {} };
   }
 
   /* #region Lifecycle */
   componentDidMount() {
-    this.model.getAll().then((result) => {
-      this.setState({ posts: result.data });
-    });
-
+    this.getAll();
     this.mapActions();
   }
 
@@ -65,9 +62,9 @@ export default class Blog extends Component {
       case ACTIONS.VIEW: {
         if (this.id) {
           console.log('view one', this.id, this.action);
-          return <PostView post={this.findOne(this.id)} />;
+          return <PostView post={this.getOne(this.id)} />;
         }
-        console.log('view all', this.id, this.action);
+        console.log('view all', this.id, this.action, this.state.posts);
         return <PostList posts={this.state.posts} />;
       }
       default: {
@@ -80,17 +77,16 @@ export default class Blog extends Component {
     return this.renderSwitch();
   }
   /* #region CRUD  */
-  findOne(id) {
-    console.log('find one?', id);
-    return this.state.posts && this.state.posts.find((posts) => posts.id == id);
+  getAll() {
+    this.model.getSummaryAll().then((result) => {
+      this.setState({ posts: result.data });
+    });
   }
-  createFakePost() {
-    const post = {
-      title: 'Hej',
-      userId: 28
-    };
-    return post;
+
+  getOne(id) {
+    this.model.getSummaryById(id).then((result) => {});
   }
+
   savePost(post) {
     if (post.id) {
       this.model.updatePost(post).then((result) => {

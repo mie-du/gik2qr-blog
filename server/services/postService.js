@@ -122,11 +122,25 @@ async function getSummary() {
         author: {},
         tags: []
       };
-      const { title, body, imageUrl, createdAt, updatedAt } = post;
-      const { firstName, lastName, username, email } = post.user;
+      const { id, title, body, imageUrl, createdAt, updatedAt } = post;
+      const {
+        id: authorId,
+        firstName,
+        lastName,
+        username,
+        email,
+        imageUrl: authorImage
+      } = post.user;
 
-      cleanPost.content = { title, body, imageUrl, createdAt, updatedAt };
-      cleanPost.author = { firstName, lastName, username, email };
+      cleanPost.content = { id, title, body, imageUrl, createdAt, updatedAt };
+      cleanPost.author = {
+        authorId,
+        firstName,
+        lastName,
+        username,
+        email,
+        authorImage
+      };
       post.tags.forEach((tag) => {
         cleanPost.tags.push(tag.name);
       });

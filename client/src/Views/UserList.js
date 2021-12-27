@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
 export default function UserList({ users }) {
+  console.log(users);
   return (
     <>
       <Typography variant='h5'>Visa alla användare</Typography>
