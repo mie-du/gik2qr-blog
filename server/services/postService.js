@@ -193,7 +193,7 @@ async function getSummaryById(id) {
       tags: [],
       comments: []
     };
-    console.log(result.comments.user);
+
     const { title, body, imageUrl, createdAt, updatedAt } = result;
     const { firstName, lastName, username, email } = result.user;
 
