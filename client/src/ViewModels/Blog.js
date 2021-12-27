@@ -11,6 +11,8 @@ import React, { Component } from 'react';
 import PostModel from '../Models/PostModel';
 import { ACTIONS } from '../Helpers/constants';
 import PostList from '../Views/PostList';
+import PostEdit from '../Views/PostEdit';
+import PostView from '../Views/PostView';
 
 export default class Blog extends Component {
   constructor(props) {
@@ -49,18 +51,21 @@ export default class Blog extends Component {
     this.mapActions();
     switch (this.action) {
       case ACTIONS.NEW: {
-        console.log('new', this.id, this.action);
-        return <></>;
+        console.log(this.id, this.action);
+        return <PostEdit />;
       }
       case ACTIONS.EDIT: {
         //can only edit if id exists
-        if (this.id) console.log('Edit', this.id, this.edit);
-        return <></>;
+        if (this.id) {
+          console.log(this.id, this.action);
+          return <PostEdit post={this.findOne(this.id)} />;
+        }
+        return <Typography>404 Not found</Typography>;
       }
       case ACTIONS.VIEW: {
         if (this.id) {
           console.log('view one', this.id, this.action);
-          return <></>;
+          return <PostView post={this.findOne(this.id)} />;
         }
         console.log('view all', this.id, this.action);
         return <PostList posts={this.state.posts} />;
@@ -75,7 +80,10 @@ export default class Blog extends Component {
     return this.renderSwitch();
   }
   /* #region CRUD  */
-
+  findOne(id) {
+    console.log('find one?', id);
+    return this.state.posts && this.state.posts.find((posts) => posts.id == id);
+  }
   createFakePost() {
     const post = {
       title: 'Hej',
