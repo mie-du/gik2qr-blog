@@ -3,18 +3,23 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText
+  ListItemText,
+  Typography
 } from '@mui/material';
 import ShortTextIcon from '@mui/icons-material/ShortText';
 import React, { Component } from 'react';
 import PostModel from '../Models/PostModel';
+import { ACTIONS } from '../Helpers/constants';
+import PostList from '../Views/PostList';
 
-export default class User extends Component {
+export default class Blog extends Component {
   constructor(props) {
     super(props);
     this.model = new PostModel();
     this.state = { posts: [] };
   }
+
+  /* #region Lifecycle */
   componentDidMount() {
     this.model.getAll().then((result) => {
       this.setState({ posts: result.data });
@@ -22,47 +27,54 @@ export default class User extends Component {
 
     this.mapActions();
   }
-  componentDidUpdate() {
-    this.mapActions();
-  }
+
+  /* #endregion */
 
   mapActions() {
     const params = this.props.match.params;
     const url = this.props.match.url;
-    console.log(params, url);
+
     this.id = params.id || 0;
-    this.action = 'view';
+    this.action = ACTIONS.VIEW;
 
     if (url.indexOf('new') > 0) {
-      this.action = 'new';
+      this.action = ACTIONS.NEW;
       this.id = 0;
     } else if (url.indexOf('edit') > 0) {
-      this.action = 'edit';
+      this.action = ACTIONS.EDIT;
     }
-    console.log(this.action, this.id);
+  }
+
+  renderSwitch() {
+    this.mapActions();
+    switch (this.action) {
+      case ACTIONS.NEW: {
+        console.log('new', this.id, this.action);
+        return <></>;
+      }
+      case ACTIONS.EDIT: {
+        //can only edit if id exists
+        if (this.id) console.log('Edit', this.id, this.edit);
+        return <></>;
+      }
+      case ACTIONS.VIEW: {
+        if (this.id) {
+          console.log('view one', this.id, this.action);
+          return <></>;
+        }
+        console.log('view all', this.id, this.action);
+        return <PostList posts={this.state.posts} />;
+      }
+      default: {
+        return <Typography>404 Not found</Typography>;
+      }
+    }
   }
 
   render() {
-    return (
-      <List sx={{ width: '100%', maxWidth: 360 }}>
-        {this.state.posts &&
-          this.state.posts.map((post) => {
-            return (
-              <ListItem key={post.id}>
-                <ListItemAvatar>
-                  <Avatar>
-                    <ShortTextIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={`${post.title}`}
-                  secondary={post.body}></ListItemText>
-              </ListItem>
-            );
-          })}
-      </List>
-    );
+    return this.renderSwitch();
   }
+  /* #region CRUD  */
 
   createFakePost() {
     const post = {
@@ -89,4 +101,5 @@ export default class User extends Component {
   }
 
   changeUser() {}
+  /* #endregion */
 }
