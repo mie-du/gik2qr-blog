@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Typography, Container } from '@mui/material';
 
 import Home from './ViewModels/Home';
 import User from './ViewModels/User';
-import Posts from './ViewModels/Posts';
+import Blog from './ViewModels/Blog';
 
 function App() {
   return (
@@ -16,16 +16,13 @@ function App() {
               <Link to='/'>GIK2QR Blog</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts'>Inlägg</Link>
+              <Link to='/posts'>Blogg</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/users'>Användare</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/users/new'>Skapa Användare</Link>
-            </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/users/1'>Min profil</Link>
+              <Link to='/users/new'>Skapa inlägg</Link>
             </Typography>
           </Toolbar>
         </AppBar>
@@ -37,11 +34,11 @@ function App() {
           }}>
           <Switch>
             <Route exact path='/' component={Home} />
+            <Route exact path='/blog' component={Blog} />
+            <Route path='/posts/:id/:action' component={Blog} />
+            <Route path='/users/:id' component={Blog} />
+            <Route exact path='/users/new' component={Blog} />
             <Route exact path='/users' component={User} />
-            <Route path='/users/:id/:action' component={User} />
-            <Route path='/users/:id' component={User} />
-            <Route exact path='/users/new' component={User} />
-            <Route exact path='/posts' component={Posts} />
           </Switch>
         </Container>
       </Router>
