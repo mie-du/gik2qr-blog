@@ -22,9 +22,14 @@ router.get('/author/:id', (req, res) => {
 
 router.get('/:id/getAuthor', (req, res) => {
   //getAuthor for post
-  postService.getAuthor(req.params.id).then((comments) => res.send(comments));
+  postService.getAuthor(req.params.id).then((posts) => res.send(posts));
 });
 
+router.get('/:id/summary', (req, res) => {
+  postService.getSummaryById(req.params.id).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
 /* Tags */
 router.post('/addTag', (req, res) => {
   postService.addTag(req.body.name, req.body.postId).then((result) => {

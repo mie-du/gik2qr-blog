@@ -142,6 +142,51 @@ async function getSummary() {
   }
 }
 
+async function getSummaryById(id) {
+  try {
+    const result = await Post.findOne({
+      where: { id },
+      include: [User, Tag, { model: Comment, include: [User] }]
+    });
+
+    if (!result) {
+      return Promise.resolve(createError(204));
+    }
+
+    let cleanPost = {
+      content: {},
+      author: {},
+      tags: [],
+      comments: []
+    };
+    console.log(result.comments.user);
+    const { title, body, imageUrl, createdAt, updatedAt } = result;
+    const { firstName, lastName, username, email } = result.user;
+
+    cleanPost.content = { title, body, imageUrl, createdAt, updatedAt };
+    cleanPost.author = { firstName, lastName, username, email };
+
+    result.tags.forEach((tag) => {
+      cleanPost.tags.push(tag.name);
+    });
+
+    result.comments.forEach((comment) => {
+      cleanPost.comments.push({
+        title: comment.title,
+        body: title.body,
+        createdAt: comment.createdAt,
+        updatedAt: comment.updatedAt,
+        authorName: `${comment.user.firstName} ${comment.user.lastName}`,
+        authorUserName: comment.user.username
+      });
+    });
+    return Promise.resolve(createResult(cleanPost));
+  } catch (err) {
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
+  }
+}
 async function getFull() {
   try {
     const result = await Post.findAll({ include: [User, Comment, Tag] });
@@ -155,7 +200,9 @@ async function getFull() {
     );
   }
 }
-/* Basic crud */
+
+/* #region basic CRUD  */
+
 async function getAll() {
   try {
     const result = await Post.findAll();
@@ -257,6 +304,7 @@ async function _postTagExists(name) {
   name = name.toLowerCase().trim();
   return await Tag.findOne({ where: { name } });
 }
+/* #endregion */
 
 module.exports = {
   getByAuthor,
@@ -267,6 +315,7 @@ module.exports = {
   removeTag,
   getFull,
   getSummary,
+  getSummaryById,
   getAll,
   getById,
   create,
