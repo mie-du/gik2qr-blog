@@ -4,27 +4,25 @@
 - Hämtar data och ger till vy
      */
 /*eslint eqeqeq: "off"*/
+import {
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  Typography,
+  List,
+  ListItemText
+} from '@mui/material';
+import ImageIcon from '@mui/icons-material/Image';
 import React, { Component } from 'react';
 import UserModel from '../Models/UserModel';
-import UserList from '../Views/UserList';
-
-import UserView from '../Views/UserView';
-import UserEdit from '../Views/UserEdit';
-
-import validator from 'validator';
 
 class User extends Component {
   constructor(props) {
     super(props);
     this.model = new UserModel();
     this.state = {
-      users: null,
-      validation: null
+      users: null
     };
-
-    this.onUserSave = this.onUserSave.bind(this);
-    this.validateUser = this.validateUser.bind(this);
-    this.findOne = this.findOne.bind(this);
   }
 
   mapActions() {
@@ -63,17 +61,6 @@ class User extends Component {
     return this.state.users.find((user) => user.id == id);
   }
 
-  validateUser(field, value) {
-    console.log(field, value);
-    const validationData = {
-      ...this.state.validation,
-      [field]: { valid: false, message: 'fel' }
-    };
-    this.setState({
-      validation: validationData
-    });
-  }
-
   newUser() {
     return {
       firstName: '',
@@ -84,21 +71,16 @@ class User extends Component {
     };
   }
 
-  onUserSave(newUser) {
-    const users = this.state.users;
-    if (newUser.id) {
-      const userIndex = users.findIndex((user) => user.id == newUser.id);
-      console.log(userIndex);
-      users.splice(userIndex, 1, newUser);
-      this.setState({ users });
-
-      this.model.updateUser(newUser).then((result) => {});
+  saveUser(user) {
+    if (user.id) {
+      this.model.updatePost(user).then((result) => {
+        console.log(result);
+      });
     } else {
-      this.model.createUser(newUser).then((result) => {
-        this.setState(users.splice(0, 0, result.body));
+      this.model.createPost(user).then((result) => {
+        console.log(result);
       });
     }
-    console.log('new state', this.state.users);
   }
 
   onUserDelete(user) {
@@ -106,59 +88,43 @@ class User extends Component {
       console.log(result);
     });
   }
-
-  renderSwitch() {
-    this.mapActions();
-
-    switch (this.action) {
-      case 'new': {
-        console.log('new', this.id, this.action);
-        return (
-          <UserEdit
-            user={this.newUser()}
-            onSave={this.onUserSave}
-            validation={this.state.validation}
-          />
-        );
-      }
-      case 'edit': {
-        console.log('edit', this.id, this.action);
-        if (this.id) {
-          return (
-            <UserEdit
-              user={this.findOne(this.id)}
-              onSave={this.onUserSave}
-              onChange={this.onUserChange}
-              validation={this.state.validation}
-            />
-          );
-        }
-        break;
-      }
-      case 'view': {
-        if (this.id) {
-          console.log('view one', this.id, this.action);
-          return <UserView user={this.findOne(this.id)} />;
-        } else {
-          console.log('view all', this.id, this.action);
-          console.log(this.state.users);
-          return (
-            <>
-              <UserList users={this.state.users} />
-            </>
-          );
-        }
-      }
-      default: {
-        <>
-          <UserList users={this.state.users} />
-        </>;
-      }
-    }
+  deleteUser(user) {
+    this.model.deletePost(user).then((result) => {
+      console.log(result);
+    });
   }
 
+  changeUser() {}
+
   render() {
-    return <div>{this.state.users ? this.renderSwitch() : 'No data'}</div>;
+    return (
+      this.state.users && (
+        <>
+          <Typography variant='h5'>Visa alla användare</Typography>
+          <List sx={{ width: '100%' }}>
+            {this.state.users &&
+              this.state.users.map((user) => {
+                return (
+                  <ListItem key={user.id}>
+                    <ListItemAvatar>
+                      {user?.imageUrl ? (
+                        <Avatar alt={user.username} src={user.imageUrl} />
+                      ) : (
+                        <Avatar>
+                          <ImageIcon />
+                        </Avatar>
+                      )}
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={`${user.username}`}
+                      secondary={user.email}></ListItemText>
+                  </ListItem>
+                );
+              })}
+          </List>
+        </>
+      )
+    );
   }
 }
 export default User;

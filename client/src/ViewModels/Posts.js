@@ -46,7 +46,7 @@ export default class User extends Component {
       console.log(result);
     });
   }
-  validateUser() {}
+
   changeUser() {}
 
   render() {

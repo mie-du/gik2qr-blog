@@ -24,7 +24,7 @@ function App() {
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/users/new'>Skapa Användare</Link>
             </Typography>
-            <Typography variant='body1' component='p'>
+            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/users/1'>Min profil</Link>
             </Typography>
           </Toolbar>
