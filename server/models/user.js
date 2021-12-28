@@ -7,15 +7,18 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: columns.id,
       email: {
-        type: DataTypes.STRING(100),
-        len: [4, 100],
+        ...columns.reqString,
         validate: {
           isEmail: true
         }
       },
+      description: {
+        type: DataTypes.STRING(500)
+      },
       firstName: { ...columns.reqString },
       lastName: { ...columns.reqString },
-      username: { ...columns.reqString }
+      username: { ...columns.reqString },
+      imageUrl: { ...columns.unreqStringLong }
     },
     options
   );

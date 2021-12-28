@@ -4,22 +4,43 @@ import './index.css';
 import App from './App';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#474785'
+      main: '#9c9cc9',
+      contrastText: '#fff'
     },
     neutral: {
       main: '#333',
       contrastText: '#fff'
     },
     secondary: {
-      main: '#47855c'
+      main: '#47855c',
+      contrastText: '#fff'
+    },
+    danger: {
+      dark: red[900],
+      main: red[600],
+      ligth: red[200],
+      contrastText: '#ffffff'
     }
   },
   typography: {
-    fontFamily: ['Fira Sans', 'sans-serif'].join(',')
+    fontFamily: ['Fira Sans', 'sans-serif'].join(','),
+    h2: {
+      fontSize: '2rem',
+      marginBottom: '1rem',
+      component: 'h2',
+      fontFamily: ['Titillium Web', 'sans-serif'].join(',')
+    },
+    h3: {
+      fontSize: '1.5rem',
+      marginBottom: '1rem',
+      component: 'h3',
+      fontWeight: 'normal'
+    }
   }
 });
 

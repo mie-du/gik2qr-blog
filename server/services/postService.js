@@ -1,6 +1,7 @@
 const Post = require('../models').post;
 const User = require('../models').user;
 const Tag = require('../models').tag;
+const db = require('../models');
 const Comment = require('../models').comment;
 const PostTag = require('../models').postTag;
 const constraints = require('../helpers/modelBase').constraints;
@@ -89,7 +90,7 @@ async function removeTag(postId, tagId) {
       return Promise.resolve(createError(400, 'Could not remove tag'));
     }
     const tagsLeft = await PostTag.findAll({ where: { tagId } });
-    console.log(tagsLeft);
+
     if (tagsLeft.length === 0) {
       Tag.destroy({ where: { id: tagId } });
     }
@@ -112,7 +113,10 @@ async function getAuthor(postId) {
 /* Clean getFull with slim result */
 async function getSummary() {
   try {
-    const allPosts = await Post.findAll({ include: [User, Tag] });
+    const allPosts = await Post.findAll({
+      include: [User, Tag, { model: Comment, include: [User] }],
+      order: [['updatedAt', 'ASC']]
+    });
     let cleanResult = [];
 
     allPosts.forEach((post) => {
@@ -120,22 +124,49 @@ async function getSummary() {
       let cleanPost = {
         content: {},
         author: {},
-        tags: []
+        tags: [],
+        comments: []
       };
-      const { title, body, imageUrl, createdAt, updatedAt } = post;
-      const { firstName, lastName, username, email } = post.user;
 
-      cleanPost.content = { title, body, imageUrl, createdAt, updatedAt };
-      cleanPost.author = { firstName, lastName, username, email };
+      cleanPost.content = {
+        id: post.id,
+        title: post.title,
+        body: post.body,
+        imageUrl: post.imageUrl,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt
+      };
+
+      cleanPost.author = {
+        id: post.user.id,
+        firstName: post.user.firstName,
+        lastName: post.user.lastName,
+        username: post.user.username,
+        email: post.user.email,
+        imageUrl: post.user.imageUrl
+      };
+
       post.tags.forEach((tag) => {
-        cleanPost.tags.push(tag.name);
+        cleanPost.tags.push({ id: tag.id, name: tag.name });
       });
-      console.log('---single post---');
-      console.log(cleanPost);
+
+      post.comments.forEach((comment) => {
+        cleanPost.comments.push({
+          title: comment.title,
+          body: comment.body,
+          createdAt: comment.createdAt,
+          updatedAt: comment.updatedAt,
+          author: {
+            id: comment.user.id,
+            firstName: comment.user.firstName,
+            lastName: comment.user.lastName,
+            imageUrl: comment.user.imageUrl
+          }
+        });
+      });
       cleanResult.push(cleanPost);
     });
-    console.log('---complete result---');
-    console.log(cleanResult);
+
     return Promise.resolve(createResult(cleanResult));
   } catch (err) {
     return Promise.resolve(
@@ -157,7 +188,9 @@ async function getFull() {
     );
   }
 }
-/* Basic crud */
+
+/* #region basic CRUD  */
+
 async function getAll() {
   try {
     const result = await Post.findAll();
@@ -259,6 +292,7 @@ async function _postTagExists(name) {
   name = name.toLowerCase().trim();
   return await Tag.findOne({ where: { name } });
 }
+/* #endregion */
 
 module.exports = {
   getByAuthor,
@@ -269,6 +303,7 @@ module.exports = {
   removeTag,
   getFull,
   getSummary,
+
   getAll,
   getById,
   create,

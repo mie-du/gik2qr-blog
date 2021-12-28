@@ -10,7 +10,7 @@ router.get('/full', (req, res) => {
 
 router.get('/summary', (req, res) => {
   postService.getSummary().then((result) => {
-    res.status(result.status).json(result.data);
+    res.send(result);
   });
 });
 

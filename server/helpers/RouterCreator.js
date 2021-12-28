@@ -3,7 +3,7 @@ class RouterCreator {
     this.service = service;
     this.router = router;
   }
-  createCrud() {
+  createGet() {
     this.router.get('/', (req, res) => {
       this.service
         .getAll()
@@ -17,7 +17,8 @@ class RouterCreator {
           res.json({ error: e.message, stack: e.stack });
         });
     });
-
+  }
+  createGetById() {
     this.router.get('/:id', (req, res) => {
       this.service
         .getById(req.params.id)
@@ -31,14 +32,16 @@ class RouterCreator {
           res.json({ error: e.message, stack: e.stack });
         });
     });
-
+  }
+  createPost() {
     this.router.post('/', (req, res) => {
       const data = req.body;
       this.service.create(data).then((result) => {
         res.status(result.status).json(result.data);
       });
     });
-
+  }
+  createPut() {
     this.router.put('/', (req, res) => {
       const data = req.body;
       const id = req.body.id;
@@ -47,7 +50,8 @@ class RouterCreator {
         res.status(result.status).json(result.data);
       });
     });
-
+  }
+  createDelete() {
     this.router.delete('/', (req, res) => {
       const id = req.body.id;
 
@@ -55,6 +59,13 @@ class RouterCreator {
         res.status(result.status).json(result.data);
       });
     });
+  }
+  createCrud() {
+    this.createGet();
+    this.createGetById();
+    this.createPost();
+    this.createPut();
+    this.createDelete();
   }
 
   getRouter() {

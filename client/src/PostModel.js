@@ -5,8 +5,12 @@ export default class PostModel {
     this.api = new Api('posts');
   }
 
-  getAll() {
+  getPost() {
     const data = this.api.get().then((data) => data);
+    return data;
+  }
+  getSummary() {
+    const data = this.api.get('summary').then((data) => data);
     return data;
   }
 
