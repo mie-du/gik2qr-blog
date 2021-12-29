@@ -6,7 +6,9 @@ import {
   CardHeader,
   CardMedia,
   Grid,
-  Typography
+  Typography,
+  Box,
+  Chip
 } from '@mui/material';
 
 import React from 'react';
@@ -15,6 +17,7 @@ import { toDateTimeString } from '../Helpers/formating';
 import { Link } from 'react-router-dom';
 import { PlaceholderAvatar } from '../Helpers/components';
 export default function PostList({ posts }) {
+  console.log('Viewing all', posts);
   return (
     <Grid container spacing={{ xs: 2, md: 3 }} sx={{ width: '100%' }}>
       {posts &&
@@ -26,60 +29,73 @@ export default function PostList({ posts }) {
 
           return (
             <Grid item key={id} xs='auto'>
-              <Card sx={{ width: 345 }}>
-                <Link to={`/users/${author.id}`}>
-                  <CardHeader
-                    avatar={<PlaceholderAvatar person={author} />}
-                    title={`Skrivet av ${author.firstName} ${author.lastName} (${author.username})`}
-                    subheader={`Senast uppdaterad: ${toDateTimeString(
-                      updatedAt
-                    )}`}
-                  />
-                </Link>
-                <CardMedia
-                  component='img'
-                  height='200'
-                  image={
-                    imageUrl
-                      ? imageUrl
-                      : `${process.env.PUBLIC_URL}/images/img-placeholder.svg`
-                  }
-                  alt={`Bild för post: ${title}`}
-                />
-                <CardContent>
-                  <Link to={`/posts/${id}`}>
-                    <Typography variant='h3' color='text.secondary'>
-                      {title}
-                    </Typography>
+              <Card
+                sx={{
+                  width: 345,
+                  minHeight: 600,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between'
+                }}>
+                <Box>
+                  <Link to={`/users/${author.id}`}>
+                    <CardHeader
+                      avatar={<PlaceholderAvatar person={author} />}
+                      title={`Skrivet av ${author.firstName} ${author.lastName} (${author.username})`}
+                      subheader={`Senast uppdaterad: ${toDateTimeString(
+                        updatedAt
+                      )}`}
+                    />
                   </Link>
-                  <Typography variant='body1'>{`${body.substring(
-                    0,
-                    50
-                  )}...`}</Typography>
-                </CardContent>
-                <CardActions>
-                  <Grid container justifyContent='space-between'>
-                    <Grid item>
+                  <CardMedia
+                    component='img'
+                    height='200'
+                    image={
+                      imageUrl
+                        ? imageUrl
+                        : `${process.env.PUBLIC_URL}/images/img-placeholder.svg`
+                    }
+                    alt={`Bild för post: ${title}`}
+                  />
+                  <CardContent>
+                    <Link to={`/posts/${id}`}>
+                      <Typography variant='h3' color='text.secondary'>
+                        {title}
+                      </Typography>
+                    </Link>
+                    <Typography variant='body1'>{`${body.substring(
+                      0,
+                      100
+                    )}...`}</Typography>
+                    <Box
+                      sx={{
+                        marginTop: '1rem',
+                        display: 'flex',
+                        width: '100%',
+                        gap: '.2rem',
+                        flexWrap: 'wrap'
+                      }}>
                       {tags &&
-                        tags.map((tag) => (
-                          <Button
-                            key={tag}
-                            sx={{
-                              bgcolor: 'secondary.light',
-                              color: 'secondary.dark',
-                              mr: 1
-                            }}
-                            size='small'>
-                            {tag}
-                          </Button>
-                        ))}
-                    </Grid>
-                    <Grid item>
-                      <Link to={`/posts/${id}`}>
-                        <Button endIcon={<ArrowForwardIcon />}>Läs mer</Button>
-                      </Link>
-                    </Grid>
-                  </Grid>
+                        tags.map((tag, i) => {
+                          if (i < 4)
+                            return (
+                              <Chip
+                                sx={{ fontSize: '.7rem' }}
+                                color='secondary'
+                                variant='contained'
+                                label={tag.name}
+                                key={`tag_${tag.id}`}></Chip>
+                            );
+                          return <Typography>...</Typography>;
+                        })}
+                    </Box>
+                  </CardContent>
+                </Box>
+                <CardActions
+                  sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Link to={`/posts/${id}`}>
+                    <Button endIcon={<ArrowForwardIcon />}>Läs mer</Button>
+                  </Link>
                 </CardActions>
               </Card>
             </Grid>

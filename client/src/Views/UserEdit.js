@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { halfFieldGridProps, textFieldProps } from '../Helpers/styles';
 
 export default function UserEdit() {
+  console.log('---- Mockdata UserView ----');
   const user = {
     id: 1,
     email: 'mie@du.se',

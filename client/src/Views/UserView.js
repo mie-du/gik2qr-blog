@@ -5,6 +5,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function UserView() {
+  console.log('---- Mockdata UserView ----');
   const user = {
     id: 1,
     email: 'mie@du.se',

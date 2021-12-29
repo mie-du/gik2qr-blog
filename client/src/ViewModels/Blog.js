@@ -70,9 +70,10 @@ export default class Blog extends Component {
   render() {
     return this.renderSwitch();
   }
+
   /* #region CRUD  */
   getAll() {
-    this.model.getSummaryAll().then((result) => {
+    this.model.getSummary().then((result) => {
       this.setState({ posts: result.data });
     });
   }

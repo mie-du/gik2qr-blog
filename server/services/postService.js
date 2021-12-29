@@ -152,6 +152,7 @@ async function getSummary() {
 
       post.comments.forEach((comment) => {
         cleanPost.comments.push({
+          id: comment.id,
           title: comment.title,
           body: comment.body,
           createdAt: comment.createdAt,
