@@ -17,10 +17,19 @@ function App() {
         <AppBar component='nav' position='static'>
           <Toolbar>
             <Typography variant='h7' component='p' sx={{ flexGrow: 1 }}>
-              <Link to='/'>Home</Link>
+              <Link to='/'>GIK2QR Blogg</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts'>Posts</Link>
+              <Link to='/posts'>Blogg</Link>
+            </Typography>
+            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
+              <Link to='/users'>Användare</Link>
+            </Typography>
+            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
+              <Link to='/posts/new'>Skapa inlägg</Link>
+            </Typography>
+            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
+              <Link to='/posts/1'>Visa inlägg</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/posts/1'>View post</Link>

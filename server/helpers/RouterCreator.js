@@ -36,6 +36,7 @@ class RouterCreator {
   createPost() {
     this.router.post('/', (req, res) => {
       const data = req.body;
+      console.log(data);
       this.service.create(data).then((result) => {
         res.status(result.status).json(result.data);
       });

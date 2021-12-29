@@ -118,6 +118,7 @@ async function getSummary() {
       order: [['updatedAt', 'ASC']]
     });
     let cleanResult = [];
+    console.log(allPosts);
 
     allPosts.forEach((post) => {
       //must be inside loop, reference will be added otherwise.
@@ -148,6 +149,21 @@ async function getSummary() {
 
       post.tags.forEach((tag) => {
         cleanPost.tags.push({ id: tag.id, name: tag.name });
+      });
+
+      post.comments.forEach((comment) => {
+        cleanPost.comments.push({
+          title: comment.title,
+          body: comment.body,
+          createdAt: comment.createdAt,
+          updatedAt: comment.updatedAt,
+          author: {
+            id: comment.user.id,
+            firstName: comment.user.firstName,
+            lastName: comment.user.lastName,
+            imageUrl: comment.user.imageUrl
+          }
+        });
       });
 
       post.comments.forEach((comment) => {
@@ -303,7 +319,11 @@ module.exports = {
   removeTag,
   getFull,
   getSummary,
+<<<<<<< HEAD
 
+=======
+  getSummaryById,
+>>>>>>> v10-5-CRUD-controller-edit
   getAll,
   getById,
   create,

@@ -5,7 +5,7 @@
 class Api {
   baseUrl = 'http://localhost:5001';
   constructor(path) {
-    this.url = `${this.baseUrl}/${path}/`;
+    this.url = `${this.baseUrl}/${path}`;
   }
   //R=GET
   //Get All, converted to JSON for cleanest possible result to work with

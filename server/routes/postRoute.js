@@ -4,27 +4,32 @@ const RouterCreator = require('../helpers/RouterCreator');
 
 router.get('/full', (req, res) => {
   postService.getFull().then((result) => {
-    res.status(result.status).json(result.data);
+    res.status(result.status).send(result);
   });
 });
 
 router.get('/summary', (req, res) => {
   postService.getSummary().then((result) => {
-    res.send(result);
+    res.status(result.status).send(result);
   });
 });
 
 /* Author */
 router.get('/author/:id', (req, res) => {
   //get posts for author
-  postService.getByAuthor(req.params.id).then((posts) => res.send(posts));
+  postService.getByAuthor(req.params.id).then((result) => res.send(result));
 });
 
 router.get('/:id/getAuthor', (req, res) => {
   //getAuthor for post
-  postService.getAuthor(req.params.id).then((comments) => res.send(comments));
+  postService.getAuthor(req.params.id).then((result) => res.send(result));
 });
 
+router.get('/:id/summary', (req, res) => {
+  postService.getSummaryById(req.params.id).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
 /* Tags */
 router.post('/addTag', (req, res) => {
   postService.addTag(req.body.name, req.body.postId).then((result) => {

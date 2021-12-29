@@ -1,4 +1,4 @@
-import Api from './Api';
+import Api from '../Api';
 
 export default class UserModel {
   constructor() {
@@ -7,6 +7,11 @@ export default class UserModel {
 
   getAll() {
     const data = this.api.get().then((data) => data);
+    return data;
+  }
+
+  getOne(id) {
+    const data = this.api.getById(id).then((data) => data);
     return data;
   }
 

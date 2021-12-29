@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import React, { Component } from 'react';
-import PostModel from './PostModel';
+import PostModel from './Models/PostModel';
 import { Link } from 'react-router-dom';
 import { PlaceholderAvatar } from './Helpers/components';
 import { toDateTimeString } from './Helpers/formating';
