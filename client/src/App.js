@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Typography } from '@mui/material';
 
 import Home from './Home';
-import User from './User';
+import User from './ViewModels/User';
 import Posts from './Posts';
 import PostEdit from './Views/PostEdit';
 import PostView from './Views/PostView';
@@ -26,25 +26,16 @@ function App() {
               <Link to='/users'>Användare</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts/new'>Skapa inlägg</Link>
-            </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/posts/1'>Visa inlägg</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts/1'>View post</Link>
+              <Link to='/posts/1/edit'>Redigera inlägg</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts/1/edit'>Edit post</Link>
-            </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/users'>Users</Link>
-            </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/users/1'>View user</Link>
+              <Link to='/users/1'>Visa användare</Link>
             </Typography>
             <Typography variant='body1' component='p'>
-              <Link to='/users/1/edit'>Edit user</Link>
+              <Link to='/users/1/edit'>Redigera användare</Link>
             </Typography>
           </Toolbar>
         </AppBar>

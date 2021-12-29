@@ -118,7 +118,6 @@ async function getSummary() {
       order: [['updatedAt', 'ASC']]
     });
     let cleanResult = [];
-    console.log(allPosts);
 
     allPosts.forEach((post) => {
       //must be inside loop, reference will be added otherwise.
@@ -319,11 +318,6 @@ module.exports = {
   removeTag,
   getFull,
   getSummary,
-<<<<<<< HEAD
-
-=======
-  getSummaryById,
->>>>>>> v10-5-CRUD-controller-edit
   getAll,
   getById,
   create,
