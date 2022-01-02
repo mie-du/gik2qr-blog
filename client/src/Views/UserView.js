@@ -1,4 +1,4 @@
-import { Typography, Grid, Fab } from '@mui/material';
+import { Typography, Grid, Fab, Box } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
@@ -24,7 +24,20 @@ export default function UserView() {
     <div>
       {user ? (
         <>
-          <Typography variant='h2'>Min profil</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '2rem',
+              marginBottom: '.3rem'
+            }}>
+            <Link to={`/users/${id}/edit`}>
+              <Fab size='small' color='secondary' aria-label='edit'>
+                <EditIcon />
+              </Fab>
+            </Link>
+            <Typography variant='h2'>Min profil</Typography>
+          </Box>
 
           <Grid container spacing={3} sx={{ width: '100%' }}>
             <Grid item xs='auto'>
@@ -54,13 +67,6 @@ export default function UserView() {
               <Typography variant='body2' color='text.secondary'>
                 {description}
               </Typography>
-            </Grid>
-            <Grid container mt={5} justifyContent='flex-end'>
-              <Link to={`/users/${id}/edit`}>
-                <Fab color='secondary' aria-label='edit'>
-                  <EditIcon />
-                </Fab>
-              </Link>
             </Grid>
           </Grid>
         </>
