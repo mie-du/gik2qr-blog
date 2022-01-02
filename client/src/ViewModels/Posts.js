@@ -1,6 +1,4 @@
-/*eslint eqeqeq: "off"*/
 import { Typography } from '@mui/material';
-
 import React, { Component } from 'react';
 import PostModel from '../Models/PostModel';
 import { ACTIONS } from '../Helpers/constants';
@@ -8,7 +6,7 @@ import PostList from '../Views/PostList';
 import PostEdit from '../Views/PostEdit';
 import PostView from '../Views/PostView';
 
-export default class Blog extends Component {
+export default class Posts extends Component {
   constructor(props) {
     super(props);
     this.model = new PostModel();
@@ -17,7 +15,10 @@ export default class Blog extends Component {
 
   /* #region Lifecycle */
   componentDidMount() {
-    this.getAll();
+    this.model.getSummary().then((result) => {
+      this.setState({ posts: result.data });
+    });
+
     this.mapActions();
   }
 
@@ -43,7 +44,7 @@ export default class Blog extends Component {
     switch (this.action) {
       case ACTIONS.NEW: {
         console.log(this.id, this.action);
-        return <PostEdit />;
+        return <></>;
       }
       case ACTIONS.EDIT: {
         //can only edit if id exists

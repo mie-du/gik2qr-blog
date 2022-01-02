@@ -1,21 +1,21 @@
 import {
+  Box,
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
+  Chip,
   Grid,
-  Typography,
-  Box,
-  Chip
+  Typography
 } from '@mui/material';
-
-import React from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { toDateTimeString } from '../Helpers/formating';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { PlaceholderAvatar } from '../Helpers/components';
+import { toDateTimeString } from '../Helpers/formating';
+
 export default function PostList({ posts }) {
   console.log('Viewing all', posts);
   return (

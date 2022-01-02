@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING(500)
       },
-      firstName: { ...columns.reqString },
-      lastName: { ...columns.reqString },
+      firstName: { ...columns.unreqStringShort },
+      lastName: { ...columns.unreqStringShort },
       username: { ...columns.reqString },
       imageUrl: { ...columns.unreqStringLong }
     },

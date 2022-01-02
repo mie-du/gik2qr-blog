@@ -165,21 +165,6 @@ async function getSummary() {
           }
         });
       });
-
-      post.comments.forEach((comment) => {
-        cleanPost.comments.push({
-          title: comment.title,
-          body: comment.body,
-          createdAt: comment.createdAt,
-          updatedAt: comment.updatedAt,
-          author: {
-            id: comment.user.id,
-            firstName: comment.user.firstName,
-            lastName: comment.user.lastName,
-            imageUrl: comment.user.imageUrl
-          }
-        });
-      });
       cleanResult.push(cleanPost);
     });
 
