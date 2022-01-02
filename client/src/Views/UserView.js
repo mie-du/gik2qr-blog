@@ -4,7 +4,18 @@ import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function UserView({ user }) {
+export default function UserView() {
+  const user = {
+    id: 1,
+    email: 'mie@du.se',
+    description: null,
+    firstName: 'Mikaela',
+    lastName: 'Hedberg',
+    username: 'termedea',
+    imageUrl: 'https://picsum.photos/seed/picsum/200/200',
+    createdAt: '2021-12-28T14:52:00.000Z',
+    updatedAt: '2021-12-28T14:55:15.000Z'
+  };
   const { id, firstName, lastName, username, email, imageUrl, description } =
     user || {};
   console.log('User in userView', user);

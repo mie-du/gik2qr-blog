@@ -1,64 +1,69 @@
-import { Field } from '../Helpers/styles';
-
 import { Grid, TextField, Typography, Button } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { halfFieldGridProps, textFieldProps } from '../Helpers/styles';
 
-export default function UserEdit({ user, onSave }) {
+export default function UserEdit() {
+  const user = {
+    id: 1,
+    email: 'mie@du.se',
+    description: null,
+    firstName: 'Mikaela',
+    lastName: 'Hedberg',
+    username: 'termedea',
+    imageUrl: 'https://picsum.photos/seed/picsum/200/200',
+    createdAt: '2021-12-28T14:52:00.000Z',
+    updatedAt: '2021-12-28T14:55:15.000Z'
+  };
+
+  const { id } = user;
   return (
     <>
       <Typography variant='h2'>
-        {user?.id ? 'Redigera Uppgfter' : 'Registrera användare'}
+        {id ? 'Redigera Uppgfter' : 'Registrera användare'}
       </Typography>
 
-      <Grid container rowSpacing={3}>
-        <Grid item xs={12} md={6}>
+      <Grid container>
+        <Grid {...halfFieldGridProps}>
           <TextField
-            variant='filled'
+            {...textFieldProps}
             type='text'
             name='firstName'
             label='Förnamn'
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid {...halfFieldGridProps}>
           <TextField
-            variant='filled'
+            {...textFieldProps}
+            type='text'
             name='lastName'
-            style={Field.right}
             label='Efternamn'
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid {...halfFieldGridProps}>
           <TextField
-            variant='filled'
+            {...textFieldProps}
+            type='email'
             name='email'
-            style={Field.left}
             label='E-post'
           />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            variant='filled'
-            name='username'
-            style={Field.right}
-            label='Användarnamn'
-          />
+        <Grid {...halfFieldGridProps}>
+          <TextField {...textFieldProps} name='username' label='Användarnamn' />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            variant='filled'
+            {...textFieldProps}
             name='imageUrl'
-            fullWidth
             label='URL till bild'
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            variant='filled'
+            {...textFieldProps}
             name='description'
-            fullWidth
             rows='3'
             multiline
             label='Beskrivning'
