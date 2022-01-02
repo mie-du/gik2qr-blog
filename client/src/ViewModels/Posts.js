@@ -1,18 +1,10 @@
-import {
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography
-} from '@mui/material';
-import ShortTextIcon from '@mui/icons-material/ShortText';
+import { Typography } from '@mui/material';
 import React, { Component } from 'react';
 import PostModel from '../Models/PostModel';
 import { ACTIONS } from '../Helpers/constants';
 import PostList from '../Views/PostList';
 
-export default class Blog extends Component {
+export default class Posts extends Component {
   constructor(props) {
     super(props);
     this.model = new PostModel();
@@ -21,7 +13,7 @@ export default class Blog extends Component {
 
   /* #region Lifecycle */
   componentDidMount() {
-    this.model.getAll().then((result) => {
+    this.model.getSummary().then((result) => {
       this.setState({ posts: result.data });
     });
 

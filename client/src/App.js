@@ -2,11 +2,9 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Typography } from '@mui/material';
 
-import Home from './Home';
-import User from './User';
-import Posts from './Posts';
-import PostEdit from './Views/PostEdit';
-import PostView from './Views/PostView';
+import Posts from './ViewModels/Posts';
+import User from './ViewModels/User';
+
 import UserEdit from './Views/UserEdit';
 import UserView from './Views/UserView';
 
@@ -31,35 +29,19 @@ function App() {
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/posts/1'>Visa inlägg</Link>
             </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts/1'>View post</Link>
-            </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts/1/edit'>Edit post</Link>
-            </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/users'>Users</Link>
-            </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/users/1'>View user</Link>
-            </Typography>
-            <Typography variant='body1' component='p'>
-              <Link to='/users/1/edit'>Edit user</Link>
-            </Typography>
           </Toolbar>
         </AppBar>
         <Container maxWidth='lg' sx={{ mt5: 5, py: 2 }}>
           <Switch>
-            <Route exact path='/' component={Home} />
+            <Route exact path='/' component={Posts} />
             <Route exact path='/users' component={User} />
             <Route exact path='/users/:id' component={UserView} />
             <Route exact path='/users/:id/edit' component={UserEdit} />
             <Route exact path='/posts' component={Posts} />
-            <Route exact path='/posts/:id' component={PostView} />
-            <Route exact path='/posts/:id/edit' component={PostEdit} />
+            <Route exact path='/posts/:id' component={Posts} />
+            <Route exact path='/posts/:id/edit' component={Posts} />
           </Switch>
         </Container>
-        '
       </Router>
     </>
   );
