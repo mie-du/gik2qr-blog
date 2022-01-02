@@ -9,9 +9,7 @@ import { red } from '@mui/material/colors';
 const theme = createTheme({
   palette: {
     primary: {
-      light: '#bdbddb',
       main: '#9c9cc9',
-      dark: '#474785',
       contrastText: '#fff'
     },
     neutral: {
@@ -19,9 +17,7 @@ const theme = createTheme({
       contrastText: '#fff'
     },
     secondary: {
-      light: '#bddbc7',
       main: '#47855c',
-      dark: '#122117',
       contrastText: '#fff'
     },
     danger: {

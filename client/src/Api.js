@@ -9,10 +9,11 @@ class Api {
   }
   //R=GET
   //Get All, converted to JSON for cleanest possible result to work with
-  get() {
+  get(details = '') {
     //first response returns data stream, needs to be converted to json.
-
-    const result = fetch(this.url)
+    const fullUrl = this.url + details;
+    console.log(fullUrl);
+    const result = fetch(fullUrl)
       .then((response) => response.json())
       .then((data) => {
         return data;

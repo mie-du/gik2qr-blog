@@ -30,6 +30,7 @@ app.use((req, res, next) => {
 /* Routes */
 app.use('/users', require('./routes/userRoute'));
 app.use('/posts', require('./routes/postRoute'));
+app.use('/blog', require('./routes/blogDataRoute'));
 
 /* Error handling on the app-level (unless caught and handled elsewhere) */
 app.use((err, req, res, next) => {
