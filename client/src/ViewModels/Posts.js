@@ -50,14 +50,13 @@ export default class Posts extends Component {
         //can only edit if id exists
         if (this.id) {
           console.log(this.id, this.action);
-          return <PostEdit post={this.findOne(this.id)} />;
+          return <></>;
         }
         return <Typography>404 Not found</Typography>;
       }
       case ACTIONS.VIEW: {
         if (this.id) {
           console.log('view one', this.id, this.action);
-          return <PostView post={this.findOne(this.id)} />;
         }
         console.log('view all', this.id, this.action, this.state.posts);
         return <PostList posts={this.state.posts} />;
