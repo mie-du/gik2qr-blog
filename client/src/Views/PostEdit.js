@@ -13,6 +13,9 @@ import { Link } from 'react-router-dom';
 
 export default function PostEdit({ post }) {
   const { id } = post.content;
+
+  //fetch tags
+
   console.log('Editing', post);
   return (
     <>
@@ -31,21 +34,23 @@ export default function PostEdit({ post }) {
         name='description'
         label='Beskrivning'
       />
-      <Autocomplete
-        multiple
-        name='tags'
-        options={post.tags}
-        getOptionLabel={(option) => option.name}
-        defaultValue={[post.tags[0], post.tags[1], post.tags[2]]}
-        renderInput={(params) => (
-          <TextField
-            {...textFieldProps}
-            {...params}
-            label='Taggar'
-            placeholder='Lägg till tagg'
-          />
-        )}
-      />
+      {post.tags > 0 && (
+        <Autocomplete
+          multiple
+          name='tags'
+          options={post.tags}
+          getOptionLabel={(option) => option.name}
+          defaultValue={[post.tags[0], post.tags[1], post.tags[2]]}
+          renderInput={(params) => (
+            <TextField
+              {...textFieldProps}
+              {...params}
+              label='Taggar'
+              placeholder='Lägg till tagg'
+            />
+          )}
+        />
+      )}
 
       <Grid container mt={3} justifyContent='space-between'>
         <Grid item>
