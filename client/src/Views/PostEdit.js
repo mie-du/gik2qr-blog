@@ -12,12 +12,11 @@ import { textFieldProps } from '../Helpers/styles';
 import { Link } from 'react-router-dom';
 
 export default function PostEdit({ post }) {
-  const { id } = post.content;
-
   //fetch tags
 
   console.log('Editing', post);
-  return (
+  return <>Editing post</>;
+  /*  return (
     <>
       <Typography variant='h2'>
         {id ? 'Redigera inlägg' : 'Skapa inlägg'}
@@ -71,5 +70,5 @@ export default function PostEdit({ post }) {
         </Grid>
       </Grid>
     </>
-  );
+  ); */
 }

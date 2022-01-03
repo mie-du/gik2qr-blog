@@ -12,7 +12,7 @@ class Api {
   get(path = '') {
     //first response returns data stream, needs to be converted to json.
     const fullUrl = this.url + path;
-    console.log('api full url:', fullUrl);
+
     const result = fetch(fullUrl)
       .then((response) => response.json())
       .then((data) => {

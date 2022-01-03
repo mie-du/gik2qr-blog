@@ -8,8 +8,10 @@ import User from './ViewModels/User';
 import UserEdit from './Views/UserEdit';
 import UserView from './Views/UserView';
 import ResourceLoader from './api/ResourceLoader';
+import EditableResourceLoader from './api/EditableResourceLoader';
 import PostView from './Views/PostView';
 import PostList from './Views/PostList';
+import PostEdit from './Views/PostEdit';
 
 function App() {
   return (
@@ -36,10 +38,20 @@ function App() {
         </AppBar>
         <Container maxWidth='lg' sx={{ mt: 5, py: 2 }}>
           <Switch>
-            <Route exact path='/users' component={User} />
-            <Route exact path='/users/:id' component={UserView} />
-            <Route exact path='/users/:id/edit' component={UserEdit} />
-
+            <Route
+              exact
+              path='/posts/new'
+              render={(props) => {
+                return (
+                  <EditableResourceLoader
+                    path='/posts'
+                    resourceName='post'
+                    {...props}>
+                    <PostEdit />
+                  </EditableResourceLoader>
+                );
+              }}
+            />
             <Route
               exact
               path='/posts/:id'
@@ -55,13 +67,39 @@ function App() {
                 );
               }}
             />
-            <Route exact path='/posts/:id/edit' component={Posts} />
-            <Route exact path='/posts' component={Posts} />
+            <Route
+              exact
+              path='/posts/:id/edit'
+              render={(props) => {
+                return (
+                  <EditableResourceLoader
+                    path='/posts'
+                    resourceName='post'
+                    {...props}>
+                    <PostEdit />
+                  </EditableResourceLoader>
+                );
+              }}
+            />
+
+            <Route
+              exact
+              path='/posts'
+              render={(props) => {
+                return (
+                  <ResourceLoader
+                    pathExtras='/summary'
+                    resourceName='posts'
+                    {...props}>
+                    <PostList />
+                  </ResourceLoader>
+                );
+              }}
+            />
             <Route
               exact
               path='/'
               render={(props) => {
-                console.log('path /');
                 return (
                   <ResourceLoader
                     pathExtras='posts/summary'
