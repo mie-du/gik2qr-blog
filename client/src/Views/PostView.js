@@ -25,6 +25,7 @@ import { PlaceholderAvatar } from '../Helpers/components';
 import { Box } from '@mui/system';
 
 export default function PostView({ post }) {
+  console.log('Component: PostView', post);
   const { id, title, body, imageUrl, createdAt, updatedAt } =
     post?.content || {};
   const { author, comments, tags } = post || {};
@@ -148,7 +149,6 @@ export default function PostView({ post }) {
               <List>
                 {comments &&
                   comments.map((comment) => {
-                    console.log(comment);
                     return (
                       <ListItem divider key={`comment_${comment.id}`}>
                         <ListItemAvatar>

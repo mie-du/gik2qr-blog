@@ -41,9 +41,10 @@ export default class Posts extends Component {
 
   renderSwitch() {
     this.mapActions();
+    console.log(`--Post Routing ${this.id} ${this.action} --`);
     switch (this.action) {
       case ACTIONS.NEW: {
-        console.log(this.id, this.action);
+        console.log('view');
         return <></>;
       }
       case ACTIONS.EDIT: {
@@ -56,9 +57,10 @@ export default class Posts extends Component {
       }
       case ACTIONS.VIEW: {
         if (this.id) {
-          console.log('view one', this.id, this.action);
+          console.log('view one');
+          return <PostView post={this.findOne(this.id)} />;
         }
-        console.log('view all', this.id, this.action, this.state.posts);
+        console.log('view all');
         return <PostList posts={this.state.posts} />;
       }
       default: {
