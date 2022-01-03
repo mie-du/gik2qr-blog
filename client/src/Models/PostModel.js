@@ -1,8 +1,8 @@
-import Api from '../Api';
+import Api from '../api/Api';
 
 export default class PostModel {
   constructor() {
-    this.api = new Api('posts');
+    this.api = new Api('posts/');
   }
 
   getPost() {

@@ -110,6 +110,7 @@ async function getAuthor(postId) {
   const post = await Post.findOne({ where: { id: postId } });
   return await post.getUser();
 }
+
 /* Clean getFull with slim result */
 async function getSummary() {
   try {
@@ -120,53 +121,25 @@ async function getSummary() {
     let cleanResult = [];
 
     allPosts.forEach((post) => {
-      //must be inside loop, reference will be added otherwise.
-      let cleanPost = {
-        content: {},
-        author: {},
-        tags: [],
-        comments: []
-      };
-
-      cleanPost.content = {
-        id: post.id,
-        title: post.title,
-        body: post.body,
-        imageUrl: post.imageUrl,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt
-      };
-
-      cleanPost.author = {
-        id: post.user.id,
-        firstName: post.user.firstName,
-        lastName: post.user.lastName,
-        username: post.user.username,
-        email: post.user.email,
-        imageUrl: post.user.imageUrl
-      };
-
-      post.tags.forEach((tag) => {
-        cleanPost.tags.push({ id: tag.id, name: tag.name });
-      });
-
-      post.comments.forEach((comment) => {
-        cleanPost.comments.push({
-          id: comment.id,
-          title: comment.title,
-          body: comment.body,
-          createdAt: comment.createdAt,
-          updatedAt: comment.updatedAt,
-          author: {
-            id: comment.user.id,
-            firstName: comment.user.firstName,
-            lastName: comment.user.lastName,
-            imageUrl: comment.user.imageUrl
-          }
-        });
-      });
-      cleanResult.push(cleanPost);
+      cleanResult.push(_createSummary(post));
     });
+
+    return Promise.resolve(createResult(cleanResult));
+  } catch (err) {
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
+  }
+}
+
+async function getSummaryById(id) {
+  try {
+    const completePost = await Post.findOne({
+      where: { id },
+      include: [User, Tag, { model: Comment, include: [User] }]
+    });
+
+    const cleanResult = _createSummary(completePost);
 
     return Promise.resolve(createResult(cleanResult));
   } catch (err) {
@@ -293,6 +266,55 @@ async function _postTagExists(name) {
   name = name.toLowerCase().trim();
   return await Tag.findOne({ where: { name } });
 }
+
+function _createSummary(post) {
+  //must be inside loop, reference will be added otherwise.
+  let cleanPost = {
+    content: {},
+    author: {},
+    tags: [],
+    comments: []
+  };
+
+  cleanPost.content = {
+    id: post.id,
+    title: post.title,
+    body: post.body,
+    imageUrl: post.imageUrl,
+    createdAt: post.createdAt,
+    updatedAt: post.updatedAt
+  };
+
+  cleanPost.author = {
+    id: post.user.id,
+    firstName: post.user.firstName,
+    lastName: post.user.lastName,
+    username: post.user.username,
+    email: post.user.email,
+    imageUrl: post.user.imageUrl
+  };
+
+  post.tags.forEach((tag) => {
+    cleanPost.tags.push({ id: tag.id, name: tag.name });
+  });
+
+  post.comments.forEach((comment) => {
+    cleanPost.comments.push({
+      id: comment.id,
+      title: comment.title,
+      body: comment.body,
+      createdAt: comment.createdAt,
+      updatedAt: comment.updatedAt,
+      author: {
+        id: comment.user.id,
+        firstName: comment.user.firstName,
+        lastName: comment.user.lastName,
+        imageUrl: comment.user.imageUrl
+      }
+    });
+  });
+  return cleanPost;
+}
 /* #endregion */
 
 module.exports = {
@@ -304,6 +326,7 @@ module.exports = {
   removeTag,
   getFull,
   getSummary,
+  getSummaryById,
   getAll,
   getById,
   create,

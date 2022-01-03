@@ -7,6 +7,9 @@ import User from './ViewModels/User';
 
 import UserEdit from './Views/UserEdit';
 import UserView from './Views/UserView';
+import ResourceLoader from './api/ResourceLoader';
+import PostView from './Views/PostView';
+import PostList from './Views/PostList';
 
 function App() {
   return (
@@ -33,13 +36,42 @@ function App() {
         </AppBar>
         <Container maxWidth='lg' sx={{ mt: 5, py: 2 }}>
           <Switch>
-            <Route exact path='/' component={Posts} />
             <Route exact path='/users' component={User} />
             <Route exact path='/users/:id' component={UserView} />
             <Route exact path='/users/:id/edit' component={UserEdit} />
-            <Route exact path='/posts' component={Posts} />
-            <Route exact path='/posts/:id' component={Posts} />
+
+            <Route
+              exact
+              path='/posts/:id'
+              render={(props) => {
+                console.log('path /posts/:id');
+                return (
+                  <ResourceLoader
+                    pathExtras='/summary'
+                    resourceName='post'
+                    {...props}>
+                    <PostView />
+                  </ResourceLoader>
+                );
+              }}
+            />
             <Route exact path='/posts/:id/edit' component={Posts} />
+            <Route exact path='/posts' component={Posts} />
+            <Route
+              exact
+              path='/'
+              render={(props) => {
+                console.log('path /');
+                return (
+                  <ResourceLoader
+                    pathExtras='posts/summary'
+                    resourceName='posts'
+                    {...props}>
+                    <PostList />
+                  </ResourceLoader>
+                );
+              }}
+            />
           </Switch>
         </Container>
       </Router>

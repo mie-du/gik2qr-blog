@@ -1,4 +1,4 @@
-import Api from '../Api';
+import Api from '../api/Api';
 
 export default class UserModel {
   constructor() {

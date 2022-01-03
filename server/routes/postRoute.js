@@ -27,7 +27,7 @@ router.get('/:id/getAuthor', (req, res) => {
 
 router.get('/:id/summary', (req, res) => {
   postService.getSummaryById(req.params.id).then((result) => {
-    res.status(result.status).json(result.data);
+    res.status(result.status).send(result);
   });
 });
 /* Tags */

@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import PostModel from '../Models/PostModel';
 import { ACTIONS } from '../Helpers/constants';
 import PostList from '../Views/PostList';
-import PostEdit from '../Views/PostEdit';
-import PostView from '../Views/PostView';
 
 export default class Posts extends Component {
   constructor(props) {
@@ -56,11 +54,11 @@ export default class Posts extends Component {
         return <Typography>404 Not found</Typography>;
       }
       case ACTIONS.VIEW: {
-        if (this.id) {
+        /*         if (this.id) {
           console.log('view one');
           return <PostView post={this.findOne(this.id)} />;
-        }
-        console.log('view all');
+        } */
+        console.log('view all', this.id);
         return <PostList posts={this.state.posts} />;
       }
       default: {
