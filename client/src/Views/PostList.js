@@ -17,7 +17,7 @@ import { PlaceholderAvatar } from '../Helpers/components';
 import { toDateTimeString } from '../Helpers/formating';
 
 export default function PostList({ posts }) {
-  console.log('Component: PostList', posts);
+  console.log('%c--- Component: PostList ---', 'color: orange', posts);
   return (
     <Grid container spacing={{ xs: 2, md: 3 }} sx={{ width: '100%' }}>
       {posts &&

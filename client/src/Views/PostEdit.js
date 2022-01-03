@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 export default function PostEdit({ post }) {
   //fetch tags
 
-  console.log('Editing', post);
+  console.info('%c---Component: PostEdit ---', 'color:yellow', post);
   return <>Editing post</>;
   /*  return (
     <>

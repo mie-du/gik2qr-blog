@@ -25,7 +25,7 @@ import { PlaceholderAvatar } from '../Helpers/components';
 import { Box } from '@mui/system';
 
 export default function PostView({ post }) {
-  console.log('Component: PostView', post);
+  console.info('%c--- Component: PostView ---', 'color:green', post);
 
   if (post) {
     const { id, title, body, imageUrl, createdAt, updatedAt } = post.content;

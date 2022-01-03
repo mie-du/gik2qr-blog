@@ -2,11 +2,6 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Typography } from '@mui/material';
 
-import Posts from './ViewModels/Posts';
-import User from './ViewModels/User';
-
-import UserEdit from './Views/UserEdit';
-import UserView from './Views/UserView';
 import ResourceLoader from './api/ResourceLoader';
 import EditableResourceLoader from './api/EditableResourceLoader';
 import PostView from './Views/PostView';
@@ -56,7 +51,6 @@ function App() {
               exact
               path='/posts/:id'
               render={(props) => {
-                console.log('path /posts/:id');
                 return (
                   <ResourceLoader
                     pathExtras='/summary'
