@@ -6,7 +6,8 @@ export default class ResourceLoader extends Component {
     this.resourceName = this.props.resourceName;
     this.state = { [this.resourceName]: null };
     this.url = this.cleanUrl(this.props.match.url, this.props.pathExtras);
-    console.log('Resourceloader url', this.fullUrl);
+
+    console.info('%c---Component: Resourceloader ---', 'color:pink', this.url);
     this.api = new Api();
   }
   componentDidUpdate() {
@@ -36,14 +37,13 @@ export default class ResourceLoader extends Component {
     });
   }
   render() {
-    console.log('State while rendering', this.state);
-    console.log('resource to send', this.state[this.resourceName]);
     return (
       <>
         {React.Children.map(this.props.children, (child) => {
           if (React.isValidElement(child)) {
             return React.cloneElement(child, {
-              [this.resourceName]: this.state[this.resourceName]
+              [this.resourceName]: this.state[this.resourceName],
+              ...this.props
             });
           }
 

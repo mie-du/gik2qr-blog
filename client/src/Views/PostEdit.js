@@ -12,7 +12,9 @@ import { textFieldStyles } from '../Helpers/styles';
 import { Link } from 'react-router-dom';
 
 export default function PostEdit({ post, changeResource, saveResource }) {
-  console.info('%c---Component: PostEdit ---', 'color:orange', post);
+  //fake userid for posting
+  post.userId = 1;
+  console.info('%c---Component: PostEdit ---', 'color:yellow', post);
 
   return (
     <>
@@ -26,6 +28,7 @@ export default function PostEdit({ post, changeResource, saveResource }) {
         type='text'
         name='title'
         label='Titel'
+        onChange={(e) => changeResource(e.target)}
       />
 
       <TextField
@@ -34,6 +37,7 @@ export default function PostEdit({ post, changeResource, saveResource }) {
         type='text'
         name='imageUrl'
         label='URL till bild'
+        onChange={(e) => changeResource(e.target)}
       />
 
       <TextField
@@ -43,6 +47,7 @@ export default function PostEdit({ post, changeResource, saveResource }) {
         multiline
         name='body'
         label='Innehåll'
+        onChange={(e) => changeResource(e.target)}
       />
       {post.tags > 0 && (
         <Autocomplete
@@ -75,7 +80,11 @@ export default function PostEdit({ post, changeResource, saveResource }) {
           </Link>
         </Grid>
         <Grid item>
-          <Button endIcon={<SaveIcon />} variant='contained' size='large'>
+          <Button
+            onClick={() => saveResource()}
+            endIcon={<SaveIcon />}
+            variant='contained'
+            size='large'>
             Save
           </Button>
         </Grid>

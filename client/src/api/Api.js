@@ -34,10 +34,12 @@ class Api {
   //C=POST
   //Send object to api for creation.
   //Returns the response, which contains information about the created object.
-  post(data) {
+  post(path = '', data) {
     const JSONData = JSON.stringify(data);
-    /* console.log(JSONData); */
-    const result = fetch(this.url, {
+    console.log(JSONData);
+    const fullUrl = this.url + path;
+
+    const result = fetch(fullUrl, {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
@@ -51,10 +53,11 @@ class Api {
   }
 
   //U=PUT
-  put(data) {
+  put(path = '', data) {
     const JSONData = JSON.stringify(data);
-    /* console.log(JSONData); */
-    const result = fetch(this.url, {
+    console.log(JSONData);
+    const fullUrl = this.url + path;
+    const result = fetch(fullUrl, {
       method: 'PUT',
       headers: {
         'content-type': 'application/json'

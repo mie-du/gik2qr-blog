@@ -9,6 +9,8 @@ import PostList from './Views/PostList';
 import PostEdit from './Views/PostEdit';
 import Header from './Components/Header';
 import Home from './Views/Home';
+import UserView from './Views/UserView';
+import UserEdit from './Views/UserEdit';
 
 function App() {
   return (
@@ -28,14 +30,36 @@ function App() {
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/posts/new'>Skapa inlägg</Link>
             </Typography>
-            <Typography variant='body1' component='p' sx={{ mr: 2 }}>
-              <Link to='/posts/1'>Visa inlägg</Link>
-            </Typography>
           </Toolbar>
         </AppBar>
         <Header />
         <Container maxWidth='lg' sx={{ mt: 5, py: 2 }}>
           <Switch>
+            <Route
+              exact
+              path='/users/:id'
+              render={(props) => {
+                return (
+                  <ResourceLoader pathExtras='' resourceName='user' {...props}>
+                    <UserView />
+                  </ResourceLoader>
+                );
+              }}
+            />
+            <Route
+              exact
+              path='/users/:id/edit'
+              render={(props) => {
+                return (
+                  <EditableResourceLoader
+                    path='/users'
+                    resourceName='user'
+                    {...props}>
+                    <UserEdit />
+                  </EditableResourceLoader>
+                );
+              }}
+            />
             <Route
               exact
               path='/posts/new'

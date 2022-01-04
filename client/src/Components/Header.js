@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 const breakpoints = {
   md: '50rem',
-  lg: '90rem'
+  lg: '105rem'
 };
 const InsideContainer = styled.div`
   background: rgb(156, 156, 201);
@@ -16,6 +16,7 @@ const InsideContainer = styled.div`
   border-bottom-left-radius: 50%;
   @media (min-width: ${breakpoints.md}) {
     border-radius: 0 50% 0 50%;
+    padding: 3rem;
   }
   @media (min-width: ${breakpoints.lg}) {
     font-size: 7rem;
@@ -75,7 +76,7 @@ export default function Header() {
     <Container>
       <InsideContainer>
         <Title>
-          Om korkade hundar,<Subtitle> och sådant</Subtitle>
+          Om korkade hundar,<Subtitle> och sån't</Subtitle>
         </Title>
       </InsideContainer>
     </Container>

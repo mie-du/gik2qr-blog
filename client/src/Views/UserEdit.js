@@ -3,34 +3,23 @@ import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { halfFieldGridProps, textFieldProps } from '../Helpers/styles';
+import { halfFieldGridProps, textFieldStyles } from '../Helpers/styles';
 
-export default function UserEdit() {
-  console.log('Component: UserView');
-  console.log('---- Mockdata UserView ----');
-  const user = {
-    id: 1,
-    email: 'mie@du.se',
-    description: null,
-    firstName: 'Mikaela',
-    lastName: 'Hedberg',
-    username: 'termedea',
-    imageUrl: 'https://picsum.photos/seed/picsum/200/200',
-    createdAt: '2021-12-28T14:52:00.000Z',
-    updatedAt: '2021-12-28T14:55:15.000Z'
-  };
+export default function UserEdit({ user, changeResource, saveResource }) {
+  console.info('%c---Component: UserEdit ---', 'color:yellow', user);
 
-  const { id } = user;
   return (
     <>
       <Typography variant='h2'>
-        {id ? 'Redigera Uppgfter' : 'Registrera användare'}
+        {user?.id ? 'Redigera Uppgfter' : 'Registrera användare'}
       </Typography>
 
       <Grid container>
         <Grid {...halfFieldGridProps}>
           <TextField
-            {...textFieldProps}
+            {...textFieldStyles}
+            value={user?.firstName || ''}
+            onChange={(e) => changeResource(e.target)}
             type='text'
             name='firstName'
             label='Förnamn'
@@ -38,7 +27,9 @@ export default function UserEdit() {
         </Grid>
         <Grid {...halfFieldGridProps}>
           <TextField
-            {...textFieldProps}
+            {...textFieldStyles}
+            value={user?.lastName || ''}
+            onChange={(e) => changeResource(e.target)}
             type='text'
             name='lastName'
             label='Efternamn'
@@ -46,25 +37,37 @@ export default function UserEdit() {
         </Grid>
         <Grid {...halfFieldGridProps}>
           <TextField
-            {...textFieldProps}
+            {...textFieldStyles}
+            value={user?.email || ''}
+            onChange={(e) => changeResource(e.target)}
             type='email'
             name='email'
             label='E-post'
           />
         </Grid>
         <Grid {...halfFieldGridProps}>
-          <TextField {...textFieldProps} name='username' label='Användarnamn' />
+          <TextField
+            {...textFieldStyles}
+            value={user?.username || ''}
+            onChange={(e) => changeResource(e.target)}
+            name='username'
+            label='Användarnamn'
+          />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            {...textFieldProps}
+            {...textFieldStyles}
+            value={user?.imageUrl || ''}
+            onChange={(e) => changeResource(e.target)}
             name='imageUrl'
             label='URL till bild'
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            {...textFieldProps}
+            {...textFieldStyles}
+            value={user?.description || ''}
+            onChange={(e) => changeResource(e.target)}
             name='description'
             rows='3'
             multiline
@@ -85,7 +88,11 @@ export default function UserEdit() {
           </Link>
         </Grid>
         <Grid item>
-          <Button endIcon={<SaveIcon />} variant='contained' size='large'>
+          <Button
+            endIcon={<SaveIcon />}
+            variant='contained'
+            size='large'
+            onClick={saveResource}>
             Save
           </Button>
         </Grid>
