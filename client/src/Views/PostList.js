@@ -13,7 +13,7 @@ import {
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PlaceholderAvatar } from '../Helpers/components';
+import { PlaceholderAvatar } from '../Components/small';
 import { toDateTimeString } from '../Helpers/formating';
 
 export default function PostList({ posts }) {

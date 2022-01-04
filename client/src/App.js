@@ -7,6 +7,8 @@ import EditableResourceLoader from './api/EditableResourceLoader';
 import PostView from './Views/PostView';
 import PostList from './Views/PostList';
 import PostEdit from './Views/PostEdit';
+import Header from './Components/Header';
+import Home from './Views/Home';
 
 function App() {
   return (
@@ -15,7 +17,7 @@ function App() {
         <AppBar component='nav' position='static'>
           <Toolbar>
             <Typography variant='h7' component='p' sx={{ flexGrow: 1 }}>
-              <Link to='/'>GIK2QR Blogg</Link>
+              <Link to='/'>Hem</Link>
             </Typography>
             <Typography variant='body1' component='p' sx={{ mr: 2 }}>
               <Link to='/posts'>Blogg</Link>
@@ -31,6 +33,7 @@ function App() {
             </Typography>
           </Toolbar>
         </AppBar>
+        <Header />
         <Container maxWidth='lg' sx={{ mt: 5, py: 2 }}>
           <Switch>
             <Route
@@ -90,20 +93,7 @@ function App() {
                 );
               }}
             />
-            <Route
-              exact
-              path='/'
-              render={(props) => {
-                return (
-                  <ResourceLoader
-                    pathExtras='posts/summary'
-                    resourceName='posts'
-                    {...props}>
-                    <PostList />
-                  </ResourceLoader>
-                );
-              }}
-            />
+            <Route exact path='/' component={Home} />
           </Switch>
         </Container>
       </Router>

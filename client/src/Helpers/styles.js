@@ -1,4 +1,4 @@
-export const textFieldProps = {
+export const textFieldStyles = {
   fullWidth: true,
   variant: 'filled',
   margin: 'normal'

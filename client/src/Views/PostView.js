@@ -21,13 +21,13 @@ import SendIcon from '@mui/icons-material/Send';
 import React from 'react';
 
 import { toDateTimeString } from '../Helpers/formating';
-import { PlaceholderAvatar } from '../Helpers/components';
+import { PlaceholderAvatar } from '../Components/small';
 import { Box } from '@mui/system';
 
 export default function PostView({ post }) {
   console.info('%c--- Component: PostView ---', 'color:green', post);
 
-  if (post) {
+  if (post && !post['error']) {
     const { id, title, body, imageUrl, createdAt, updatedAt } = post.content;
     const { author, comments, tags } = post;
     return (

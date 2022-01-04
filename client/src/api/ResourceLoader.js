@@ -5,9 +5,7 @@ export default class ResourceLoader extends Component {
     super(props);
     this.resourceName = this.props.resourceName;
     this.state = { [this.resourceName]: null };
-
     this.url = this.cleanUrl(this.props.match.url, this.props.pathExtras);
-
     console.log('Resourceloader url', this.fullUrl);
     this.api = new Api();
   }

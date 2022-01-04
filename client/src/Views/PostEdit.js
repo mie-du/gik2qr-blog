@@ -8,30 +8,41 @@ import {
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react';
-import { textFieldProps } from '../Helpers/styles';
+import { textFieldStyles } from '../Helpers/styles';
 import { Link } from 'react-router-dom';
 
-export default function PostEdit({ post }) {
-  //fetch tags
+export default function PostEdit({ post, changeResource, saveResource }) {
+  console.info('%c---Component: PostEdit ---', 'color:orange', post);
 
-  console.info('%c---Component: PostEdit ---', 'color:yellow', post);
-  return <>Editing post</>;
-  /*  return (
+  return (
     <>
       <Typography variant='h2'>
-        {id ? 'Redigera inlägg' : 'Skapa inlägg'}
+        {post?.id ? 'Redigera inlägg' : 'Skapa inlägg'}
       </Typography>
 
-      <TextField {...textFieldProps} type='text' name='title' label='Titel' />
-
-      <TextField {...textFieldProps} name='imageUrl' label='URL till bild' />
+      <TextField
+        {...textFieldStyles}
+        value={post?.title || ''}
+        type='text'
+        name='title'
+        label='Titel'
+      />
 
       <TextField
-        {...textFieldProps}
+        {...textFieldStyles}
+        value={post?.imageUrl || ''}
+        type='text'
+        name='imageUrl'
+        label='URL till bild'
+      />
+
+      <TextField
+        {...textFieldStyles}
+        value={post?.body || ''}
         rows='10'
         multiline
-        name='description'
-        label='Beskrivning'
+        name='body'
+        label='Innehåll'
       />
       {post.tags > 0 && (
         <Autocomplete
@@ -42,7 +53,7 @@ export default function PostEdit({ post }) {
           defaultValue={[post.tags[0], post.tags[1], post.tags[2]]}
           renderInput={(params) => (
             <TextField
-              {...textFieldProps}
+              {...textFieldStyles}
               {...params}
               label='Taggar'
               placeholder='Lägg till tagg'
@@ -70,5 +81,5 @@ export default function PostEdit({ post }) {
         </Grid>
       </Grid>
     </>
-  ); */
+  );
 }
