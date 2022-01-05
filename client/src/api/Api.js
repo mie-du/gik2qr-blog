@@ -72,10 +72,11 @@ class Api {
   }
 
   //D=DELETE
-  delete(data) {
+  delete(path = '', data) {
     const JSONData = JSON.stringify(data);
-    /* console.log(JSONData); */
-    const result = fetch(this.url, {
+    console.log(JSONData);
+    const fullUrl = this.url + path;
+    const result = fetch(fullUrl, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json'

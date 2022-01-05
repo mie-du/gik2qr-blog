@@ -33,27 +33,29 @@ router.get('/:id/summary', (req, res) => {
 /* Tags */
 router.post('/addTag', (req, res) => {
   postService.addTag(req.body.name, req.body.postId).then((result) => {
-    res.status(result.status).send(result.data);
+    res.status(result.status).send(result);
   });
 });
 
 router.post('/removeTag', (req, res) => {
   //Refactor to id in query?
   postService.removeTag(req.body.postId, req.body.tagId).then((result) => {
-    res.status(result.status).send(result.data);
+    res.status(result.status).send(result);
   });
 });
 
 /* Comments */
-router.post(':id/addComment', (req, res) => {
+router.post('/:id/addComment', (req, res) => {
   //Refactor to id in query?
   postService.addComment(req.params.id, req.body).then((result) => {
-    res.status(result.status).send(result.data);
+    res.status(result.status).send(result);
   });
 });
 
 router.get('/:id/getComments', (req, res) => {
-  postService.getComments(req.params.id).then((comments) => res.send(comments));
+  postService.getComments(req.params.id).then((result) => {
+    res.status(result.status).send(result);
+  });
 });
 
 //regular crud

@@ -3,7 +3,7 @@ import Api from '../api/Api';
 export default class ResourceLoader extends Component {
   static defaultProps = {
     pathExtras: '',
-    resourceId: 0
+    resourceId: null
   };
 
   constructor(props) {
@@ -23,19 +23,10 @@ export default class ResourceLoader extends Component {
     console.info('%c---Component: Resourceloader ---', 'color:pink', this.url);
     this.api = new Api();
   }
-  componentDidUpdate() {
-    const currentResourceId = this.props.resourceId;
-    //if url
-    if (this.resourceId !== currentResourceId) {
-      this.resourceName = this.props.resourceName;
-      this.resourcePath = this.props.resourcePath;
-      this.resourceId = this.props.resourceId;
-
-      this.fetchUrl = this.getFetchUrl(
-        this.props.resourcePath,
-        this.props.resourceId,
-        this.props.pathExtras
-      );
+  componentDidUpdate(prevProps) {
+    //if url changed
+    if (this.props.match.path !== prevProps.match.path) {
+      this.refreshParams();
 
       this.fetchResource();
     }
@@ -43,9 +34,22 @@ export default class ResourceLoader extends Component {
   componentDidMount() {
     this.fetchResource();
   }
+  refreshParams() {
+    this.resourceName = this.props.resourceName;
+    this.resourcePath = this.props.resourcePath;
+    this.resourceId = this.props.resourceId;
+
+    this.fetchUrl = this.getFetchUrl(
+      this.props.resourcePath,
+      this.props.resourceId,
+      this.props.pathExtras
+    );
+  }
+
   getFetchUrl(path, pathId, pathExtras) {
     console.log('Creating fetch-url', path, pathId, pathExtras);
     const id = pathId && !isNaN(pathId) ? pathId : '';
+
     return `${path}/${id}${pathExtras}`;
   }
 

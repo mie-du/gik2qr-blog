@@ -8,7 +8,7 @@ import Tags from '../Components/Tags';
 export default function Home(props) {
   return (
     <Grid container width='100%' spacing={{ xs: 2, md: 3 }}>
-      <Grid item xs={12} lg={9} justifyContent='center'>
+      <Grid item xs={12} lg={10} justifyContent='center'>
         <ResourceService
           {...props}
           resourcePath='/posts'
@@ -22,7 +22,7 @@ export default function Home(props) {
           container
           rowSpacing={3}
           columnSpacing={4}
-          justifyContent={{ xs: 'center', lg: 'flex-end' }}
+          justifyContent={{ xs: 'center', lg: 'flex-start' }}
           minWidth='100%'>
           <Grid item sx={{ borderBottom: 1, borderColor: 'primary.light' }}>
             <ResourceService

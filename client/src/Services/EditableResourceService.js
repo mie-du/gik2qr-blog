@@ -31,6 +31,7 @@ export default class EditableResourceService extends Component {
     this.api = new Api();
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   getFetchUrl(path, pathId, pathExtras) {
@@ -84,15 +85,29 @@ export default class EditableResourceService extends Component {
       this.api
         .put(this.resourcePath, this.state[this.resourceName])
         .then((result) => {
-          console.log(result);
+          window.location.href = `${this.resourcePath}/${this.resourceId}`;
         });
     } else {
       this.api
         .post(this.resourcePath, this.state[this.resourceName])
         .then((result) => {
           console.log(result);
+
+          window.location.href = `${this.resourcePath}/${result.data.id}`;
         });
     }
+  }
+
+  onDelete() {
+    console.log(
+      `Deleting resource at to ${this.resourcePath}`,
+      this.state[this.resourceName]
+    );
+    this.api
+      .delete(this.resourcePath, { id: this.state[this.resourceName].id })
+      .then(() => {
+        window.location.href = `${this.resourcePath}`;
+      });
   }
 
   render() {
@@ -103,7 +118,8 @@ export default class EditableResourceService extends Component {
             return React.cloneElement(child, {
               [this.resourceName]: this.state[this.resourceName],
               changeResource: this.onChange,
-              saveResource: this.onSave
+              saveResource: this.onSave,
+              deleteResource: this.onDelete
             });
           }
 

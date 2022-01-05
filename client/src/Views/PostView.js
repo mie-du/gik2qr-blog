@@ -5,21 +5,21 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Chip
+  Chip,
+  Button
 } from '@mui/material';
 
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 import React from 'react';
 import EditableResourceService from '../Services/EditableResourceService';
 import ResourceService from '../Services/ResourceService';
 import { toDateTimeString } from '../Helpers/formating';
 import { PlaceholderAvatar } from '../Components/small';
 import { Box } from '@mui/system';
-import CommentEdit from './CommentEdit';
-import CommentList from './CommentList';
+import CommentEdit from '../Components/CommentEdit';
+import CommentList from '../Components/CommentList';
 
 export default function PostView(props) {
   const post = props?.post;
@@ -27,24 +27,15 @@ export default function PostView(props) {
 
   if (post && !post['error']) {
     const { id, title, body, imageUrl, createdAt, updatedAt } = post.content;
-    const { author, comments, tags } = post;
+    const { author, tags } = post;
     return (
       <>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: '2rem',
-            marginBottom: '.3rem'
-          }}>
-          <Link to={`/posts/${id}/edit`}>
-            <Fab size='small' color='secondary' aria-label='edit'>
-              <EditIcon />
-            </Fab>
-          </Link>
-          <Typography variant='h2'>{title}</Typography>
-        </Box>
-        <Grid container justifyContent='space-between' sx={{ width: '100%' }}>
+        <Grid
+          container
+          justifyContent='space-between'
+          spacing={5}
+          width={{ xs: '100%', lg: '75%' }}
+          mx={{ xs: 2, lg: 'auto' }}>
           <Grid item>
             {imageUrl ? (
               <img
@@ -60,7 +51,21 @@ export default function PostView(props) {
               />
             )}
           </Grid>
-          <Grid item xs={12} md={9}>
+          <Grid item xs={12} xl={9}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 2,
+                marginBottom: '.3rem'
+              }}>
+              <Link to={`/posts/${id}/edit`}>
+                <Fab size='small' color='secondary' aria-label='edit'>
+                  <EditIcon />
+                </Fab>
+              </Link>
+              <Typography variant='h2'>{title}</Typography>
+            </Box>
             <Grid
               container
               spacing={2}
@@ -71,16 +76,18 @@ export default function PostView(props) {
               </Grid>
 
               <Grid item>
-                <Typography component='p'>
-                  {`Författare: ${author.firstName} (${author.username})`}
-                </Typography>
-                <Typography sx={{ fontSize: '0.8rem' }}>
-                  {`Publicerat: ${toDateTimeString(createdAt)} 
+                <Link to={`/users/${author.id}`}>
+                  <Typography component='p'>
+                    {`Författare: ${author.firstName} (${author.username})`}
+                  </Typography>
+                  <Typography sx={{ fontSize: '0.8rem' }}>
+                    {`Publicerat: ${toDateTimeString(createdAt)} 
                 `}
-                </Typography>
-                <Typography sx={{ fontSize: '0.8rem' }}>
-                  {`Senast uppdaterat: ${toDateTimeString(updatedAt)}`}
-                </Typography>
+                  </Typography>
+                  <Typography sx={{ fontSize: '0.8rem' }}>
+                    {`Senast uppdaterat: ${toDateTimeString(updatedAt)}`}
+                  </Typography>
+                </Link>
               </Grid>
             </Grid>
             <Typography variant='body1'>{body}</Typography>
@@ -131,16 +138,16 @@ export default function PostView(props) {
                   pathExtras=''>
                   <CommentEdit />
                 </EditableResourceService>
-                <ResourceService
-                  {...props}
-                  resourcePath={`/posts/${id}/getComments`}
-                  resourceName='comments'
-                  resourceId=''
-                  pathExtras=''>
-                  <CommentList />
-                </ResourceService>
               </AccordionDetails>
             </Accordion>
+            <ResourceService
+              {...props}
+              resourcePath={`/posts/${id}/getComments`}
+              resourceName='comments'
+              resourceId=''
+              pathExtras=''>
+              <CommentList />
+            </ResourceService>
           </Grid>
         </Grid>
       </>

@@ -1,17 +1,23 @@
 import { Grid, TextField, Typography, Button } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { halfFieldGridProps, textFieldStyles } from '../Helpers/styles';
 
-export default function UserEdit({ user, changeResource, saveResource }) {
+export default function UserEdit({
+  user,
+  changeResource,
+  saveResource,
+  deleteResource
+}) {
   console.info('%c---Component: UserEdit ---', 'color:yellow', user);
 
   return (
     <>
       <Typography variant='h2'>
-        {user?.id ? 'Redigera Uppgfter' : 'Registrera användare'}
+        {user?.id ? 'Redigera inlägg' : 'Skapa inlägg'}
       </Typography>
 
       <Grid container>
@@ -77,23 +83,32 @@ export default function UserEdit({ user, changeResource, saveResource }) {
       </Grid>
       <Grid container mt={3} justifyContent='space-between'>
         <Grid item>
-          <Link to={`/users/${user.id}`}>
+          <Link to={`/users/${user?.id}`}>
             <Button
               startIcon={<ArrowBackIcon />}
               variant='contained'
               size='large'
               color='danger'>
-              Back
+              Tillbaka
             </Button>
           </Link>
         </Grid>
         <Grid item>
           <Button
+            endIcon={<DeleteIcon />}
+            variant='contained'
+            sx={{ marginRight: 2 }}
+            size='large'
+            onClick={deleteResource}
+            color='danger'>
+            Ta bort
+          </Button>
+          <Button
             endIcon={<SaveIcon />}
             variant='contained'
             size='large'
             onClick={saveResource}>
-            Save
+            Spara
           </Button>
         </Grid>
       </Grid>

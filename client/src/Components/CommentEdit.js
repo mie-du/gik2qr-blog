@@ -13,7 +13,7 @@ export default function CommentEdit({ comment, changeResource, saveResource }) {
         rows='3'
         multiline
         label='Kommentar'
-        value={comment?.body}
+        value={comment?.title}
         onChange={(e) => changeResource(e.target)}
       />
       <Box

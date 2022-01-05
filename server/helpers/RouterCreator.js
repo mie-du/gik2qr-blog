@@ -38,7 +38,7 @@ class RouterCreator {
       const data = req.body;
       console.log(data);
       this.service.create(data).then((result) => {
-        res.status(result.status).json(result.data);
+        res.status(result.status).json(result);
       });
     });
   }
@@ -48,7 +48,7 @@ class RouterCreator {
       const id = req.body.id;
 
       this.service.update(data, id).then((result) => {
-        res.status(result.status).json(result.data);
+        res.status(result.status).json(result);
       });
     });
   }

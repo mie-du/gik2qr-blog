@@ -5,7 +5,9 @@ import { PlaceholderAvatar } from '../Components/small';
 export default function CommentList({ comments }) {
   console.log('%c--- Component: CommentList ---', 'color: orange', comments);
   return (
-    <List>
+    <>
+      CommentList
+      {/* <List>
       {comments &&
         comments.map((comment) => {
           return (
@@ -19,6 +21,7 @@ export default function CommentList({ comments }) {
             </ListItem>
           );
         })}
-    </List>
+    </List> */}
+    </>
   );
 }

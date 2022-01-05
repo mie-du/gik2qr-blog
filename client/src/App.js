@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Typography } from '@mui/material';
 
-import ResourceLoader from './Services/ResourceService';
+import ResourceService from './Services/ResourceService';
 import EditableResourceService from './Services/EditableResourceService';
 import PostView from './Views/PostView';
 import PostList from './Views/PostList';
@@ -11,6 +11,7 @@ import Header from './Components/Header';
 import Home from './Views/Home';
 import UserView from './Views/UserView';
 import UserEdit from './Views/UserEdit';
+import UserList from './Views/UserList';
 
 function App() {
   return (
@@ -33,19 +34,36 @@ function App() {
           </Toolbar>
         </AppBar>
         <Header />
-        <Container maxWidth='xxl' sx={{ mt: 5, py: 2 }}>
+        <Container maxWidth='xl' sx={{ mt: 5, py: 2 }}>
           <Switch>
+            <Route
+              exact
+              path='/users/new'
+              render={(props) => {
+                return (
+                  <EditableResourceService
+                    resourcePath='/users'
+                    resourceName='user'
+                    pathExtras=''
+                    {...props}>
+                    <UserEdit />
+                  </EditableResourceService>
+                );
+              }}
+            />
             <Route
               exact
               path='/users/:id'
               render={(props) => {
                 return (
-                  <ResourceLoader
+                  <ResourceService
+                    resourcePath='/users'
                     resourceName='user'
                     resourceId={props.match.params.id}
+                    pathExtras=''
                     {...props}>
                     <UserView />
-                  </ResourceLoader>
+                  </ResourceService>
                 );
               }}
             />
@@ -61,6 +79,20 @@ function App() {
                     {...props}>
                     <UserEdit />
                   </EditableResourceService>
+                );
+              }}
+            />
+            <Route
+              exact
+              path='/users'
+              render={(props) => {
+                return (
+                  <ResourceService
+                    {...props}
+                    resourcePath='/users'
+                    resourceName='users'>
+                    <UserList />
+                  </ResourceService>
                 );
               }}
             />
@@ -83,14 +115,14 @@ function App() {
               path='/posts/:id'
               render={(props) => {
                 return (
-                  <ResourceLoader
+                  <ResourceService
                     resourcePath='/posts'
                     resourceName='post'
                     resourceId={props.match.params.id}
                     pathExtras='/summary'
                     {...props}>
                     <PostView />
-                  </ResourceLoader>
+                  </ResourceService>
                 );
               }}
             />
@@ -115,13 +147,13 @@ function App() {
               path='/posts'
               render={(props) => {
                 return (
-                  <ResourceLoader
+                  <ResourceService
                     resourcePath='/posts'
                     pathExtras='/summary'
                     resourceName='posts'
                     {...props}>
                     <PostList />
-                  </ResourceLoader>
+                  </ResourceService>
                 );
               }}
             />

@@ -7,7 +7,10 @@ import {
   ListItemText,
   Typography
 } from '@mui/material';
-import ImageIcon from '@mui/icons-material/Image';
+
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { PlaceholderAvatar } from '../Components/small';
+import { Link } from 'react-router-dom';
 export default function UserList({ users }) {
   console.log('%c--- Component: UserList ---', 'color: orange', users);
   return (
@@ -19,17 +22,13 @@ export default function UserList({ users }) {
             return (
               <ListItem key={user.id}>
                 <ListItemAvatar>
-                  {user?.imageUrl ? (
-                    <Avatar alt={user.username} src={user.imageUrl} />
-                  ) : (
-                    <Avatar>
-                      <ImageIcon />
-                    </Avatar>
-                  )}
+                  <PlaceholderAvatar person={user} />
                 </ListItemAvatar>
-                <ListItemText
-                  primary={`${user.username}`}
-                  secondary={user.email}></ListItemText>
+                <Link to={`/users/${user.id}`}>
+                  <ListItemText
+                    primary={`${user.username}`}
+                    secondary={user.email}></ListItemText>
+                </Link>
               </ListItem>
             );
           })}

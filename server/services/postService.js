@@ -18,8 +18,7 @@ const postConstraints = {
 
 const commentConstraints = {
   title: constraints.reqString,
-  userId: { presence: { allowEmpty: false } },
-  postId: { presence: { allowEmpty: false } }
+  userId: { presence: { allowEmpty: false } }
 };
 
 /* refactor to blog/comments? */
@@ -48,7 +47,26 @@ async function addComment(id, data) {
 }
 
 async function getComments(postId) {
-  return Comment.findAll({ where: { postId } });
+  try {
+    const result = await Comment.findAll({
+      where: { postId },
+      include: {
+        model: User,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'description', 'email']
+        }
+      }
+    });
+    console.log(result);
+    if (result.length === 0) {
+      return Promise.resolve(createError(204, 'No posts found'));
+    }
+    return Promise.resolve(createResult(result));
+  } catch (err) {
+    return Promise.resolve(
+      createError(err.status || 500, err.message || 'Unknown error')
+    );
+  }
 }
 
 async function addTag(name, postId) {
@@ -169,7 +187,7 @@ async function getAll() {
   try {
     const result = await Post.findAll();
     if (result.length === 0) {
-      return Promise.resolve(createError(204));
+      return Promise.resolve(createError(204, 'No posts found'));
     }
     return Promise.resolve(createResult(result));
   } catch (err) {

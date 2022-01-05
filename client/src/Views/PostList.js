@@ -28,7 +28,7 @@ export default function PostList({ posts }) {
           const { tags } = post;
 
           return (
-            <Grid item key={id}>
+            <Grid item key={`post_${id}`}>
               <Card
                 sx={{
                   width: 400,

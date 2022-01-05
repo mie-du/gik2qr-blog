@@ -6,12 +6,18 @@ import {
   Typography
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react';
 import { textFieldStyles } from '../Helpers/styles';
 import { Link } from 'react-router-dom';
 
-export default function PostEdit({ post, changeResource, saveResource }) {
+export default function PostEdit({
+  post,
+  changeResource,
+  saveResource,
+  deleteResource
+}) {
   console.info('%c---Component: PostEdit ---', 'color:yellow', post);
 
   return (
@@ -79,11 +85,16 @@ export default function PostEdit({ post, changeResource, saveResource }) {
         </Grid>
         <Grid item>
           <Button
-            onClick={() => {
-              //fake userid if none exists
-              if (post && !post.userId) post.userId = 1;
-              saveResource();
-            }}
+            endIcon={<DeleteIcon />}
+            variant='contained'
+            sx={{ marginRight: 2 }}
+            size='large'
+            onClick={deleteResource}
+            color='danger'>
+            Ta bort
+          </Button>
+          <Button
+            onClick={saveResource}
             endIcon={<SaveIcon />}
             variant='contained'
             size='large'>
