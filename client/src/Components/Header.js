@@ -60,7 +60,7 @@ const Subtitle = styled.p`
   position: absolute;
   left: 35%;
   top: 55%;
-  color: hsl(150, 10%, 30%);
+  color: hsl(var(--color-main-h), 20%, 30%);
 
   @media (min-width: ${breakpoints.md}) {
     font-size: 3rem;

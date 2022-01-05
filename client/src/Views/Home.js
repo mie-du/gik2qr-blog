@@ -1,32 +1,45 @@
 import { Divider, Grid } from '@mui/material';
 import React from 'react';
-import ResourceLoader from '../api/ResourceLoader';
+import ResourceService from '../Services/ResourceService';
 import PostList from './PostList';
 import UserList from './UserList';
 import Tags from '../Components/Tags';
 
 export default function Home(props) {
   return (
-    <Grid container sx={{ width: '100%' }} spacing={{ xs: 2, md: 3 }}>
-      <Grid item xs={12} sm={8} lg={10}>
-        <ResourceLoader
+    <Grid container width='100%' spacing={{ xs: 2, md: 3 }}>
+      <Grid item xs={12} lg={9} justifyContent='center'>
+        <ResourceService
           {...props}
-          pathExtras='posts/summary'
+          resourcePath='/posts'
+          pathExtras='/summary'
           resourceName='posts'>
           <PostList />
-        </ResourceLoader>
+        </ResourceService>
       </Grid>
-      <Grid item lg={2}>
-        <Grid container rowSpacing={3}>
-          <Grid item>
-            <ResourceLoader {...props} pathExtras='users' resourceName='users'>
+      <Grid item xs={12} lg={2}>
+        <Grid
+          container
+          rowSpacing={3}
+          columnSpacing={4}
+          justifyContent={{ xs: 'center', lg: 'flex-end' }}
+          minWidth='100%'>
+          <Grid item sx={{ borderBottom: 1, borderColor: 'primary.light' }}>
+            <ResourceService
+              {...props}
+              resourcePath='/users'
+              resourceName='users'>
               <UserList />
-            </ResourceLoader>
+            </ResourceService>
           </Grid>
-          <Grid item>
-            <ResourceLoader {...props} pathExtras='users' resourceName='users'>
-              <Tags />
-            </ResourceLoader>
+          <Grid item sx={{ borderBottom: 1, borderColor: 'primary.light' }}>
+            <ResourceService
+              {...props}
+              resourcePath='/users'
+              pathExtras=''
+              resourceName='users'>
+              <UserList />
+            </ResourceService>
           </Grid>
         </Grid>
       </Grid>

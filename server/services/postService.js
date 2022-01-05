@@ -22,9 +22,9 @@ const commentConstraints = {
   postId: { presence: { allowEmpty: false } }
 };
 
-/* refactor to blog? */
+/* refactor to blog/comments? */
 
-async function addComment(data) {
+async function addComment(id, data) {
   try {
     const invalidData = validate(data, commentConstraints);
 
@@ -32,13 +32,13 @@ async function addComment(data) {
       return Promise.resolve(createError(400, invalidData));
     }
 
-    const existingPost = await Post.findOne({ where: { id: data.postId } });
-    const existingUser = await User.findOne({ wher: { id: data.userId } });
+    const existingPost = await Post.findOne({ where: { id } });
+    const existingUser = await User.findOne({ where: { id: data.userId } });
 
     if (!existingPost || !existingUser) {
       return Promise.resolve(createError(400, 'Invalid post or author'));
     }
-    const result = await Comment.create(data);
+    const result = await Comment.create({ postId: id, ...data });
     return Promise.resolve(createResult(result));
   } catch (err) {
     return Promise.resolve(
@@ -116,7 +116,7 @@ async function getSummary() {
   try {
     const allPosts = await Post.findAll({
       include: [User, Tag, { model: Comment, include: [User] }],
-      order: [['updatedAt', 'ASC']]
+      order: [['updatedAt', 'DESC']]
     });
     let cleanResult = [];
 

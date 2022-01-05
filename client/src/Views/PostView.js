@@ -2,12 +2,6 @@ import {
   Grid,
   Typography,
   Fab,
-  Button,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  TextField,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -19,8 +13,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import React from 'react';
-import EditableResourceLoader from '../api/EditableResourceLoader';
-import ResourceLoader from '../api/ResourceLoader';
+import EditableResourceService from '../Services/EditableResourceService';
+import ResourceService from '../Services/ResourceService';
 import { toDateTimeString } from '../Helpers/formating';
 import { PlaceholderAvatar } from '../Components/small';
 import { Box } from '@mui/system';
@@ -129,15 +123,22 @@ export default function PostView(props) {
                 <Typography component='p' variant='body2'>
                   Kommenterar som: {author.firstName}
                 </Typography>
-                <EditableResourceLoader
+                <EditableResourceService
                   {...props}
-                  pathExtras='comments'
-                  path='/posts'>
+                  resourcePath={`/posts/${id}/addComment`}
+                  resourceName='comment'
+                  resourceId=''
+                  pathExtras=''>
                   <CommentEdit />
-                </EditableResourceLoader>
-                <ResourceLoader resourceName='comments' {...props}>
+                </EditableResourceService>
+                <ResourceService
+                  {...props}
+                  resourcePath={`/posts/${id}/getComments`}
+                  resourceName='comments'
+                  resourceId=''
+                  pathExtras=''>
                   <CommentList />
-                </ResourceLoader>
+                </ResourceService>
               </AccordionDetails>
             </Accordion>
           </Grid>

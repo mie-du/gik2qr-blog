@@ -45,9 +45,9 @@ router.post('/removeTag', (req, res) => {
 });
 
 /* Comments */
-router.post('/addComment', (req, res) => {
+router.post(':id/addComment', (req, res) => {
   //Refactor to id in query?
-  postService.addComment(req.body).then((result) => {
+  postService.addComment(req.params.id, req.body).then((result) => {
     res.status(result.status).send(result.data);
   });
 });

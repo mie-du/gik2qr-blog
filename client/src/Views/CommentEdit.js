@@ -2,17 +2,19 @@ import { Box, Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import React from 'react';
 
-export default function CommentEdit({ comment }) {
-  console.info('%c---Component: CommentEdit ---', 'color:yellow');
+export default function CommentEdit({ comment, changeResource, saveResource }) {
+  console.info('%c---Component: CommentEdit ---', 'color:yellow', comment);
   return (
     <>
       <TextField
         variant='filled'
-        name='comment'
+        name='body'
         fullWidth
         rows='3'
         multiline
         label='Kommentar'
+        value={comment?.body}
+        onChange={(e) => changeResource(e.target)}
       />
       <Box
         sx={{
@@ -20,7 +22,11 @@ export default function CommentEdit({ comment }) {
           justifyContent: 'flex-end',
           marginTop: '1rem'
         }}>
-        <Button endIcon={<SendIcon />} variant='contained' size='large'>
+        <Button
+          endIcon={<SendIcon />}
+          variant='contained'
+          size='large'
+          onClick={saveResource}>
           Skicka
         </Button>
       </Box>

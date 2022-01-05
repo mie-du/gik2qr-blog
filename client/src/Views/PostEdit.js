@@ -12,8 +12,6 @@ import { textFieldStyles } from '../Helpers/styles';
 import { Link } from 'react-router-dom';
 
 export default function PostEdit({ post, changeResource, saveResource }) {
-  //fake userid for posting
-  post.userId = 1;
   console.info('%c---Component: PostEdit ---', 'color:yellow', post);
 
   return (
@@ -49,7 +47,7 @@ export default function PostEdit({ post, changeResource, saveResource }) {
         label='Innehåll'
         onChange={(e) => changeResource(e.target)}
       />
-      {post.tags > 0 && (
+      {post?.tags > 0 && (
         <Autocomplete
           multiple
           name='tags'
@@ -69,7 +67,7 @@ export default function PostEdit({ post, changeResource, saveResource }) {
 
       <Grid container mt={3} justifyContent='space-between'>
         <Grid item>
-          <Link to={`/posts/${post.id}`}>
+          <Link to={`/posts/${post?.id}`}>
             <Button
               startIcon={<ArrowBackIcon />}
               variant='contained'
@@ -81,7 +79,11 @@ export default function PostEdit({ post, changeResource, saveResource }) {
         </Grid>
         <Grid item>
           <Button
-            onClick={() => saveResource()}
+            onClick={() => {
+              //fake userid if none exists
+              if (post && !post.userId) post.userId = 1;
+              saveResource();
+            }}
             endIcon={<SaveIcon />}
             variant='contained'
             size='large'>

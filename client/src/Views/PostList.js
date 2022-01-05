@@ -14,12 +14,12 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { PlaceholderAvatar } from '../Components/small';
-import { toDateTimeString } from '../Helpers/formating';
+import { toDateTimeString, shorten } from '../Helpers/formating';
 
 export default function PostList({ posts }) {
   console.log('%c--- Component: PostList ---', 'color: orange', posts);
   return (
-    <Grid container spacing={{ xs: 2, md: 3 }} sx={{ width: '100%' }}>
+    <Grid container spacing={{ xs: 2, md: 4 }} justifyContent='center'>
       {posts &&
         posts.map((post) => {
           const { id, title, body, imageUrl, updatedAt } = post.content;
@@ -28,11 +28,10 @@ export default function PostList({ posts }) {
           const { tags } = post;
 
           return (
-            <Grid item key={id} xs='auto'>
+            <Grid item key={id}>
               <Card
                 sx={{
-                  width: 345,
-                  minHeight: 600,
+                  width: 400,
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between'
@@ -59,14 +58,11 @@ export default function PostList({ posts }) {
                   />
                   <CardContent>
                     <Link to={`/posts/${id}`}>
-                      <Typography variant='h3' color='text.secondary'>
+                      <Typography variant='body1' color='text.secondary'>
                         {title}
                       </Typography>
                     </Link>
-                    <Typography variant='body1'>{`${body.substring(
-                      0,
-                      100
-                    )}...`}</Typography>
+                    <Typography variant='body2'>{shorten(body, 50)}</Typography>
                     <Box
                       sx={{
                         marginTop: '1rem',

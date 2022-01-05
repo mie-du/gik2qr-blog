@@ -38,6 +38,7 @@ class Api {
     const JSONData = JSON.stringify(data);
     console.log(JSONData);
     const fullUrl = this.url + path;
+    console.log(fullUrl);
 
     const result = fetch(fullUrl, {
       method: 'POST',
