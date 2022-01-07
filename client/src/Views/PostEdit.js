@@ -94,7 +94,10 @@ export default function PostEdit({
             Ta bort
           </Button>
           <Button
-            onClick={saveResource}
+            onClick={() => {
+              if (!post.userId) post.userId = 1;
+              saveResource();
+            }}
             endIcon={<SaveIcon />}
             variant='contained'
             size='large'>

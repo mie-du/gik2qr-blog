@@ -85,7 +85,8 @@ export default class EditableResourceService extends Component {
       this.api
         .put(this.resourcePath, this.state[this.resourceName])
         .then((result) => {
-          window.location.href = `${this.resourcePath}/${this.resourceId}`;
+          console.log(result);
+          //fix redirect
         });
     } else {
       this.api
@@ -93,7 +94,7 @@ export default class EditableResourceService extends Component {
         .then((result) => {
           console.log(result);
 
-          window.location.href = `${this.resourcePath}/${result.data.id}`;
+          //fix redirect
         });
     }
   }
