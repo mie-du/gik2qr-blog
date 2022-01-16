@@ -9,10 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       title: {
         type: DataTypes.STRING(100),
-        allowNull: false,
-        validator: {
-          len: [2, 100]
-        }
+        allowNull: false
       },
       body: {
         type: DataTypes.TEXT,
