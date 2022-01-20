@@ -4,14 +4,14 @@ const validate = require('validate.js');
 
 const constraints = {
   email: {
-    email: {
-      message: '^E-postadressen är i ett felaktigt format'
-    },
     length: {
       minimum: 4,
       maximum: 200,
       tooShort: '^E-postadressen måste vara minst %{count} tecken lång.',
-      tooLong: '^E-postadressen får inte vara mer än %{count} tecken lång.'
+      tooLong: '^E-postadressen får inte vara längre än %{count} tecken lång.'
+    },
+    email: {
+      message: '^E-postadressen är i ett felaktigt format.'
     }
   },
   username: {
@@ -19,7 +19,12 @@ const constraints = {
       minimum: 3,
       maximum: 50,
       tooShort: '^Användarnamnet måste vara minst %{count} tecken långt.',
-      tooLong: '^Användarnamnet får inte vara mer än %{count} tecken långt.'
+      tooLong: '^Användarnamnet får inte vara längre än %{count} tecken långt.'
+    }
+  },
+  imageUrl: {
+    url: {
+      message: '^Sökvägen är felaktig.'
     }
   }
 };
@@ -30,48 +35,33 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   const user = req.body;
-  if (!user.email || !user.username) {
-    res
-      .status(422)
-      .json({ message: 'Användarnamn och e-postadress är obligatoriskt' });
+  const invalidData = validate(user, constraints);
+  if (invalidData) {
+    res.status(400).json(invalidData);
   } else {
-    const existingUser = await db.user.findOne({
-      where: db.sequelize.or(
-        {
-          email: user.email
-        },
-        {
-          username: user.username
-        }
-      )
+    db.user.create(user).then((result) => {
+      res.send(result);
     });
-    if (existingUser) {
-      res
-        .status(400)
-        .json({ message: 'Användarnamnet eller e-postadressen är inte unik.' });
-    } else {
-      const invalidData = validate(user, constraints);
-      if (invalidData) {
-        res.status(422).json(invalidData);
-      } else {
-        db.user.create(user).then((result) => {
-          res.send(result);
-        });
-      }
-    }
   }
 });
 
 router.put('/', (req, res) => {
-  db.user
-    .update(req.body, {
-      where: { id: req.body.id }
-    })
-    .then((result) => {
-      res.send(result);
-    });
+  const user = req.body;
+  const invalidData = validate(user, constraints);
+  const id = user.id;
+  if (invalidData || !id) {
+    res.status(400).json(invalidData || 'Id är obligatoriskt.');
+  } else {
+    db.user
+      .update(user, {
+        where: { id: user.id }
+      })
+      .then((result) => {
+        res.send('Inlägget har uppdaterats.');
+      });
+  }
 });
 router.delete('/', (req, res) => {
   db.user
