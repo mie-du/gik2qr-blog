@@ -169,15 +169,13 @@ async function getSummaryById(id) {
 
 async function getFull() {
   try {
-    const result = await Post.findAll({ include: [User, Comment, Tag] });
+    const result = await Post({ include: [User, Comment, Tag] });
     if (result.length === 0) {
-      return Promise.resolve(createError(204));
+      return createError(204);
     }
-    return Promise.resolve(createResult(result));
+    return createResult(result);
   } catch (err) {
-    return Promise.resolve(
-      createError(err.status || 500, err.message || 'Unknown error')
-    );
+    return createError(err.status || 500, err.message || 'Unknown error');
   }
 }
 
@@ -216,20 +214,19 @@ async function create(data) {
 
   const invalidData = validate(data, postConstraints);
   if (invalidData) {
-    return Promise.resolve(createError(400, invalidData));
+    return createError(400, invalidData);
   } else {
     try {
       const existingUser = await User.findOne({ where: { id: data.userId } });
 
       if (!existingUser) {
-        return Promise.resolve(createError(400, 'Invalid userId'));
+        return createError(400, 'Invalid userId');
       }
       const result = await Post.create(data);
-      return Promise.resolve(createResult(result));
+
+      return createResult(result);
     } catch (err) {
-      return Promise.resolve(
-        createError(err.status || 500, err.message || 'Unknown error')
-      );
+      return createError(err.status || 500, err.message || 'Unknown error');
     }
   }
 }
