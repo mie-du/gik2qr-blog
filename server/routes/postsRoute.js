@@ -8,6 +8,11 @@ router.get('/', (req, res) => {
     res.status(result.status).json(result.data);
   });
 });
+router.get('/:id', (req, res) => {
+  postService.getById(req.params.id).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
 
 router.post('/', (req, res) => {
   postService.create(req.body).then((result) => {

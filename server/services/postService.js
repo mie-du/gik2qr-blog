@@ -16,6 +16,19 @@ const constraints = {
   }
 };
 
+async function getById(id) {
+  try {
+    const post = await db.post.findOne({
+      where: { id },
+      include: [db.user, db.tag]
+    });
+    /* Om allt blev bra, returnera allPosts */
+    return createOkObjectReponse(post);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
 async function getAll() {
   try {
     const allPosts = await db.post.findAll();
@@ -40,6 +53,7 @@ async function create(post) {
 }
 
 async function update(post, id) {
+  console.log(post.tags);
   if (!id) {
     return createResponseError(422, 'Id är obligatoriskt.');
   }
@@ -75,8 +89,14 @@ async function destroy(id) {
   }
 }
 
+async function _postTagExists(name) {
+  name = name.toLowerCase().trim();
+  return await Tag.findOne({ where: { name } });
+}
+
 module.exports = {
   getAll,
+  getById,
   create,
   update,
   destroy
