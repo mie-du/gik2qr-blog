@@ -61,6 +61,7 @@ async function create(post) {
   }
   try {
     console.log(post);
+    //remake all post.tags to objects?
 
     /*     let newPost = await db.sequelize.transaction((transaction) =>
       db.post.create(post, {
