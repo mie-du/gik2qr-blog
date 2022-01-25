@@ -22,8 +22,21 @@ async function getById(id) {
       where: { id },
       include: [db.user, db.tag]
     });
-    /* Om allt blev bra, returnera allPosts */
-    return createOkObjectReponse(post);
+    const cleanPost = {
+      id: post.id,
+      title: post.title,
+      body: post.body,
+      author: {
+        id: post.user.id,
+        username: post.user.username,
+        email: post.user.email
+      },
+      tags: []
+    };
+    post.tags.map((tag) => (cleanPost.tags = [tag.name, ...cleanPost.tags]));
+
+    return createOkObjectReponse(cleanPost);
+    //return createOkObjectReponse(post);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -31,7 +44,9 @@ async function getById(id) {
 
 async function getAll() {
   try {
-    const allPosts = await db.post.findAll();
+    const allPosts = await db.post.findAll({
+      include: [db.tag, db.user, db.comment]
+    });
     /* Om allt blev bra, returnera allPosts */
     return createOkObjectReponse(allPosts);
   } catch (error) {
@@ -45,7 +60,23 @@ async function create(post) {
     return createResponseError(422, invalidData);
   }
   try {
+    console.log(post);
+
+    /*     let newPost = await db.sequelize.transaction((transaction) =>
+      db.post.create(post, {
+        include: { model: db.tag, as: 'tags' },
+        transaction
+      })
+    ); */
     const newPost = await db.post.create(post);
+    console.log(newPost);
+
+    post.tags.forEach(async (tag) => {
+      const foundOrCreatedTag = await _findOrCreateTag(tag);
+      console.log(foundOrCreatedTag[0].id);
+      await newPost.addTag(foundOrCreatedTag[0].id);
+    });
+
     return createOkObjectReponse(newPost);
   } catch (error) {
     return createResponseError(error.status, error.message);
@@ -53,7 +84,6 @@ async function create(post) {
 }
 
 async function update(post, id) {
-  console.log(post.tags);
   if (!id) {
     return createResponseError(422, 'Id är obligatoriskt.');
   }
@@ -66,7 +96,13 @@ async function update(post, id) {
     if (!existingPost) {
       return createResponseError(404, 'Hittade inget inlägg att uppdatera.');
     }
-    await db.post.update(post, { where: { id } });
+    /* await db.post.update(post, { where: { id } }); */
+    console.log(post);
+    await db.post.update(post, {
+      include: { model: db.tag, as: 'tags' },
+      where: { id }
+    });
+
     return createResponseMessage(200, `Inlägget med id ${id} uppdaterades.`);
   } catch (error) {
     return createResponseError(error.status, error.message);
@@ -89,9 +125,11 @@ async function destroy(id) {
   }
 }
 
-async function _postTagExists(name) {
+async function _findOrCreateTag(name) {
   name = name.toLowerCase().trim();
-  return await Tag.findOne({ where: { name } });
+  const foundOrCreatedTag = await db.tag.findOrCreate({ where: { name } });
+
+  return foundOrCreatedTag;
 }
 
 module.exports = {
