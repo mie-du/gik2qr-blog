@@ -4,6 +4,7 @@ const {
   createResponseError,
   createResponseMessage
 } = require('../helpers/responseHelper');
+
 const validate = require('validate.js');
 const constraints = {
   title: {
@@ -22,20 +23,8 @@ async function getById(id) {
       where: { id },
       include: [db.user, db.tag]
     });
-    const cleanPost = {
-      id: post.id,
-      title: post.title,
-      body: post.body,
-      author: {
-        id: post.user.id,
-        username: post.user.username,
-        email: post.user.email
-      },
-      tags: []
-    };
-    post.tags.map((tag) => (cleanPost.tags = [tag.name, ...cleanPost.tags]));
 
-    return createOkObjectReponse(cleanPost);
+    return createOkObjectReponse(_formatPost(post));
     //return createOkObjectReponse(post);
   } catch (error) {
     return createResponseError(error.status, error.message);
@@ -47,8 +36,7 @@ async function getAll() {
     const allPosts = await db.post.findAll({
       include: [db.tag, db.user, db.comment]
     });
-    /* Om allt blev bra, returnera allPosts */
-    return createOkObjectReponse(allPosts);
+    return createOkObjectReponse(allPosts.map((post) => _formatPost(post)));
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -60,22 +48,10 @@ async function create(post) {
     return createResponseError(422, invalidData);
   }
   try {
-    console.log(post);
-    //remake all post.tags to objects?
-
-    /*     let newPost = await db.sequelize.transaction((transaction) =>
-      db.post.create(post, {
-        include: { model: db.tag, as: 'tags' },
-        transaction
-      })
-    ); */
     const newPost = await db.post.create(post);
-    console.log(newPost);
-
     post.tags.forEach(async (tag) => {
-      const foundOrCreatedTag = await _findOrCreateTag(tag);
-      console.log(foundOrCreatedTag[0].id);
-      await newPost.addTag(foundOrCreatedTag[0].id);
+      const tagId = await _findOrCreateTagId(tag);
+      await newPost.addTag(tagId);
     });
 
     return createOkObjectReponse(newPost);
@@ -98,9 +74,13 @@ async function update(post, id) {
       return createResponseError(404, 'Hittade inget inlägg att uppdatera.');
     }
     /* await db.post.update(post, { where: { id } }); */
-    console.log(post);
+
+    post.tags.forEach(async (tag) => {
+      const foundOrCreatedTag = await _findOrCreateTag(tag);
+      await existingPost.addTag(foundOrCreatedTag.id);
+    });
+
     await db.post.update(post, {
-      include: { model: db.tag, as: 'tags' },
       where: { id }
     });
 
@@ -126,11 +106,32 @@ async function destroy(id) {
   }
 }
 
-async function _findOrCreateTag(name) {
+async function _findOrCreateTagId(name) {
   name = name.toLowerCase().trim();
   const foundOrCreatedTag = await db.tag.findOrCreate({ where: { name } });
 
-  return foundOrCreatedTag;
+  return foundOrCreatedTag[0].id;
+}
+
+function _formatPost(post) {
+  const cleanPost = {
+    id: post.id,
+    title: post.title,
+    body: post.body,
+    imageUrl: post.body.imageUrl,
+    author: {
+      id: post.user.id,
+      username: post.user.username,
+      email: post.user.email,
+      firstName: post.user.firstName,
+      lastName: post.user.lastName,
+      imageUrl: post.user.imageUrl,
+      description: post.user.description
+    },
+    tags: []
+  };
+  post.tags.map((tag) => (cleanPost.tags = [tag.name, ...cleanPost.tags]));
+  return cleanPost;
 }
 
 module.exports = {
