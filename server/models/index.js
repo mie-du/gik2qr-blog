@@ -40,9 +40,7 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-db.post.belongsTo(db.user, {
-  foreignKey: { allowNull: false, onDelete: 'CASCADE' }
-});
+db.post.belongsTo(db.user, { foreignKey: { allowNull: false } });
 db.user.hasMany(db.post, {
   allowNull: false,
   onDelete: 'CASCADE'
