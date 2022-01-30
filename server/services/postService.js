@@ -11,11 +11,24 @@ const constraints = {
     length: {
       minimum: 2,
       maximum: 100,
-      tooShort: '^Titeln måste vara minst %{count} tecken lång.',
+      tooShort: '^Titeln måste vara  %{count} tecken eller längre.',
       tooLong: '^Titeln får inte vara längre än %{count} tecken lång.'
     }
   }
 };
+
+function getConstraints() {
+  return createResponseSuccess(constraints);
+}
+async function getById(id) {
+  try {
+    const allPosts = await db.post.findOne({ where: { id } });
+    /* Om allt blev bra, returnera allPosts */
+    return createResponseSuccess(allPosts);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
 
 async function getAll() {
   try {
@@ -57,6 +70,7 @@ async function update(post, id) {
     return createResponseError(error.status, error.message);
   }
 }
+
 async function destroy(id) {
   if (!id) {
     return createResponseError(422, 'Id är obligatoriskt');
@@ -72,6 +86,8 @@ async function destroy(id) {
 }
 
 module.exports = {
+  getConstraints,
+  getById,
   getAll,
   create,
   update,

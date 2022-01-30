@@ -2,6 +2,15 @@ const router = require('express').Router();
 const db = require('../models');
 
 const postService = require('../services/postService');
+router.get('/getConstraints', (req, res) => {
+  const result = postService.getConstraints();
+  res.status(result.status).json(result.data);
+});
+router.get('/:id', (req, res) => {
+  postService.getById(req.params.id).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
 
 router.get('/', (req, res) => {
   postService.getAll().then((result) => {
