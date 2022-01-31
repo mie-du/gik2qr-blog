@@ -47,4 +47,9 @@ router.delete('/', (req, res) => {
   });
 });
 
+router.delete('/all', (req, res) => {
+  postService.destroyAll().then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
 module.exports = router;

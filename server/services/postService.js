@@ -18,6 +18,10 @@ const constraints = {
   }
 };
 
+function getConstraints() {
+  return createResponseSuccess(constraints);
+}
+
 async function getById(id) {
   try {
     const post = await db.post.findOne({
@@ -25,7 +29,7 @@ async function getById(id) {
       include: [db.user, db.tag]
     });
 
-    return createOkObjectReponse(_formatPost(post));
+    return createResponseSuccess(_formatPost(post));
     //return createOkObjectReponse(post);
   } catch (error) {
     return createResponseError(error.status, error.message);
@@ -37,7 +41,8 @@ async function getAll() {
     const allPosts = await db.post.findAll({
       include: [db.tag, db.user, db.comment]
     });
-    return createOkObjectReponse(allPosts.map((post) => _formatPost(post)));
+
+    return createResponseSuccess(allPosts.map((post) => _formatPost(post)));
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -50,12 +55,9 @@ async function create(post) {
   }
   try {
     const newPost = await db.post.create(post);
-    post.tags.forEach(async (tag) => {
-      const tagId = await _findOrCreateTagId(tag);
-      await newPost.addTag(tagId);
-    });
+    await _addTagToPost(newPost, post.tags);
 
-    return createOkObjectReponse(newPost);
+    return createResponseSuccess(newPost);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -74,12 +76,13 @@ async function update(post, id) {
     if (!existingPost) {
       return createResponseError(404, 'Hittade inget inlägg att uppdatera.');
     }
-    /* await db.post.update(post, { where: { id } }); */
 
-    post.tags.forEach(async (tag) => {
-      const foundOrCreatedTag = await _findOrCreateTag(tag);
-      await existingPost.addTag(foundOrCreatedTag.id);
-    });
+    if (post.tags) {
+      post.tags.forEach(async (tag) => {
+        const foundOrCreatedTag = await _findOrCreateTagId(tag);
+        await existingPost.addTag(foundOrCreatedTag);
+      });
+    }
 
     await db.post.update(post, {
       where: { id }
@@ -87,7 +90,10 @@ async function update(post, id) {
 
     return createResponseMessage(200, `Inlägget med id ${id} uppdaterades.`);
   } catch (error) {
-    return createResponseError(error.status, error.message);
+    return createResponseError(error.status, {
+      message: error.message,
+      stack: error.stack
+    });
   }
 }
 
@@ -105,11 +111,32 @@ async function destroy(id) {
   }
 }
 
+async function destroyAll() {
+  try {
+    await db.post.destroy({
+      where: {},
+      force: true
+    });
+    return createResponseMessage(200, 'Samtliga inlägg raderades.');
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
 async function _findOrCreateTagId(name) {
   name = name.toLowerCase().trim();
   const foundOrCreatedTag = await db.tag.findOrCreate({ where: { name } });
 
   return foundOrCreatedTag[0].id;
+}
+
+async function _addTagToPost(post, tags) {
+  if (tags) {
+    tags.forEach(async (tag) => {
+      const tagId = await _findOrCreateTagId(tag);
+      await post.addTag(tagId);
+    });
+  }
 }
 
 function _formatPost(post) {
@@ -140,5 +167,6 @@ module.exports = {
   getById,
   create,
   update,
-  destroy
+  destroy,
+  destroyAll
 };
