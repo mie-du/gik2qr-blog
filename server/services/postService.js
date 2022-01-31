@@ -4,6 +4,7 @@ const {
   createResponseError,
   createResponseMessage
 } = require('../helpers/responseHelper');
+
 const validate = require('validate.js');
 
 const constraints = {
@@ -17,14 +18,15 @@ const constraints = {
   }
 };
 
-function getConstraints() {
-  return createResponseSuccess(constraints);
-}
 async function getById(id) {
   try {
-    const allPosts = await db.post.findOne({ where: { id } });
-    /* Om allt blev bra, returnera allPosts */
-    return createResponseSuccess(allPosts);
+    const post = await db.post.findOne({
+      where: { id },
+      include: [db.user, db.tag]
+    });
+
+    return createOkObjectReponse(_formatPost(post));
+    //return createOkObjectReponse(post);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -32,9 +34,10 @@ async function getById(id) {
 
 async function getAll() {
   try {
-    const allPosts = await db.post.findAll();
-    /* Om allt blev bra, returnera allPosts */
-    return createResponseSuccess(allPosts);
+    const allPosts = await db.post.findAll({
+      include: [db.tag, db.user, db.comment]
+    });
+    return createOkObjectReponse(allPosts.map((post) => _formatPost(post)));
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -47,7 +50,12 @@ async function create(post) {
   }
   try {
     const newPost = await db.post.create(post);
-    return createResponseSuccess(newPost);
+    post.tags.forEach(async (tag) => {
+      const tagId = await _findOrCreateTagId(tag);
+      await newPost.addTag(tagId);
+    });
+
+    return createOkObjectReponse(newPost);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -62,10 +70,22 @@ async function update(post, id) {
     return createResponseError(422, invalidData);
   }
   try {
+    const existingPost = await db.post.findOne({ where: { id } });
+    if (!existingPost) {
+      return createResponseError(404, 'Hittade inget inlägg att uppdatera.');
+    }
+    /* await db.post.update(post, { where: { id } }); */
+
+    post.tags.forEach(async (tag) => {
+      const foundOrCreatedTag = await _findOrCreateTag(tag);
+      await existingPost.addTag(foundOrCreatedTag.id);
+    });
+
     await db.post.update(post, {
       where: { id }
     });
-    return createResponseMessage(200, 'Inlägget uppdaterades.');
+
+    return createResponseMessage(200, `Inlägget med id ${id} uppdaterades.`);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -85,10 +105,39 @@ async function destroy(id) {
   }
 }
 
+async function _findOrCreateTagId(name) {
+  name = name.toLowerCase().trim();
+  const foundOrCreatedTag = await db.tag.findOrCreate({ where: { name } });
+
+  return foundOrCreatedTag[0].id;
+}
+
+function _formatPost(post) {
+  const cleanPost = {
+    id: post.id,
+    title: post.title,
+    body: post.body,
+    imageUrl: post.body.imageUrl,
+    author: {
+      id: post.user.id,
+      username: post.user.username,
+      email: post.user.email,
+      firstName: post.user.firstName,
+      lastName: post.user.lastName,
+      imageUrl: post.user.imageUrl,
+      description: post.user.description
+    },
+    tags: []
+  };
+  post.tags.map((tag) => (cleanPost.tags = [tag.name, ...cleanPost.tags]));
+  return cleanPost;
+}
+
 module.exports = {
   getConstraints,
   getById,
   getAll,
+  getById,
   create,
   update,
   destroy

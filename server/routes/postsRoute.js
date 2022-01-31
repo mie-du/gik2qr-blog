@@ -18,6 +18,12 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/:id', (req, res) => {
+  postService.getById(req.params.id).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
+
 router.post('/', (req, res) => {
   const post = req.body;
   postService.create(post).then((result) => {
