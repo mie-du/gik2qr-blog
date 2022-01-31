@@ -4,7 +4,6 @@ const {
   createResponseError,
   createResponseMessage
 } = require('../helpers/responseHelper');
-
 const validate = require('validate.js');
 
 const constraints = {
@@ -12,25 +11,49 @@ const constraints = {
     length: {
       minimum: 2,
       maximum: 100,
-      tooShort: '^Titeln måste vara  %{count} tecken eller längre.',
+      tooShort: '^Titeln måste vara minst %{count} tecken lång.',
       tooLong: '^Titeln får inte vara längre än %{count} tecken lång.'
     }
   }
 };
 
-function getConstraints() {
-  return createResponseSuccess(constraints);
+async function getByTag(tagId) {
+  try {
+    const tag = await db.tag.findOne({ where: { id: tagId } });
+    const allPosts = await tag.getPosts({ include: [db.user, db.tag] });
+    /* Om allt blev bra, returnera allPosts */
+    return createResponseSuccess(allPosts.map((post) => _formatPost(post)));
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
+async function getByAuthor(userId) {
+  try {
+    const user = await db.user.findOne({ where: { id: userId } });
+    const allPosts = await user.getPosts({ include: [db.user, db.tag] });
+    /* Om allt blev bra, returnera allPosts */
+    return createResponseSuccess(allPosts.map((post) => _formatPost(post)));
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
 }
 
 async function getById(id) {
   try {
     const post = await db.post.findOne({
       where: { id },
-      include: [db.user, db.tag]
+      include: [
+        db.user,
+        db.tag,
+        {
+          model: db.comment,
+          include: [db.user]
+        }
+      ]
     });
-
+    /* Om allt blev bra, returnera post */
     return createResponseSuccess(_formatPost(post));
-    //return createOkObjectReponse(post);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -38,11 +61,22 @@ async function getById(id) {
 
 async function getAll() {
   try {
-    const allPosts = await db.post.findAll({
-      include: [db.tag, db.user, db.comment]
-    });
-
+    const allPosts = await db.post.findAll({ include: [db.user, db.tag] });
+    /* Om allt blev bra, returnera allPosts */
     return createResponseSuccess(allPosts.map((post) => _formatPost(post)));
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
+async function addComment(id, comment) {
+  if (!id) {
+    return createResponseError(422, 'Id är obligatoriskt');
+  }
+  try {
+    comment.postId = id;
+    const newComment = await db.comment.create(comment);
+    return createResponseSuccess(newComment);
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
@@ -55,6 +89,8 @@ async function create(post) {
   }
   try {
     const newPost = await db.post.create(post);
+    //post tags är en array av namn
+    //lägg till eventuella taggar
     await _addTagToPost(newPost, post.tags);
 
     return createResponseSuccess(newPost);
@@ -76,27 +112,15 @@ async function update(post, id) {
     if (!existingPost) {
       return createResponseError(404, 'Hittade inget inlägg att uppdatera.');
     }
-
-    if (post.tags) {
-      post.tags.forEach(async (tag) => {
-        const foundOrCreatedTag = await _findOrCreateTagId(tag);
-        await existingPost.addTag(foundOrCreatedTag);
-      });
-    }
-
+    await _addTagToPost(existingPost, post.tags);
     await db.post.update(post, {
       where: { id }
     });
-
-    return createResponseMessage(200, `Inlägget med id ${id} uppdaterades.`);
+    return createResponseMessage(200, 'Inlägget uppdaterades.');
   } catch (error) {
-    return createResponseError(error.status, {
-      message: error.message,
-      stack: error.stack
-    });
+    return createResponseError(error.status, error.message);
   }
 }
-
 async function destroy(id) {
   if (!id) {
     return createResponseError(422, 'Id är obligatoriskt');
@@ -111,15 +135,46 @@ async function destroy(id) {
   }
 }
 
-async function destroyAll() {
-  try {
-    await db.post.destroy({
-      where: {},
-      force: true
+function _formatPost(post) {
+  const cleanPost = {
+    id: post.id,
+    title: post.title,
+    body: post.body,
+    imageUrl: post.imageUrl,
+    createdAt: post.createdAt,
+    updatedAt: post.updatedAt,
+    author: {
+      id: post.user.id,
+      username: post.user.username,
+      email: post.user.email,
+      firstName: post.user.firstName,
+      lastName: post.user.lastName,
+      imageUrl: post.user.imageUrl
+    },
+    tags: []
+  };
+
+  if (post.comments) {
+    cleanPost.comments = [];
+
+    post.comments.map((comment) => {
+      return (cleanPost.comments = [
+        {
+          title: comment.title,
+          body: comment.body,
+          author: comment.user.username,
+          createdAt: comment.createdAt
+        },
+        ...cleanPost.comments
+      ]);
     });
-    return createResponseMessage(200, 'Samtliga inlägg raderades.');
-  } catch (error) {
-    return createResponseError(error.status, error.message);
+  }
+
+  if (post.tags) {
+    post.tags.map((tag) => {
+      return (cleanPost.tags = [tag.name, ...cleanPost.tags]);
+    });
+    return cleanPost;
   }
 }
 
@@ -139,34 +194,13 @@ async function _addTagToPost(post, tags) {
   }
 }
 
-function _formatPost(post) {
-  const cleanPost = {
-    id: post.id,
-    title: post.title,
-    body: post.body,
-    imageUrl: post.body.imageUrl,
-    author: {
-      id: post.user.id,
-      username: post.user.username,
-      email: post.user.email,
-      firstName: post.user.firstName,
-      lastName: post.user.lastName,
-      imageUrl: post.user.imageUrl,
-      description: post.user.description
-    },
-    tags: []
-  };
-  post.tags.map((tag) => (cleanPost.tags = [tag.name, ...cleanPost.tags]));
-  return cleanPost;
-}
-
 module.exports = {
-  getConstraints,
+  getByTag,
+  getByAuthor,
   getById,
   getAll,
-  getById,
+  addComment,
   create,
   update,
-  destroy,
-  destroyAll
+  destroy
 };
