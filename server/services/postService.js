@@ -52,8 +52,9 @@ async function getById(id) {
         }
       ]
     });
+    if (post) return createResponseSuccess(_formatPost(post));
     /* Om allt blev bra, returnera post */
-    return createResponseSuccess(_formatPost(post));
+    return createResponseMessage(204, 'Hittade inget inlägg');
   } catch (error) {
     return createResponseError(error.status, error.message);
   }

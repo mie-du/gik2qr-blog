@@ -42,6 +42,7 @@ router.put('/', (req, res) => {
 
 router.delete('/', (req, res) => {
   const id = req.body.id;
+
   postService.destroy(id).then((result) => {
     res.status(result.status).json(result.data);
   });
