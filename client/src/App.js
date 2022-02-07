@@ -20,7 +20,7 @@ function App() {
     <div className='App'>
       <Router>
         <Typography variant='h1' sx={{ color: teal['800'] }}>
-          Blogg
+          <Link to='/'>Blogg</Link>
         </Typography>
         <AppBar position='static'>
           <Toolbar>
@@ -43,7 +43,11 @@ function App() {
           }}>
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route exact path='/posts/new' component={PostEdit} />
+            <Route
+              exact
+              path='/posts/new'
+              component={(params) => <PostEdit new='true' {...params} />}
+            />
             <Route exact path='/posts/:id' component={PostDetail} />
             <Route exact path='/posts/:id/edit' component={PostEdit} />
             <Route exact path='/posts/' component={Posts} />

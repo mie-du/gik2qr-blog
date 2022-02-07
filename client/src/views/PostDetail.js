@@ -10,7 +10,14 @@ export default function PostDetail(props) {
   const [post, setPost] = useState({});
   useEffect(() => {
     api.get(`posts/${id}`).then((result) => {
-      setPost(result.data);
+      if (result.status === 200) setPost(result.data);
+      if (result.status === 204) {
+        // modal ?
+        console.log('Inget inlägg hittades');
+
+        //på delay?
+        window.location.href = '/posts/';
+      }
     });
   }, [id]);
 

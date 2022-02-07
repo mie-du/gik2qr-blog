@@ -1,23 +1,44 @@
 import { Button, TextField } from '@mui/material';
 import React, { Component } from 'react';
+
 import api from '../server/api';
 
 export default class PostEdit extends Component {
-  id = 0;
-  state = { post: { title: '', body: '', imageUrl: '', author: {}, id: 0 } };
+  state = {
+    post: { title: '', body: '', imageUrl: '', author: {}, id: 0 }
+  };
   constructor(props) {
     super(props);
-    const paramsId = props.match.params.id;
-    this.id = !isNaN(paramsId) ? paramsId : 0;
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onDelete = this.onDelete.bind(this);
   }
-  componentDidMount() {
-    if (this.id) {
+  reset() {
+    this.setState({
+      post: { title: '', body: '', imageUrl: '', author: {}, id: 0 }
+    });
+  }
+  fetchPost() {
+    const paramsId = this.props.match.params.id;
+    this.id = !isNaN(paramsId) ? paramsId : 0;
+
+    if (this.id && this.id > 0 && !this.props.new) {
       api.get(`posts/${this.id}`).then((result) => {
-        this.setState({ post: result.data });
+        if (result.status === 200) this.setState({ post: result.data });
+        console.log(this.state.post);
       });
+    } else {
+      this.reset();
+    }
+  }
+
+  componentDidMount() {
+    this.fetchPost();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.fetchPost();
     }
   }
 
@@ -26,16 +47,26 @@ export default class PostEdit extends Component {
       post: { ...this.state.post, [e.target.name]: e.target.value }
     });
   }
+
   onSave() {
     console.log(this.state.post);
     if (this.id) {
-      console.log('update', this.id);
+      api.put('posts', this.state.post).then((result) => {
+        if (result.status === 200) alert(result.data.message);
+        console.log(result.data);
+      });
     } else {
-      console.log('create');
+      //skickar även med fake userid
+      api.post('posts', { ...this.state.post, userId: 2 }).then((result) => {
+        if (result.status === 200) alert('Inlägget skapades');
+        console.log(result.data);
+      });
     }
   }
   onDelete() {
-    api.delete('posts', { data: { id: this.state.post.id } });
+    api.delete('posts', { data: { id: this.state.post.id } }).then((result) => {
+      window.location.href = `/posts/`;
+    });
   }
 
   render() {
@@ -51,6 +82,7 @@ export default class PostEdit extends Component {
           value={post?.title}
           onChange={this.onChange}
           fullWidth
+          required
         />
         <TextField
           color='secondary'
@@ -61,14 +93,33 @@ export default class PostEdit extends Component {
           value={post?.body}
           onChange={this.onChange}
           multiline
-          maxRows={10}
+          minRows={10}
+          fullWidth
+          required
+        />
+        <TextField
+          color='secondary'
+          id='imageUrl'
+          label='Sökväg till bild'
+          variant='outlined'
+          name='imageUrl'
+          value={post?.imageUrl}
+          onChange={this.onChange}
+          fullWidth
+        />
+        <TextField
+          color='secondary'
+          id='tags'
+          label='Taggar'
+          variant='outlined'
+          name='tags'
           fullWidth
         />
         <Button variant='contained' color='primary' onClick={this.onSave}>
           Spara
         </Button>
         {this.id !== 0 && (
-          <Button variant='contained' color='primary' onClick={this.onDelete}>
+          <Button variant='contained' color='error' onClick={this.onDelete}>
             Ta bort
           </Button>
         )}

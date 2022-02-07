@@ -7,7 +7,6 @@ export default class Posts extends Component {
   componentDidMount() {
     api.get('posts').then((result) => {
       this.setState({ posts: result.data });
-      console.log(this.state.posts);
     });
   }
   render() {

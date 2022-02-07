@@ -92,6 +92,7 @@ async function create(post) {
     const newPost = await db.post.create(post);
     //post tags är en array av namn
     //lägg till eventuella taggar
+
     await _addTagToPost(newPost, post.tags);
 
     return createResponseSuccess(newPost);
@@ -144,6 +145,7 @@ function _formatPost(post) {
     imageUrl: post.imageUrl,
     createdAt: post.createdAt,
     updatedAt: post.updatedAt,
+
     author: {
       id: post.user.id,
       username: post.user.username,
