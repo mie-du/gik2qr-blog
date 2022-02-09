@@ -28,7 +28,7 @@ function App() {
         <Box
           sx={{
             maxWidth: '60rem',
-            margin: '.5rem auto'
+            margin: '0 auto'
           }}>
           <Switch>
             <Route exact path='/' component={Home} />
