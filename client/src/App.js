@@ -1,37 +1,43 @@
 import './App.css';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from './views/Home';
 import Posts from './views/Posts';
-import Users from './views/Users';
+import PostEdit from './views/PostEdit';
+import PostDetail from './views/PostDetail';
 
 function App() {
   return (
     <div className='App'>
-      <h1>Blogg</h1>
-      <AppBar position='static'>
-        <Toolbar>
-          <IconButton
-            size='large'
-            edge='start'
-            color='inherit'
-            aria-label='menu'
-            sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <Button color='inherit'>Login</Button>
-        </Toolbar>
-      </AppBar>
       <Router>
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/posts/' component={Posts} />
-          <Route exact path='/users/' component={Users} />
-        </Switch>
+        <h1>Blogg</h1>
+        <AppBar position='static'>
+          <Toolbar>
+            <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+              <Link to='/'>Hem</Link>
+            </Typography>
+            <Button color='inherit'>
+              <Link to='/posts/'>Visa alla inlägg</Link>
+            </Button>
+            <Button color='inherit'>
+              <Link to='/posts/new'>Skapa inlägg</Link>
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Box
+          sx={{
+            maxWidth: '60rem',
+            margin: '.5rem auto'
+          }}>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/posts/new' component={PostEdit} />
+            <Route exact path='/posts/:id' component={PostDetail} />
+            <Route exact path='/posts/:id/edit' component={PostEdit} />
+            <Route exact path='/posts/' component={Posts} />
+          </Switch>
+        </Box>
       </Router>
     </div>
   );

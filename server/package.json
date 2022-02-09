@@ -13,5 +13,8 @@
     "mysql2": "^2.3.3",
     "sequelize": "6.11",
     "validate.js": "^0.13.1"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5"
   }
 }
