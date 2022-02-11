@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PostModel from '../models/PostsModel';
+import { Chip } from '@mui/material';
 export default function Posts() {
   const postModel = new PostModel('posts');
   const [posts, setPosts] = useState([]);
@@ -28,6 +29,12 @@ export default function Posts() {
               <p>
                 <Link to={`/posts/${post.id}`}>Titel: {post.title}</Link>
               </p>
+              {post.tags &&
+                post.tags.map((tag, i) => {
+                  return (
+                    <Chip color='secondary' key={`tag_${i}`} label={tag}></Chip>
+                  );
+                })}
               <p>Skrivet: {post.createdAt}</p>
               {post.body}
             </li>

@@ -35,4 +35,24 @@ export default class PostModel {
     }
     return {};
   }
+
+  async create(resource) {
+    const result = await api.post(this.resourceUrl, resource);
+    if (result.status === 200) return result.data;
+    else {
+      console.log(result.status);
+      console.log(result.data);
+    }
+    return {};
+  }
+
+  async remove(id) {
+    const result = await api.delete(this.resourceUrl, { data: { id } });
+    if (result.status === 200) return result.data;
+    else {
+      console.log(result.status);
+      console.log(result.data);
+    }
+    return {};
+  }
 }

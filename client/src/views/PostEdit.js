@@ -1,6 +1,6 @@
 import React from 'react';
 import PostModel from '../models/PostsModel';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Chip } from '@mui/material';
 
 export default class PostEdit extends React.Component {
   state = { post: { title: '', body: '', imageUrl: '', author: {}, tags: [] } };
@@ -9,16 +9,37 @@ export default class PostEdit extends React.Component {
   constructor(props) {
     super(props);
     this.postModel = new PostModel('posts');
-    this.id = this.props.match.params.id;
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+    this.fetchPost = this.fetchPost.bind(this);
+    this.reset = this.reset.bind(this);
   }
-  componentDidMount() {
+  reset() {
+    this.setState({
+      post: { title: '', body: '', imageUrl: '', author: {}, tags: [] }
+    });
+  }
+
+  fetchPost() {
+    this.id = this.props.match.params.id;
     const isValidId = !isNaN(this.id);
     if (isValidId) {
       this.postModel.getById(this.id).then((post) => {
         this.setState({ post });
       });
+    } else {
+      this.reset();
+    }
+  }
+
+  componentDidMount() {
+    this.fetchPost();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.fetchPost();
     }
   }
 
@@ -29,18 +50,27 @@ export default class PostEdit extends React.Component {
   }
 
   onSave() {
-    //om id finns, update
     if (this.id) {
       this.postModel.update(this.state.post).then((result) => {
         console.log(result);
       });
+    } else {
+      const postWithUserId = { ...this.state.post, userId: 1 };
+
+      this.postModel.create(postWithUserId).then((result) => {
+        console.log('Inlägget sparades');
+      });
     }
-    //annars create
   }
 
+  onDelete() {
+    this.postModel.remove(this.id).then((result) => {
+      console.log(result);
+      window.location.href = '/';
+    });
+  }
   render() {
     const post = this.state.post;
-    console.log(post);
 
     return (
       <div>
@@ -74,12 +104,24 @@ export default class PostEdit extends React.Component {
           onChange={this.onChange}
           fullWidth
         />
+        {post.tags &&
+          post.tags.map((tag, i) => {
+            return (
+              <Chip
+                onDelete={() => console.log('chip delete')}
+                color='secondary'
+                key={`tag_${i}`}
+                label={tag}></Chip>
+            );
+          })}
         <Button variant='contained' color='primary' onClick={this.onSave}>
           Spara
         </Button>
-        <Button variant='contained' color='error' onClick={this.onDelete}>
-          Ta bort
-        </Button>
+        {!isNaN(this.id) && this.id > 0 && (
+          <Button variant='contained' color='error' onClick={this.onDelete}>
+            Ta bort
+          </Button>
+        )}
       </div>
     );
   }
