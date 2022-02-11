@@ -25,4 +25,14 @@ export default class PostModel {
     }
     return {};
   }
+
+  async update(resource) {
+    const result = await api.put(this.resourceUrl, resource);
+    if (result.status === 200) return result.data;
+    else {
+      console.log(result.status);
+      console.log(result.data);
+    }
+    return {};
+  }
 }

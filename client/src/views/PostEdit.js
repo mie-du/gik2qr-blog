@@ -5,18 +5,18 @@ import { TextField, Button } from '@mui/material';
 export default class PostEdit extends React.Component {
   state = { post: { title: '', body: '', imageUrl: '', author: {}, tags: [] } };
   postModel = null;
+  id = 0;
   constructor(props) {
     super(props);
     this.postModel = new PostModel('posts');
-
+    this.id = this.props.match.params.id;
     this.onChange = this.onChange.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
   componentDidMount() {
-    const id = this.props.match.params.id;
-
-    const isValidId = !isNaN(id);
+    const isValidId = !isNaN(this.id);
     if (isValidId) {
-      this.postModel.getById(id).then((post) => {
+      this.postModel.getById(this.id).then((post) => {
         this.setState({ post });
       });
     }
@@ -26,6 +26,16 @@ export default class PostEdit extends React.Component {
     const field = e.target.name;
     const value = e.target.value;
     this.setState({ post: { ...this.state.post, [field]: value } });
+  }
+
+  onSave() {
+    //om id finns, update
+    if (this.id) {
+      this.postModel.update(this.state.post).then((result) => {
+        console.log(result);
+      });
+    }
+    //annars create
   }
 
   render() {
