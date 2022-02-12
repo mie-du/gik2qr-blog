@@ -11,7 +11,10 @@ function App() {
   return (
     <div className='App'>
       <Router>
-        <h1>Blogg</h1>
+        <Typography variant='h1' color='secondary.dark' marginLeft={5}>
+          Blogg
+        </Typography>
+
         <AppBar position='static'>
           <Toolbar>
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
@@ -25,10 +28,11 @@ function App() {
             </Button>
           </Toolbar>
         </AppBar>
+
         <Box
           sx={{
             maxWidth: '60rem',
-            margin: '0 auto'
+            margin: '1rem auto'
           }}>
           <Switch>
             <Route exact path='/' component={Home} />

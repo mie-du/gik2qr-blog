@@ -3,6 +3,9 @@
 a {
   color: inherit;
   text-decoration: none;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
 }
 
 body {
@@ -12,4 +15,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+li {
+  list-style-type: none;
 }

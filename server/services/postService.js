@@ -162,6 +162,7 @@ function _formatPost(post) {
         {
           title: comment.title,
           body: comment.body,
+          authorImage: comment.user.imageUrl,
           author: comment.user.username,
           createdAt: comment.createdAt
         },
