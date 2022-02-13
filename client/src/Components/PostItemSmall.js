@@ -13,8 +13,17 @@ export default function PostItemSmall({ post }) {
     <>
       <Paper
         elevation={1}
-        sx={{ marginBottom: 4, marginTop: 4, backgroundColor: grey[50] }}>
-        <Grid container spacing={2} sx={{ padding: 2 }}>
+        sx={{
+          marginBottom: 4,
+          marginTop: 4,
+          backgroundColor: grey[50]
+        }}>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            padding: 2
+          }}>
           <Grid item xs={12}>
             <UserItemSmall user={post.author} />
             <Divider />
@@ -29,7 +38,10 @@ export default function PostItemSmall({ post }) {
                   <Typography
                     variant='h5'
                     component='p'
-                    sx={{ textTransform: 'uppercase', color: teal[900] }}>
+                    sx={{
+                      textTransform: 'uppercase',
+                      color: teal[900]
+                    }}>
                     {truncate(post.title, 30)}
                   </Typography>
                 </Grid>

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PostModel from '../models/PostsModel';
 import {
-  Avatar,
   Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
-  Chip,
   CircularProgress,
   List,
   ListItem,
@@ -16,10 +14,9 @@ import {
   Paper,
   Typography
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom';
 import UserItemSmall from '../Components/UserItemSmall';
-import { teal } from '@mui/material/colors';
+import { grey, teal } from '@mui/material/colors';
 import { toDateTimeString } from '../helpers/formatting';
 import { PlaceHolderAvatar } from '../Components/PlaceHolders';
 import { Box } from '@mui/system';
@@ -44,7 +41,12 @@ export default function PostDetail(props) {
     <>
       {post.author ? (
         <>
-          <Card sx={{ maxWidth: 800, margin: '0 auto' }}>
+          <Card
+            sx={{
+              maxWidth: 800,
+              margin: '0 auto',
+              backgroundColor: grey[50]
+            }}>
             <Box
               sx={{
                 padding: '1rem',
@@ -59,7 +61,7 @@ export default function PostDetail(props) {
               </Typography>
               {post.tags &&
                 post.tags.map((tag) => {
-                  return <Tag tag={tag} />;
+                  return <Tag tag={tag} key={tag} />;
                 })}
             </Box>
             {post.imageUrl && (
@@ -81,9 +83,13 @@ export default function PostDetail(props) {
               </Typography>
             </CardContent>
             <CardActions sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button variant='contained'>
-                <Link to={`/posts/${post.id}/edit`}> Ändra</Link>
-              </Button>
+              <Link
+                to={{
+                  pathname: `/posts/${post.id}/edit`,
+                  state: { from: props.location.pathname }
+                }}>
+                <Button variant='contained'>Ändra</Button>
+              </Link>
             </CardActions>
           </Card>
         </>
@@ -92,12 +98,13 @@ export default function PostDetail(props) {
       )}
 
       {post.comments && (
-        <Box
+        <Paper
           sx={{
             maxWidth: '800px',
             margin: '2rem auto',
             padding: '1rem',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            backgroundColor: grey[50]
           }}>
           <Typography variant='h5' sx={{ fontVariant: 'small-caps' }}>
             Kommentarer
@@ -110,6 +117,7 @@ export default function PostDetail(props) {
             {post.comments.map((comment, i) => {
               return (
                 <Paper
+                  key={`com_${i}`}
                   elevation={1}
                   sx={{
                     padding: '1rem',
@@ -143,7 +151,7 @@ export default function PostDetail(props) {
               );
             })}
           </List>
-        </Box>
+        </Paper>
       )}
     </>
   );
