@@ -117,7 +117,11 @@ export default class PostEdit extends React.Component {
             );
           })}
         {this.props.location.from && (
-          <Link to={this.props.location.from}>
+          <Link
+            to={{
+              pathname: this.props.location.from,
+              from: this.props.location.pathname
+            }}>
             <Button variant='contained' color='primary'>
               Tillbaka
             </Button>

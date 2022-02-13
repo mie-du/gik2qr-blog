@@ -6,8 +6,8 @@ export default class PostModel {
     this.resourceUrl = resourceUrl;
   }
 
-  async getAll() {
-    const result = await api.get(this.resourceUrl);
+  async getAll(url = this.resourceUrl) {
+    const result = await api.get(url);
     if (result.status === 200) return result.data;
     else {
       console.log(result.status);

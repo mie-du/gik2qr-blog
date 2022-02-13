@@ -16,8 +16,9 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import UserItemSmall from '../Components/UserItemSmall';
-import { grey, teal } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import { toDateTimeString } from '../helpers/formatting';
+import { pageSubtitle, pageTitle } from '../helpers/styles';
 import { PlaceHolderAvatar } from '../Components/PlaceHolders';
 import { Box } from '@mui/system';
 import Tag from '../Components/Tag';
@@ -48,14 +49,12 @@ export default function PostDetail(props) {
             }}>
             <Box
               sx={{
-                padding: '1rem',
-                color: teal[900]
+                padding: '1rem'
               }}>
               <Typography
-                gutterBottom
-                variant='h3'
-                component='h2'
-                sx={{ fontVariant: 'small-caps' }}>
+                sx={pageTitle.sx}
+                variant={pageTitle.variant}
+                component={pageTitle.component}>
                 {post.title}
               </Typography>
               {post.tags &&
@@ -103,7 +102,7 @@ export default function PostDetail(props) {
         <CircularProgress color='secondary' />
       )}
 
-      {post.comments && (
+      {post.comments > 0 && (
         <Paper
           sx={{
             maxWidth: '800px',
@@ -112,7 +111,10 @@ export default function PostDetail(props) {
             boxSizing: 'border-box',
             backgroundColor: grey[50]
           }}>
-          <Typography variant='h5' sx={{ fontVariant: 'small-caps' }}>
+          <Typography
+            sx={pageSubtitle.sx}
+            variant={pageSubtitle.variant}
+            component={pageSubtitle.component}>
             Kommentarer
           </Typography>
           <List

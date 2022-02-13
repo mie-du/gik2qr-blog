@@ -1,15 +1,17 @@
-import { Button, Chip, Divider, Grid, Paper, Typography } from '@mui/material';
-import { grey, teal } from '@mui/material/colors';
-import { truncate, toDateTimeString } from '../helpers/formatting';
-import { PlaceHolderImage } from './PlaceHolders';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button, Divider, Grid, Paper, Typography } from '@mui/material';
+import { grey } from '@mui/material/colors';
+import { truncate, toDateTimeString } from '../helpers/formatting';
+import { PlaceHolderImage } from './PlaceHolders';
 import UserItemSmall from './UserItemSmall';
 import { Box } from '@mui/system';
 import Tag from './Tag';
+import { pageSubtitle } from '../helpers/styles';
 
 export default function PostItemSmall(props) {
   const post = props.post;
+  console.log(pageSubtitle.variant);
 
   return (
     <>
@@ -42,13 +44,10 @@ export default function PostItemSmall(props) {
                 }}>
                 <Grid item>
                   <Typography
-                    variant='h5'
-                    component='p'
-                    sx={{
-                      textTransform: 'uppercase',
-                      color: teal[900]
-                    }}>
-                    {truncate(post.title, 30)}
+                    sx={pageSubtitle.sx}
+                    variant={pageSubtitle.variant}
+                    component={pageSubtitle.component}>
+                    {truncate(post.title, 50)}
                   </Typography>
                 </Grid>
               </Link>
@@ -67,6 +66,8 @@ export default function PostItemSmall(props) {
                 <Typography variant='body2'>
                   {truncate(post.body, 200)}
                 </Typography>
+              </Grid>
+              <Grid item xs={12}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <Link
                     to={{
