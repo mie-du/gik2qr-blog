@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PostModel from '../models/PostsModel';
-import { Button, Chip } from '@mui/material';
+import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 export default function PostDetail(props) {
@@ -27,12 +27,6 @@ export default function PostDetail(props) {
             <Link to={`/posts/${post.id}/edit`}>Ändra</Link>
           </Button>
           <h2>{post.title}</h2>
-          {post.tags &&
-            post.tags.map((tag, i) => {
-              return (
-                <Chip color='secondary' key={`tag_${i}`} label={tag}></Chip>
-              );
-            })}
           <p>{post.author.username}</p>
           <img src={post.imageUrl} />
           <p>{post.body}</p>
@@ -40,17 +34,6 @@ export default function PostDetail(props) {
       ) : (
         <p>Laddar</p>
       )}
-      {post.comments &&
-        post.comments.map((comment, i) => {
-          return (
-            <li key={`com_${i}`}>
-              <p>Skriven av: {comment.author} </p>
-
-              <p>{comment.title}</p>
-              <p>{comment.body}</p>
-            </li>
-          );
-        })}
     </>
   );
 }
