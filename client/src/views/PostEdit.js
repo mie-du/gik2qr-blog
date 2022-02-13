@@ -1,7 +1,7 @@
 import React from 'react';
 import PostModel from '../models/PostsModel';
 import { TextField, Button, Chip } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 export default class PostEdit extends React.Component {
   state = { post: { title: '', body: '', imageUrl: '', author: {}, tags: [] } };
@@ -36,7 +36,6 @@ export default class PostEdit extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.fetchPost();
   }
 
@@ -117,9 +116,13 @@ export default class PostEdit extends React.Component {
                 label={tag}></Chip>
             );
           })}
-        <Button variant='contained' color='primary' onClick={this.onSave}>
-          <Link to='/'>Tillbaka</Link>
-        </Button>
+        {this.props.location.from && (
+          <Link to={this.props.location.from}>
+            <Button variant='contained' color='primary'>
+              Tillbaka
+            </Button>
+          </Link>
+        )}
         <Button variant='contained' color='primary' onClick={this.onSave}>
           Spara
         </Button>

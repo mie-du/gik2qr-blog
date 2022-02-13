@@ -25,7 +25,6 @@ export const PlaceHolderImage = ({ source }) => {
 };
 
 export const PlaceHolderAvatar = ({ user }) => {
-  console.log(user);
   {
     return user.imageUrl ? (
       <Avatar

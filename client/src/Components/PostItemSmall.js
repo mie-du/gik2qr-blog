@@ -8,7 +8,9 @@ import UserItemSmall from './UserItemSmall';
 import { Box } from '@mui/system';
 import Tag from './Tag';
 
-export default function PostItemSmall({ post }) {
+export default function PostItemSmall(props) {
+  const post = props.post;
+
   return (
     <>
       <Paper
@@ -32,8 +34,12 @@ export default function PostItemSmall({ post }) {
             {<PlaceHolderImage source={post} />}
           </Grid>
           <Grid item xs={9}>
-            <Link to={`/posts/${post.id}`}>
-              <Grid container rowSpacing={1}>
+            <Grid container rowSpacing={1}>
+              <Link
+                to={{
+                  pathname: `/posts/${post.id}`,
+                  from: props.location.pathname
+                }}>
                 <Grid item>
                   <Typography
                     variant='h5'
@@ -45,22 +51,28 @@ export default function PostItemSmall({ post }) {
                     {truncate(post.title, 30)}
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
-                  {post.tags &&
-                    post.tags.map((tag) => {
-                      return <Tag tag={tag} />;
-                    })}
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='body2' component='p'>
-                    Skrivet: {toDateTimeString(post.createdAt)}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant='body2'>
-                    {truncate(post.body, 200)}
-                  </Typography>
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              </Link>
+              <Grid item xs={12}>
+                {post.tags &&
+                  post.tags.map((tag) => {
+                    return <Tag tag={tag} key={tag} />;
+                  })}
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant='body2' component='p'>
+                  Skrivet: {toDateTimeString(post.createdAt)}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant='body2'>
+                  {truncate(post.body, 200)}
+                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Link
+                    to={{
+                      pathname: `/posts/${post.id}`,
+                      from: props.location.pathname
+                    }}>
                     <Button
                       sx={{ marginTop: 1 }}
                       size='small'
@@ -68,10 +80,10 @@ export default function PostItemSmall({ post }) {
                       color='secondary'>
                       Läs mer...
                     </Button>
-                  </Box>
-                </Grid>
+                  </Link>
+                </Box>
               </Grid>
-            </Link>
+            </Grid>
           </Grid>
         </Grid>
       </Paper>

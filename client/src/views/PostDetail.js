@@ -25,10 +25,9 @@ import Tag from '../Components/Tag';
 export default function PostDetail(props) {
   const id = props.match.params.id;
   const isValidId = !isNaN(id);
-
   const postModel = new PostModel('posts');
   const [post, setPost] = useState({});
-
+  console.log(props);
   useEffect(() => {
     if (isValidId) {
       postModel.getById(id).then((post) => {
@@ -83,10 +82,17 @@ export default function PostDetail(props) {
               </Typography>
             </CardContent>
             <CardActions sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {props.location.from && (
+                <Link to={props.location.from}>
+                  <Button variant='contained' color='primary'>
+                    Tillbaka
+                  </Button>
+                </Link>
+              )}
               <Link
                 to={{
                   pathname: `/posts/${post.id}/edit`,
-                  state: { from: props.location.pathname }
+                  from: props.location.pathname
                 }}>
                 <Button variant='contained'>Ändra</Button>
               </Link>

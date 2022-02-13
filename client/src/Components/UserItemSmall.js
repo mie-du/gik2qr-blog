@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { PlaceHolderAvatar } from './PlaceHolders';
 
 export default function UserItemSmall({ user }) {
-  console.log(user);
   return (
     <>
       <Grid
