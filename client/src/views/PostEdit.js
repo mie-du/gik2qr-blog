@@ -12,8 +12,6 @@ export default class PostEdit extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onDelete = this.onDelete.bind(this);
-    this.fetchPost = this.fetchPost.bind(this);
-    this.reset = this.reset.bind(this);
   }
   reset() {
     this.setState({
@@ -62,6 +60,12 @@ export default class PostEdit extends React.Component {
       });
     }
   }
+
+  onDelete() {
+    this.postModel.remove(this.id).then((result) => {
+      console.log(result);
+    });
+  }
   render() {
     const post = this.state.post;
 
@@ -97,12 +101,23 @@ export default class PostEdit extends React.Component {
           onChange={this.onChange}
           fullWidth
         />
+        {post.tags &&
+          post.tags.map((tag) => (
+            <Chip
+              onDelete={() => console.log('taggen togs bort')}
+              key={`tag_${tag}`}
+              label={tag}
+              color='secondary'
+            />
+          ))}
         <Button variant='contained' color='primary' onClick={this.onSave}>
           Spara
         </Button>
-        <Button variant='contained' color='error' onClick={this.onDelete}>
-          Ta bort
-        </Button>
+        {this.id && (
+          <Button variant='contained' color='error' onClick={this.onDelete}>
+            Ta bort
+          </Button>
+        )}
       </div>
     );
   }
