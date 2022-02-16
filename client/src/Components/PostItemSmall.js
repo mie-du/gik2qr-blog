@@ -11,8 +11,7 @@ import { pageSubtitle } from '../helpers/styles';
 
 export default function PostItemSmall(props) {
   const post = props.post;
-  console.log(pageSubtitle.variant);
-
+  console.log(post);
   return (
     <>
       <Paper

@@ -1,4 +1,4 @@
-import { teal } from '@mui/material/colors';
+import { amber, brown, teal } from '@mui/material/colors';
 
 export const pageTitle = {
   sx: {
@@ -12,8 +12,19 @@ export const pageTitle = {
 export const pageSubtitle = {
   sx: {
     textTransform: 'uppercase',
-    color: teal[900]
+    color: teal[900],
+    marginBottom: '1rem'
   },
   variant: 'h5',
   component: 'h3'
+};
+
+export const bodyTitle = {
+  sx: {
+    color: brown[900],
+    marginBottom: '.4rem',
+    fontWeight: 'normal'
+  },
+  variant: 'h7',
+  component: 'h4'
 };

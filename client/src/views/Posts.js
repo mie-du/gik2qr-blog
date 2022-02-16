@@ -9,7 +9,7 @@ export default function Posts(props) {
   const [posts, setPosts] = useState([]);
   const url = props.match.url;
   const path = props.match.path;
-  console.log(path);
+
   let title = '';
 
   useEffect(() => {

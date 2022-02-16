@@ -7,10 +7,6 @@ import {
   CardContent,
   CardMedia,
   CircularProgress,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Paper,
   Typography
 } from '@mui/material';
@@ -19,16 +15,20 @@ import UserItemSmall from '../Components/UserItemSmall';
 import { grey } from '@mui/material/colors';
 import { toDateTimeString } from '../helpers/formatting';
 import { pageSubtitle, pageTitle } from '../helpers/styles';
-import { PlaceHolderAvatar } from '../Components/PlaceHolders';
+
 import { Box } from '@mui/system';
 import Tag from '../Components/Tag';
+import CommentList from '../Components/CommentList';
+import CommentForm from '../Components/CommentForm';
 
 export default function PostDetail(props) {
   const id = props.match.params.id;
   const isValidId = !isNaN(id);
   const postModel = new PostModel('posts');
+
   const [post, setPost] = useState({});
-  console.log(props);
+
+  console.log(post);
   useEffect(() => {
     if (isValidId) {
       postModel.getById(id).then((post) => {
@@ -37,6 +37,14 @@ export default function PostDetail(props) {
     }
   }, []);
 
+  const addComment = (comment) => {
+    postModel.addComment(post.id, comment).then((post) => {
+      setPost({
+        ...post,
+        comments: [...post.comments, post.comments]
+      });
+    });
+  };
   return (
     <>
       {post.author ? (
@@ -101,66 +109,27 @@ export default function PostDetail(props) {
       ) : (
         <CircularProgress color='secondary' />
       )}
+      <Paper
+        sx={{
+          maxWidth: '800px',
+          margin: '2rem auto',
+          padding: '1rem',
+          boxSizing: 'border-box',
+          backgroundColor: grey[50]
+        }}>
+        <Typography
+          sx={pageSubtitle.sx}
+          variant={pageSubtitle.variant}
+          component={pageSubtitle.component}>
+          Kommentarer
+        </Typography>
 
-      {post.comments > 0 && (
-        <Paper
-          sx={{
-            maxWidth: '800px',
-            margin: '2rem auto',
-            padding: '1rem',
-            boxSizing: 'border-box',
-            backgroundColor: grey[50]
-          }}>
-          <Typography
-            sx={pageSubtitle.sx}
-            variant={pageSubtitle.variant}
-            component={pageSubtitle.component}>
-            Kommentarer
-          </Typography>
-          <List
-            sx={{
-              marginTop: 3,
-              width: '100%'
-            }}>
-            {post.comments.map((comment, i) => {
-              return (
-                <Paper
-                  key={`com_${i}`}
-                  elevation={1}
-                  sx={{
-                    padding: '1rem',
-                    marginBottom: '.3rem',
-                    boxSizing: 'border-box'
-                  }}>
-                  <ListItem key={`com_${i}`}>
-                    <ListItemAvatar>
-                      <PlaceHolderAvatar
-                        user={{
-                          username: comment.author,
-                          imageUrl: comment.authorImage
-                        }}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <>
-                          <Typography variant='body2'>
-                            Av: {comment.author}
-                          </Typography>
-                          <Typography variant='body1'>
-                            {comment.title}
-                          </Typography>
-                        </>
-                      }
-                      secondary={comment.body}
-                    />
-                  </ListItem>
-                </Paper>
-              );
-            })}
-          </List>
-        </Paper>
-      )}
+        <CommentForm onSave={addComment} />
+
+        {post.comments?.length > 0 && (
+          <CommentList comments={(post.id, post.comments)} />
+        )}
+      </Paper>
     </>
   );
 }

@@ -55,4 +55,17 @@ export default class PostModel {
     }
     return {};
   }
+
+  async addComment(id, resource) {
+    const result = await api.post(
+      `${this.resourceUrl}/${id}/addComment`,
+      resource
+    );
+    if (result.status === 200) return result.data;
+    else {
+      console.log(result.status);
+      console.log(result.data);
+    }
+    return {};
+  }
 }
