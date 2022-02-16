@@ -41,7 +41,11 @@ export default function CommentForm({ onSave }) {
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
-              onClick={() => onSave({ title, body, userId: 1 })}
+              onClick={() => {
+                onSave({ title, body, userId: 1 });
+                setTitle('');
+                setBody('');
+              }}
               variant='contained'
               color='secondary'>
               Spara

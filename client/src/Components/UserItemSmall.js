@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import { brown } from '@mui/material/colors';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PlaceHolderAvatar } from './PlaceHolders';
+import { PlaceHolderAvatar } from '../helpers/PlaceHolderComponents';
 
 export default function UserItemSmall({ user }) {
   return (

@@ -7,6 +7,7 @@ import {
   CardContent,
   CardMedia,
   CircularProgress,
+  List,
   Paper,
   Typography
 } from '@mui/material';
@@ -15,11 +16,11 @@ import UserItemSmall from '../Components/UserItemSmall';
 import { grey } from '@mui/material/colors';
 import { toDateTimeString } from '../helpers/formatting';
 import { pageSubtitle, pageTitle } from '../helpers/styles';
-
 import { Box } from '@mui/system';
 import Tag from '../Components/Tag';
-import CommentList from '../Components/CommentList';
 import CommentForm from '../Components/CommentForm';
+import CommonList from '../helpers/CommonList';
+import CommentListItem from '../Components/CommentListItem';
 
 export default function PostDetail(props) {
   const id = props.match.params.id;
@@ -28,21 +29,18 @@ export default function PostDetail(props) {
 
   const [post, setPost] = useState({});
 
-  console.log(post);
   useEffect(() => {
     if (isValidId) {
       postModel.getById(id).then((post) => {
         setPost(post);
+        console.log(post);
       });
     }
   }, []);
 
   const addComment = (comment) => {
     postModel.addComment(post.id, comment).then((post) => {
-      setPost({
-        ...post,
-        comments: [...post.comments, post.comments]
-      });
+      setPost(post);
     });
   };
   return (
@@ -127,7 +125,17 @@ export default function PostDetail(props) {
         <CommentForm onSave={addComment} />
 
         {post.comments?.length > 0 && (
-          <CommentList comments={(post.id, post.comments)} />
+          <List
+            sx={{
+              marginTop: 3,
+              width: '100%'
+            }}>
+            <CommonList
+              items={post.comments}
+              itemComponent={CommentListItem}
+              resourceName='comment'
+            />
+          </List>
         )}
       </Paper>
     </>

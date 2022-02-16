@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Divider, Grid, Paper, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { truncate, toDateTimeString } from '../helpers/formatting';
-import { PlaceHolderImage } from './PlaceHolders';
+import { PlaceHolderImage } from '../helpers/PlaceHolderComponents';
 import UserItemSmall from './UserItemSmall';
 import { Box } from '@mui/system';
 import Tag from './Tag';
