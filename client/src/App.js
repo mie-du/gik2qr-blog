@@ -11,7 +11,13 @@ function App() {
   return (
     <div className='App'>
       <Router>
-        <Typography variant='h1' color='secondary.dark' marginLeft={5}>
+        <Typography
+          variant='h1'
+          sx={{
+            fontFamily: ['Parisienne', 'Fira Sans', 'sans-serif'].join(',')
+          }}
+          color='secondary.dark'
+          marginLeft={5}>
           Blogg
         </Typography>
 

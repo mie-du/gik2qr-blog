@@ -20,10 +20,14 @@ const constraints = {
 async function getByTagName(tagName) {
   try {
     const tag = await db.tag.findOne({ where: { name: tagName } });
+
+    if (!tag) return createResponseError(404, 'Hittade ingen tagg');
     const allPosts = await tag.getPosts({ include: [db.user, db.tag] });
-    /* Om allt blev bra, returnera allPosts */
+
+    if (!allPosts) return createResponseError(404, 'Hittade inga inlägg');
     return createResponseSuccess(allPosts.map((post) => _formatPost(post)));
   } catch (error) {
+    console.log(error);
     return createResponseError(error.status, error.message);
   }
 }
@@ -63,6 +67,7 @@ async function getAll() {
   try {
     const allPosts = await db.post.findAll({ include: [db.user, db.tag] });
     /* Om allt blev bra, returnera allPosts */
+    if (!allPosts) return createResponseError(404, 'Hittade ingea inlägg');
     return createResponseSuccess(allPosts.map((post) => _formatPost(post)));
   } catch (error) {
     return createResponseError(error.status, error.message);
@@ -88,7 +93,8 @@ async function addComment(id, comment) {
         }
       ]
     });
-
+    if (!postWithNewComment)
+      return createResponseError(404, 'Hittade inget inlägg');
     return createResponseSuccess(_formatPost(postWithNewComment));
   } catch (error) {
     return createResponseError(error.status, error.message);
@@ -203,6 +209,7 @@ async function _addTagToPost(post, tags) {
   if (tags) {
     tags.forEach(async (tag) => {
       const tagId = await _findOrCreateTagId(tag);
+
       await post.addTag(tagId);
     });
   }

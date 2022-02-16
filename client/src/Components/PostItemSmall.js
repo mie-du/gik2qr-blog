@@ -11,7 +11,7 @@ import { pageSubtitle } from '../helpers/styles';
 
 export default function PostItemSmall(props) {
   const post = props.post;
-  console.log(post);
+
   return (
     <>
       <Paper
@@ -31,16 +31,12 @@ export default function PostItemSmall(props) {
             <UserItemSmall user={post.author} />
             <Divider />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={12} md={4}>
             {<PlaceHolderImage source={post} />}
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} md={8}>
             <Grid container rowSpacing={1}>
-              <Link
-                to={{
-                  pathname: `/posts/${post.id}`,
-                  from: props.location.pathname
-                }}>
+              <Link to={`/posts/${post.id}`}>
                 <Grid item>
                   <Typography
                     sx={pageSubtitle.sx}
@@ -68,11 +64,7 @@ export default function PostItemSmall(props) {
               </Grid>
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Link
-                    to={{
-                      pathname: `/posts/${post.id}`,
-                      from: props.location.pathname
-                    }}>
+                  <Link to={`/posts/${post.id}`}>
                     <Button
                       sx={{ marginTop: 1 }}
                       size='small'

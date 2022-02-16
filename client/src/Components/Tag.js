@@ -3,15 +3,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Tag({ tag }) {
+  tag = tag.name ? tag.name : tag;
   return (
-    <Link to={`/tags/${tag}/posts`}>
-      <Chip
-        component='span'
-        sx={{ marginRight: 1, cursor: 'pointer' }}
-        color='secondary'
-        key={`tag_${tag}`}
-        label={tag}
-      />
-    </Link>
+    tag && (
+      <Link to={`/tags/${tag}/posts`}>
+        <Chip
+          component='span'
+          sx={{ marginRight: 1, cursor: 'pointer' }}
+          color='secondary'
+          key={`tag_${tag}`}
+          label={tag}
+        />
+      </Link>
+    )
   );
 }

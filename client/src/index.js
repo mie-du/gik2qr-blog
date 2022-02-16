@@ -2,21 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { amber, teal, brown } from '@mui/material/colors';
+import { teal, lightGreen, deepPurple } from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: amber[200]
+      main: lightGreen[200]
     },
     secondary: {
-      main: teal[500]
+      main: deepPurple[500]
     }
   },
   typography: {
     fontFamily: ['PT Sans', 'sans-serif'].join(','),
     h1: {
       fontFamily: ['Parisienne', 'Fira Sans', 'sans-serif'].join(',')
+    },
+    h5: {
+      fontFamily: ['Montserrat', 'Fira Sans', 'sans-serif'].join(',')
     },
     h6: {
       fontFamily: ['Montserrat', 'Fira Sans', 'sans-serif'].join(',')

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PostModel from '../models/PostsModel';
 import {
   Button,
   Card,
@@ -15,17 +14,18 @@ import { Link } from 'react-router-dom';
 import UserItemSmall from '../Components/UserItemSmall';
 import { grey } from '@mui/material/colors';
 import { toDateTimeString } from '../helpers/formatting';
-import { pageSubtitle, pageTitle } from '../helpers/styles';
+import { pageSubtitle, pageTitle, rightAligned } from '../helpers/styles';
 import { Box } from '@mui/system';
 import Tag from '../Components/Tag';
 import CommentForm from '../Components/CommentForm';
-import CommonList from '../helpers/CommonList';
+import CommonList from '../Components/Lists/CommonList';
 import CommentListItem from '../Components/CommentListItem';
+import ResourceModel from '../models/ResourceModel';
 
 export default function PostDetail(props) {
   const id = props.match.params.id;
   const isValidId = !isNaN(id);
-  const postModel = new PostModel('posts');
+  const postModel = new ResourceModel('posts');
 
   const [post, setPost] = useState({});
 
@@ -57,12 +57,7 @@ export default function PostDetail(props) {
               sx={{
                 padding: '1rem'
               }}>
-              <Typography
-                sx={pageTitle.sx}
-                variant={pageTitle.variant}
-                component={pageTitle.component}>
-                {post.title}
-              </Typography>
+              <Typography {...pageTitle}>{post.title}</Typography>
               {post.tags &&
                 post.tags.map((tag) => {
                   return <Tag tag={tag} key={tag} />;
@@ -86,7 +81,7 @@ export default function PostDetail(props) {
                 {post.body}
               </Typography>
             </CardContent>
-            <CardActions sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <CardActions sx={rightAligned}>
               {props.location.from && (
                 <Link to={props.location.from}>
                   <Button variant='contained' color='primary'>

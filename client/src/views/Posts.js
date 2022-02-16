@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import PostModel from '../models/PostsModel';
+
 import PostItemSmall from '../Components/PostItemSmall';
 import { Typography } from '@mui/material';
 import { pageTitle } from '../helpers/styles';
+import ResourceModel from '../models/ResourceModel';
 
 export default function Posts(props) {
-  const postModel = new PostModel('posts');
+  const postModel = new ResourceModel('posts');
   const [posts, setPosts] = useState([]);
   const url = props.match.url;
   const path = props.match.path;
@@ -40,14 +41,17 @@ export default function Posts(props) {
         {title}
       </Typography>
       <ul>
-        {posts.length > 0 &&
+        {posts?.length > 0 ? (
           posts.map((post) => {
             return (
               <li key={`post_${post.id}`}>
                 <PostItemSmall {...props} post={post} />
               </li>
             );
-          })}
+          })
+        ) : (
+          <Typography>Hitade inga inlägg</Typography>
+        )}
       </ul>
     </>
   );

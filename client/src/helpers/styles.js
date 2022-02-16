@@ -1,4 +1,12 @@
-import { amber, brown, teal } from '@mui/material/colors';
+import {
+  amber,
+  blue,
+  brown,
+  cyan,
+  lightGreen,
+  lime,
+  teal
+} from '@mui/material/colors';
 
 export const pageTitle = {
   sx: {
@@ -6,25 +14,31 @@ export const pageTitle = {
     marginBottom: '.3em',
     color: teal[900]
   },
-  variant: 'h4',
+  variant: 'h5',
   component: 'h2'
 };
 export const pageSubtitle = {
   sx: {
-    textTransform: 'uppercase',
-    color: teal[900],
+    color: lightGreen[900],
     marginBottom: '1rem'
   },
-  variant: 'h5',
+  variant: 'h6',
   component: 'h3'
 };
 
 export const bodyTitle = {
   sx: {
-    color: brown[900],
+    color: 'primary.dark',
     marginBottom: '.4rem',
     fontWeight: 'normal'
   },
   variant: 'h7',
   component: 'h4'
+};
+export const contentBox = {};
+
+export const rightAligned = {
+  display: 'flex',
+  gap: '.3rem',
+  justifyContent: 'flex-end'
 };

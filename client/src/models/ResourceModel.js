@@ -1,19 +1,23 @@
 import api from '../api';
 
-export default class PostModel {
+export default class ResourceModel {
   resourceUrl = '';
   constructor(resourceUrl) {
     this.resourceUrl = resourceUrl;
   }
 
   async getAll(url = this.resourceUrl) {
-    const result = await api.get(url);
-    if (result.status === 200) return result.data;
-    else {
-      console.log(result.status);
-      console.log(result.data);
+    try {
+      const result = await api.get(url);
+      if (result.status === 200) return result.data;
+      else {
+        console.log(result.status);
+        console.log(result.data);
+      }
+      return [];
+    } catch (e) {
+      console.log(e);
     }
-    return [];
   }
 
   async getById(id) {
@@ -61,10 +65,10 @@ export default class PostModel {
       `${this.resourceUrl}/${id}/addComment`,
       resource
     );
+    console.log(result);
     if (result.status === 200) return result.data;
     else {
-      console.log(result.status);
-      console.log(result.data);
+      console.log('error');
     }
     return {};
   }
