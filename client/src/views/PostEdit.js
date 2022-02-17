@@ -12,8 +12,6 @@ export default class PostEdit extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onDelete = this.onDelete.bind(this);
-    this.fetchPost = this.fetchPost.bind(this);
-    this.reset = this.reset.bind(this);
   }
   reset() {
     this.setState({
