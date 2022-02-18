@@ -25,10 +25,11 @@ function App() {
             </Button>
           </Toolbar>
         </AppBar>
+
         <Box
           sx={{
             maxWidth: '60rem',
-            margin: '0 auto'
+            margin: '1rem auto'
           }}>
           <Switch>
             <Route exact path='/' component={Home} />
@@ -36,6 +37,8 @@ function App() {
             <Route exact path='/posts/:id' component={PostDetail} />
             <Route exact path='/posts/:id/edit' component={PostEdit} />
             <Route exact path='/posts/' component={Posts} />
+            <Route exact path='/tags/:name/posts' component={Posts} />
+            <Route exact path='/users/:id/posts' component={Posts} />
           </Switch>
         </Box>
       </Router>
