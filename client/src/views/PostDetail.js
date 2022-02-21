@@ -26,13 +26,11 @@ export default function PostDetail(props) {
           <Button variant='contained' color='secondary'>
             <Link to={`/posts/${post.id}/edit`}>Ändra</Link>
           </Button>
-          <h2>{post.title}</h2>
           {post.tags &&
-            post.tags.map((tag, i) => {
-              return (
-                <Chip color='secondary' key={`tag_${i}`} label={tag}></Chip>
-              );
-            })}
+            post.tags.map((tag) => (
+              <Chip key={`tag_${tag}`} label={tag} color='secondary' />
+            ))}
+          <h2>{post.title}</h2>
           <p>{post.author.username}</p>
           <img src={post.imageUrl} />
           <p>{post.body}</p>
@@ -40,17 +38,20 @@ export default function PostDetail(props) {
       ) : (
         <p>Laddar</p>
       )}
-      {post.comments &&
-        post.comments.map((comment, i) => {
-          return (
-            <li key={`com_${i}`}>
-              <p>Skriven av: {comment.author} </p>
-
-              <p>{comment.title}</p>
-              <p>{comment.body}</p>
-            </li>
-          );
-        })}
+      <ul>
+        {post.comments &&
+          post.comments.map((comment) => {
+            return (
+              <li key={`comment_${comment.id}`}>
+                {comment.title}
+                <br />
+                {comment.author}
+                <br />
+                {comment.body}
+              </li>
+            );
+          })}
+      </ul>
     </>
   );
 }

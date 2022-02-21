@@ -64,7 +64,6 @@ export default class PostEdit extends React.Component {
   onDelete() {
     this.postModel.remove(this.id).then((result) => {
       console.log(result);
-      window.location.href = '/';
     });
   }
   render() {
@@ -103,19 +102,18 @@ export default class PostEdit extends React.Component {
           fullWidth
         />
         {post.tags &&
-          post.tags.map((tag, i) => {
-            return (
-              <Chip
-                onDelete={() => console.log('chip delete')}
-                color='secondary'
-                key={`tag_${i}`}
-                label={tag}></Chip>
-            );
-          })}
+          post.tags.map((tag) => (
+            <Chip
+              onDelete={() => console.log('taggen togs bort')}
+              key={`tag_${tag}`}
+              label={tag}
+              color='secondary'
+            />
+          ))}
         <Button variant='contained' color='primary' onClick={this.onSave}>
           Spara
         </Button>
-        {!isNaN(this.id) && this.id > 0 && (
+        {this.id && (
           <Button variant='contained' color='error' onClick={this.onDelete}>
             Ta bort
           </Button>
