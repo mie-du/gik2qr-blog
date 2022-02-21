@@ -27,8 +27,8 @@ export default function Posts(props) {
               <br />
               {post.tags &&
                 post.tags.map((tag) => (
-                  <Link to={`/tags/${tag}/posts`}>
-                    <Chip key={`tag_${tag}`} label={tag} color='secondary' />
+                  <Link key={`tag_${tag}`} to={`/tags/${tag}/posts`}>
+                    <Chip label={tag} color='secondary' />
                   </Link>
                 ))}
               <img
