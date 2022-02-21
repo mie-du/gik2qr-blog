@@ -1,13 +1,36 @@
+import {
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography
+} from '@mui/material';
 import React from 'react';
+import { toDateTimeString } from '../helpers/formatting';
+import { PlaceHolderAvatar } from '../helpers/PlaceHolderComponents';
 
 export default function CommentListItem({ comment }) {
   console.log(comment);
   return (
-    <li>
-      <p>Skriven av: {comment.author} </p>
-
-      <p>{comment.title}</p>
-      <p>{comment.body}</p>
-    </li>
+    <ListItem>
+      <ListItemAvatar>
+        <PlaceHolderAvatar
+          user={{
+            username: comment.author,
+            imageUrl: comment.authorImage
+          }}
+        />
+      </ListItemAvatar>
+      <ListItemText
+        primary={comment.title}
+        secondary={
+          <>
+            <Typography sx={{ fontSize: '.8rem' }}>{`Skriven av: ${
+              comment.author
+            } ${toDateTimeString(comment.createdAt)}`}</Typography>
+            <Typography>{comment.body}</Typography>
+          </>
+        }
+      />
+    </ListItem>
   );
 }

@@ -6,6 +6,19 @@ export default class PostModel {
     this.resourceUrl = resourceUrl;
   }
 
+  async addComment(id, comment) {
+    const result = await api.post(
+      `${this.resourceUrl}/${id}/addComment`,
+      comment
+    );
+    if (result.status === 200) return result.data;
+    else {
+      console.log(result.status);
+      console.log(result.data);
+    }
+    return {};
+  }
+
   async getAll(url = this.resourceUrl) {
     const result = await api.get(url);
     if (result.status === 200) return result.data;
