@@ -3,8 +3,9 @@ import ResourceList from '../Components/ResourceList';
 import UserItemSmall from '../Components/UserItemSmall';
 import PostItemSmall from '../Components/PostItemSmall';
 import Tag from '../Components/Tag';
-import { Box } from '@mui/system';
-import { Grid, Typography } from '@mui/material';
+
+import { Grid, Typography, Paper } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 export default function Home() {
   return (
@@ -18,22 +19,36 @@ export default function Home() {
           />
         </Grid>
         <Grid item xs={12} md={3}>
-          <Box sx={{ marginBottom: '.5rem', minHeight: '50vh' }}>
-            <Typography variant='h6'>Användare</Typography>
+          <Paper
+            sx={{
+              marginBottom: 4,
+              backgroundColor: grey[50],
+              padding: 2
+            }}>
+            <Typography variant='h5' gutterBottom>
+              Användare
+            </Typography>
             <ResourceList
               modelPath='users'
               resourceName='user'
               itemComponent={UserItemSmall}
             />
-          </Box>
-          <Box sx={{ marginBottom: '.5rem' }}>
-            <Typography variant='h6'>Taggar</Typography>
+          </Paper>
+          <Paper
+            sx={{
+              marginBottom: 4,
+              backgroundColor: grey[50],
+              padding: 2
+            }}>
+            <Typography variant='h5' gutterBottom>
+              Taggar
+            </Typography>
             <ResourceList
               modelPath='tags'
               resourceName='tag'
               itemComponent={Tag}
             />
-          </Box>
+          </Paper>
         </Grid>
       </Grid>
     </div>

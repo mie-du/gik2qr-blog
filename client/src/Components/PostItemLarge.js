@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
-  Chip,
   Typography
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
@@ -13,7 +12,6 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { toDateTimeString } from '../helpers/formatting';
-import { PlaceHolderAvatar } from '../helpers/PlaceHolderComponents';
 
 import Tag from './Tag';
 import UserItemSmall from './UserItemSmall';

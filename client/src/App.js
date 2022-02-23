@@ -11,7 +11,9 @@ function App() {
   return (
     <div className='App'>
       <Router>
-        <h1>Blogg</h1>
+        <Typography variant='h1' component='h1'>
+          Blogg
+        </Typography>
         <AppBar position='static'>
           <Toolbar>
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
@@ -28,7 +30,7 @@ function App() {
 
         <Box
           sx={{
-            maxWidth: '60rem',
+            maxWidth: '70rem',
             margin: '1rem auto'
           }}>
           <Switch>

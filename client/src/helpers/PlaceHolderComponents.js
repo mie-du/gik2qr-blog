@@ -3,16 +3,12 @@ import { amber, brown, orange } from '@mui/material/colors';
 
 export const PlaceHolderImage = ({ source }) => {
   return source.imageUrl ? (
-    <img
-      src={source.imageUrl}
-      alt={source.title}
-      style={{ width: '200px', height: '200px' }}
-    />
+    <img src={source.imageUrl} alt={source.title} style={{ width: '200px' }} />
   ) : (
     <Box
       sx={{
-        width: 200,
-        height: 200,
+        width: '200px',
+        height: '200px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

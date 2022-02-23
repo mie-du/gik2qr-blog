@@ -7,7 +7,11 @@ export default function Tag({ tag }) {
 
   return (
     <Link to={`/tags/${tag}/posts`} key={tag}>
-      <Chip sx={{ margin: '.2rem' }} color='secondary' label={tag}></Chip>
+      <Chip
+        component='span'
+        sx={{ margin: '.2rem', cursor: 'pointer' }}
+        color='secondary'
+        label={tag}></Chip>
     </Link>
   );
 }
