@@ -200,6 +200,8 @@ async function _findOrCreateTagId(name) {
 }
 
 async function _addTagToPost(post, tags) {
+  await db.postTag.destroy({ where: { postId: post.id } });
+
   if (tags) {
     tags.forEach(async (tag) => {
       const tagId = await _findOrCreateTagId(tag);

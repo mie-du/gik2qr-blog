@@ -1,6 +1,6 @@
 import api from '../api';
 
-export default class PostModel {
+export default class ResourceModel {
   resourceUrl = '';
   constructor(resourceUrl) {
     this.resourceUrl = resourceUrl;

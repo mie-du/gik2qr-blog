@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import PostModel from '../models/PostsModel';
+import ResourceModel from '../models/ResourceModel';
 import { Chip } from '@mui/material';
 import PostItemSmall from '../Components/PostItemSmall';
 
 export default function Posts(props) {
-  const postModel = new PostModel('posts');
+  const postModel = new ResourceModel('posts');
   const [posts, setPosts] = useState([]);
   const url = props.match.url;
   console.log(url);

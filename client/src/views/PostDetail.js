@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import PostModel from '../models/PostsModel';
-import { Button, Chip, List, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import ResourceModel from '../models/ResourceModel';
+import { List, Typography } from '@mui/material';
+
 import PostItemLarge from '../Components/PostItemLarge';
 import CommentListItem from '../Components/CommentListItem';
 import { Box } from '@mui/system';
@@ -11,7 +11,7 @@ export default function PostDetail(props) {
   const id = props.match.params.id;
   const isValidId = !isNaN(id);
 
-  const postModel = new PostModel('posts');
+  const postModel = new ResourceModel('posts');
   const [post, setPost] = useState({});
 
   useEffect(() => {
