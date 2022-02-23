@@ -9,7 +9,6 @@ import { toDateTimeString } from '../helpers/formatting';
 import { PlaceHolderAvatar } from '../helpers/PlaceHolderComponents';
 
 export default function CommentListItem({ comment }) {
-  console.log(comment);
   return (
     <ListItem>
       <ListItemAvatar>

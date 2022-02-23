@@ -8,14 +8,12 @@ export default function Posts(props) {
   const postModel = new ResourceModel('posts');
   const [posts, setPosts] = useState([]);
   const url = props.match.url;
-  console.log(url);
 
   useEffect(() => {
     postModel.getAll(url).then((posts) => {
       setPosts(posts);
     });
   }, [url]);
-  console.log(posts);
 
   return (
     <ul>
