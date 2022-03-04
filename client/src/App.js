@@ -2,9 +2,9 @@ import './App.css';
 import { AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './views/Home';
-import Posts from './views/Posts';
-import Users from './views/Users';
+import Home from './Views/Home';
+import Posts from './Views/Posts';
+import Users from './Views/Users';
 
 function App() {
   return (
