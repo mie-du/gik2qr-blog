@@ -2,10 +2,10 @@ import './App.css';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Home from './views/Home';
-import Posts from './views/Posts';
-import PostEdit from './views/PostEdit';
-import PostDetail from './views/PostDetail';
+import Home from './Views/Home';
+import Posts from './Views/Posts';
+import PostEdit from './Views/PostEdit';
+import PostDetail from './Views/PostDetail';
 
 function App() {
   return (
